@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id           Int        @id @default(autoincrement()) @map("userId")
+  email        String     @map("email") @db.VarChar(255)
+  password     String     @map("password") @db.VarChar(255)
+  name         String     @map("name") @db.VarChar(255)
+  profileImage String     @map("profileImage") @db.VarChar(255) // ERD에 profileImage 빠짐.
+  role         Role
+  class        Class[]
+  projects     Projects[]
+  teams        Teams[]
+  tasks        Tasks[]
+
+  @@map("Users")
+}
+
+model Class {
+  id     Int    @id @default(autoincrement()) @map("classId")
+  userId Int    @map("userId")
+  name   String @map("name") @db.VarChar(255)
+  users  Users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("Class")
+}
+
+model Teams {
+  id     Int     @id @default(autoincrement()) @map("teamId")
+  userId Int     @map("userId")
+  name   String  @map("name") @db.VarChar(255)
+  tasks  Tasks[]
+  users  Users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("Teams")
+}
+
+model Projects {
+  id        Int      @id @default(autoincrement()) @map("projectId")
+  userId    Int      @map("userId")
+  title     String   @map("title") @db.VarChar(255)
+  duration  DateTime @map("duration")
+  createdAt DateTime @default(now()) @map("createdAt")
+  category  Category
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("Projects")
+}
+
+model Tasks {
+  id        Int         @id @default(autoincrement()) @map("taskId")
+  userId    Int?        @map("userId")
+  teamId    Int?        @map("teamId")
+  content   String      @map("content") @db.VarChar(255)
+  submitUrl String      @map("submitUrl") @db.VarChar(255)
+  createdAt DateTime    @default(now()) @map("createdAt")
+  status    Status
+  users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  Feedbacks Feedbacks[]
+
+  @@map("Tasks")
+}
+
+model Feedbacks {
+  id        Int      @id @default(autoincrement()) @map("feedbackId")
+  taskId    Int      @map("taskId")
+  title     String   @map("title") @db.VarChar(255)
+  content   String   @map("content") @db.VarChar(255)
+  rating    Int      @map("rating") // rating이 enum??? 1-10점 평점
+  createdAt DateTime @default(now()) @map("createdAt")
+  status    Status
+  task      Tasks    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("Feedbacks")
+}
+
+enum Role {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+enum Category {
+  TIL
+  PERSONAL_PROJECT
+  TEAM_PROJECT
+}
+
+enum Status {
+  SUBMIT_REQUESTED
+  IN_PROGRESS
+  SUBMIT_COMPLETED
+}
