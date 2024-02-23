@@ -2,11 +2,13 @@
 
 ## 📌 프로젝트 개요
 
-👉🏼 **[ERD]**
-👉🏼 **[ERD]**
+👉🏼 **[Miro]** https://miro.com/app/board/uXjVNpDYOA0=/?share_link_id=885420720570
+👉🏼 **[Notion API 명세서]** https://www.notion.so/teamsparta/2d6d6256d0594759a60be2f2a67e0a71?v=10ce548bb4774e68b350eacb56ce4d97&pvs=4
 👉🏼 **[ERD]**
 
 ### 🔧 개발 기간
+
+2024.02.24 - 2024.02.29
 
 ### 📁 Directory Structure: 폴더 구조
 
@@ -15,47 +17,32 @@
 ├── .env
 ├── .gitignore
 ├── .prettierrc
+├── jest.config.js
 ├── middlewares
-│   ├── errorhandler.Middleware.js
+│   ├── error-handler.Middleware.js
 │   └── jwt-validate.Middleware.js
-│   └── auth.Middleware.js
 └── repositories
-│   ├── resumes.repository.js
 │   └── users.repository.js
 └── services
-│   ├── resumes.service.js
 │   └── users.service.js
 └── controllers
-│   ├── resumes.controller.js
 │   └── users.controller.js
 └── routers
-│   ├── resumes.router.js
 │   └── users.router.js
-└── uils
+└── utils
 │   └── prisma
 │       └── index.js
 └── prisma
 │   └── schema.prisma
-└── redis
-│   ├── client.js
-│   └── keys.js
 ├── tests
-│   ├── data
-│   │   ├── all-resumes.data.json
-│   │   ├── new-resume.data.json
-│   │   ├── all-users.data.json
-│   │   └── new-user.data.json
-│   ├── integration
 │   └── unit
 │       ├── repositories
-│       │   └── resumes.repository.uint.spec.js
+│       │   └── users.repository.uint.spec.js
 │       ├── services
-│       │   └── resumes.service.uint.spec.js
+│       │   └── users.service.uint.spec.js
 │       └── controllers
-│           └── resumes.controller.uint.spec.js
+│           └── users.controller.uint.spec.js
 ├── app.js
-├── swagger-output.json
-├── swagger.js
 ├── package-lock.json
 └── package.json
 

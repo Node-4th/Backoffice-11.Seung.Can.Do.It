@@ -1,4 +1,4 @@
-export class UsersRepository {
+export class TeamsRepository {
   constructor(prisma) {
     this.prisma = prisma;
   }
