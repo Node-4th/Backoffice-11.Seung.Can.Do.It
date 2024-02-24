@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middlewares/error-handler.Middleware.js";
+import feedbacksRouter from './src/routes/feedbacks.routes.js';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,11 +16,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/feedback/:projectId', feedbacksRouter);
 app.use("/classes", ClassRoter);
-
-// router.get("/", (req, res) => {
-//   return res.json({ message: "안녕하세요.😄" });
-// });
 
 app.use(errorHandlerMiddleware);
 

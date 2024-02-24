@@ -107,12 +107,13 @@ enum Status {
 enum Rating {
   RATING_1
   RATING_2
+  RATING_3
   RATING_4
   RATING_5
-  RATING_3
   RATING_6
   RATING_7
   RATING_8
   RATING_9
   RATING_10
 }
+
