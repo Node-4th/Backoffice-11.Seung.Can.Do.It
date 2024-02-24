@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/feedback/:projectId', feedbacksRouter);
+app.use('/feedback/:taskId', feedbacksRouter);
 app.use("/classes", ClassRoter);
 
 app.use(errorHandlerMiddleware);
