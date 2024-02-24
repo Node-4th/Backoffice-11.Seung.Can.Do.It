@@ -49,6 +49,7 @@ model Projects {
   createdAt DateTime @default(now()) @map("createdAt")
   category  Category
   users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Tasks     Tasks[]
 
   @@map("Projects")
 }
@@ -61,9 +62,11 @@ model Tasks {
   content   String      @map("content") @db.VarChar(255)
   submitUrl String      @map("submitUrl") @db.VarChar(255)
   createdAt DateTime    @default(now()) @map("createdAt")
+  updatedAt DateTime    @updatedAt @map("updatedAt")
   status    Status
   users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  projects  Projects    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   Feedbacks Feedbacks[]
 
   @@map("Tasks")
@@ -74,8 +77,9 @@ model Feedbacks {
   taskId    Int      @map("taskId")
   title     String   @map("title") @db.VarChar(255)
   content   String   @map("content") @db.VarChar(255)
-  rating    Int      @map("rating") // rating이 enum??? 1-10점 평점
+  rating    Rating
   createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
   status    Status
   task      Tasks    @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
@@ -102,5 +106,14 @@ enum Status {
 
 enum Rating {
   RATING_1
-  
+  RATING_2
+  RATING_3
+  RATING_4
+  RATING_5
+  RATING_6
+  RATING_7
+  RATING_8
+  RATING_9
+  RATING_10
 }
+
