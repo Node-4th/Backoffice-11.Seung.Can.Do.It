@@ -1,16 +1,11 @@
-export class ClassesController {
-  constructor(classesService) {
-    this.classesService = classesService;
-  }
-  /** 컨트롤러 계층 패턴
-   * 0. try...catch 구문으로 에러핸들러에 에러 전달
-   * 1. Request : 클라이언트로부터 전달 받는 데이터(입력값)
-   * 2. 입력값에 대한 유효성 검사 (검증 로직 X)
-   * 3. 서비스 계층에 요청
-   * 4. Response : 클라이언트에게 반환할 데이터
-   */
-
-  /** 클래스 생성 - 3계층 로직
+/** 컨트롤러 계층 패턴
+ * 0. try...catch 구문으로 에러핸들러에 에러 전달
+ * 1. Request : 클라이언트로부터 전달 받는 데이터(입력값)
+ * 2. 입력값에 대한 유효성 검사 (검증 로직 X)
+ * 3. 서비스 계층에 요청
+ * 4. Response : 클라이언트에게 반환할 데이터
+ */
+/** 클래스 생성 - 3계층 로직
 
 Controller에서는
 <Request>
@@ -55,6 +50,11 @@ Repository createClass에서는
   - prisma.class.create(data)로 Users 테이블의 유저정보를 끌어다가 조회한 결과를 서비스 계층에 반환한다.
  */
 
+export class ClassesController {
+  constructor(classesService) {
+    this.classesService = classesService;
+  }
+
   createClass = async (req, res, next) => {
     try {
       //Request
@@ -67,12 +67,54 @@ Repository createClass에서는
       }
 
       //서비스 계층에 클래스 생성 요청
-      const newClass = await this.classesService.createClass(user, name);
+      const createdClass = await this.classesService.createClass(user, name);
       //Response
       res.status(201).json({
         success: true,
         message: "클래스가 성공적으로 생성되었습니다.",
-        newClass,
+        createdClass,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateClass = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const { classId } = req.params;
+      const { name } = req.body;
+
+      if (!name) {
+        throw new Error("클래스명은 필수 입력 항목입니다.");
+      }
+
+      const updatedClass = await this.classesService.updateClass(
+        user,
+        classId,
+        name,
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "클래스가 성공적으로 수정되었습니다.",
+        updatedClass,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteClass = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const { classId } = req.params;
+
+      await this.classesService.deleteClass(user, classId);
+
+      res.status(200).json({
+        success: true,
+        message: "클래스가 성공적으로 삭제되었습니다.",
       });
     } catch (error) {
       next(error);

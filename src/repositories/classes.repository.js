@@ -17,12 +17,45 @@ export class ClassesRepository {
     });
   };
 
+  getClassByName = async (name) => {
+    return await this.prisma.class.findFirst({
+      where: {
+        name,
+      },
+    });
+  };
+
+  getClassByClassId = async (classId) => {
+    return await this.prisma.class.findUnique({
+      where: {
+        classId: +classId,
+      },
+    });
+  };
   createClass = async (user, name) => {
     return await this.prisma.class.create({
       data: {
-        classId: classId,
         name: name,
         userId: user.userId,
+      },
+    });
+  };
+
+  updateClass = async (classId, name) => {
+    return await this.prisma.class.update({
+      where: {
+        classId: +classId,
+      },
+      data: {
+        name: name,
+      },
+    });
+  };
+
+  deleteClass = async (classId) => {
+    return await this.prisma.class.delete({
+      where: {
+        classId: +classId,
       },
     });
   };
