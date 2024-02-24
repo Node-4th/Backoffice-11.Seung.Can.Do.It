@@ -9,14 +9,18 @@ export class ClassesService {
    * 4. Return : 컨트롤러 계층에 전달할 데이터
    *
    */
-  verifyUserAdmin = async (userId) => {
-    const user = await this.classesRepository.getUserById(userId);
-    if (!user || user.role !== "admin") {
+
+  createClass = async (user, name) => {
+    //Parameter - user.role이 admin인지 검증하기
+    const user = await this.classesRepository.getUserByUserId(user.userId);
+    if (!user) throw new Error("존재하지 않는 사용자입니다.");
+    if (user.role !== "admin")
       throw new Error("관리자만 클래스를 생성할 수 있습니다.");
-    }
-  };
-  createClass = async (userId, className) => {
-    return await this.classesRepository.createClass(userId, className);
+
+    //레파지토리 계층에 클래스 생성 요청
+    const newClass = await this.classesRepository.createClass(user, name);
+    //Return
+    return newClass.name;
   };
 
   inviteUserToClass = async (classId, userId, role) => {

@@ -16,7 +16,7 @@ const classesController = new ClassesController(classesService);
 
 // 클래스 생성, 조회, 수정, 삭제
 router.post("/classes", classesController.createClass);
-// router.get("/classes", classesController.getAllClasses);
+// router.get("/classes", classesController.getClassById);
 // router.put("/classes/:classId", classesController.updateClass);
 // router.delete("/classes/:classId", classesController.deleteClass);
 

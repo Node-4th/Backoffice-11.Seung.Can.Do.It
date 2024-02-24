@@ -9,22 +9,20 @@ export class ClassesRepository {
    *
    */
 
-  getUserById = async (userId) => {
-    return await this.prisma.users.findFirst({
+  getUserByUserId = async (userId) => {
+    return await this.prisma.class.findFirst({
       where: {
-        id: userId,
-      },
-      select: {
-        role: true,
+        userId: +userId,
       },
     });
   };
 
-  createClass = async (adminUserId, className) => {
+  createClass = async (user, name) => {
     return await this.prisma.class.create({
       data: {
-        name: className,
-        userId: adminUserId,
+        classId: classId,
+        name: name,
+        userId: user.userId,
       },
     });
   };
