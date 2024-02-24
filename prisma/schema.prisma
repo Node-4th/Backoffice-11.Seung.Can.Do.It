@@ -45,10 +45,11 @@ model Projects {
   id        Int      @id @default(autoincrement()) @map("projectId")
   userId    Int      @map("userId")
   title     String   @map("title") @db.VarChar(255)
-  duration  DateTime @map("duration")
+  deadline  DateTime @map("deadline")
   createdAt DateTime @default(now()) @map("createdAt")
   category  Category
   users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Tasks     Tasks[]
 
   @@map("Projects")
 }
@@ -57,12 +58,15 @@ model Tasks {
   id        Int         @id @default(autoincrement()) @map("taskId")
   userId    Int?        @map("userId")
   teamId    Int?        @map("teamId")
+  projectId Int         @map("projectId")
   content   String      @map("content") @db.VarChar(255)
   submitUrl String      @map("submitUrl") @db.VarChar(255)
   createdAt DateTime    @default(now()) @map("createdAt")
+  updatedAt DateTime    @updatedAt @map("updatedAt")
   status    Status
   users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  projects  Projects    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   Feedbacks Feedbacks[]
 
   @@map("Tasks")
@@ -73,8 +77,9 @@ model Feedbacks {
   taskId    Int      @map("taskId")
   title     String   @map("title") @db.VarChar(255)
   content   String   @map("content") @db.VarChar(255)
-  rating    Int      @map("rating") // rating이 enum??? 1-10점 평점
+  rating    Rating
   createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
   status    Status
   task      Tasks    @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
@@ -97,4 +102,17 @@ enum Status {
   SUBMIT_REQUESTED
   IN_PROGRESS
   SUBMIT_COMPLETED
+}
+
+enum Rating {
+  RATING_1
+  RATING_2
+  RATING_4
+  RATING_5
+  RATING_3
+  RATING_6
+  RATING_7
+  RATING_8
+  RATING_9
+  RATING_10
 }
