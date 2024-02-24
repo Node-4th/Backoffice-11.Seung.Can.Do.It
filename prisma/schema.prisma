@@ -45,7 +45,7 @@ model Projects {
   id        Int      @id @default(autoincrement()) @map("projectId")
   userId    Int      @map("userId")
   title     String   @map("title") @db.VarChar(255)
-  duration  DateTime @map("duration")
+  deadline  DateTime @map("deadline")
   createdAt DateTime @default(now()) @map("createdAt")
   category  Category
   users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -57,6 +57,7 @@ model Tasks {
   id        Int         @id @default(autoincrement()) @map("taskId")
   userId    Int?        @map("userId")
   teamId    Int?        @map("teamId")
+  projectId Int         @map("projectId")
   content   String      @map("content") @db.VarChar(255)
   submitUrl String      @map("submitUrl") @db.VarChar(255)
   createdAt DateTime    @default(now()) @map("createdAt")
@@ -97,4 +98,9 @@ enum Status {
   SUBMIT_REQUESTED
   IN_PROGRESS
   SUBMIT_COMPLETED
+}
+
+enum Rating {
+  RATING_1
+  
 }
