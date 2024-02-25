@@ -9,13 +9,13 @@ datasource db {
 
 model Users {
   id           Int        @id @default(autoincrement()) @map("userId")
-  classId      Int        @map("classId")
+  classId      Int?       @map("classId")
   email        String     @unique @map("email") @db.VarChar(255)
   password     String     @map("password") @db.VarChar(255)
   name         String     @map("name") @db.VarChar(255)
   profileImage String?    @map("profileImage") @db.VarChar(255)
   role         Role
-  class        Class      @relation(fields: [classId], references: [id], onDelete: Cascade)
+  class        Class?     @relation(fields: [classId], references: [id], onDelete: Cascade)
   projects     Projects[]
   teams        Teams[]
   tasks        Tasks[]
