@@ -11,11 +11,11 @@ export class FeedbacksRepository {
     return feedback;
   } 
 
-  findFeedback = async (taskId) => {
+  findFeedback = async (taskId, feedbackId) => {
     const task = await this.prisma.Feedbacks.findFirst({
       where: {
-        taskId,
-        feedbackId
+        id: feedbackId,
+        taskId
       }
     })
 

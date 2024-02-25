@@ -76,7 +76,7 @@ export class FeedbacksService {
   }
 
   deleteFeedback = async (taskId, feedbackId) => {
-    const feedback = await this.feedbacksRepository.delete(
+    const feedback = await this.feedbacksRepository.deleteFeedback(
       taskId,
       feedbackId
     );
