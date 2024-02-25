@@ -9,10 +9,9 @@ export class FeedbacksController {
 
       const feedback = await this.feedbacksService.findFeedback(projectId);
 
-      return res.status(200).json({data: feedback});
-
-    } catch(err) {
+      return res.status(200).json({ data: feedback });
+    } catch (err) {
       next(err);
     }
-  }
+  };
 }

@@ -14,6 +14,7 @@
     "test:integration": "jest __tests__/integration --forceExit"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.23.9",
     "@prisma/client": "^5.10.2",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
