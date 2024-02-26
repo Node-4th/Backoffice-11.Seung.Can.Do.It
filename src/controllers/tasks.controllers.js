@@ -5,8 +5,8 @@ export class TasksController {
   submitTask = async (req, res, next) => {
     try {
       const projectId = req.params.projectId;
-      // const user = req.user;
-      const { content, submitUrl, userId } = req.body;
+      const user = req.user;
+      const { content, submitUrl } = req.body;
       if (!content || !submitUrl)
         return res
           .status(400)
@@ -14,8 +14,7 @@ export class TasksController {
       const teamId = req.query.teamId;
       const submitTask = await this.tasksService.submitTask(
         projectId,
-        userId,
-        //user.userId,
+        user.userId,
         teamId,
         content,
         submitUrl,
