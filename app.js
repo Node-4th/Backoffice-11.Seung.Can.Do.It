@@ -8,6 +8,7 @@ dotenv.config();
 
 import ClassRoter from "./src/routes/classes.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
+import eamilRouter from "./src/routes/emailservice.routes.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/feedback/:projectId", feedbacksRouter);
 app.use("/classes", ClassRoter);
+app.use("/api", eamilRouter);
 
 app.use(errorHandlerMiddleware);
 
