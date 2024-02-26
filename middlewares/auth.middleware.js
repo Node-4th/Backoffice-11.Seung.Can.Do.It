@@ -1,11 +1,11 @@
-import jwt from 'jsonwebtoken';
-import { prisma } from '../src/models/index.js';
-import dotenv from 'dotenv';
+import jwt from "jsonwebtoken";
+import { prisma } from "../src/models/index.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-export default async function ( req,res,next ){
-  try{
+export default async function (req, res, next) {
+  try {
     const { accessToken, refreshToken } = req.cookies;
     if (!accessToken) throw new Error("토큰이 없습니다.");
 
@@ -27,7 +27,7 @@ export default async function ( req,res,next ){
       if (refreshToken) {
         const decodedRefreshToken = jwt.verify(
           refreshToken,
-          process.env.CUSTOM_SECRET_KEY
+          process.env.CUSTOM_SECRET_KEY,
         );
 
         if (decodedRefreshToken.exp * 1000 > Date.now()) {
@@ -43,7 +43,7 @@ export default async function ( req,res,next ){
       }
     }
     next();
-  }catch(error){
+  } catch (error) {
     if (error.name === "JsonWebTokenError")
       return res.status(401).json({ message: "토큰이 조작되었습니다." });
     return res.status(400).json({ message: error.message });
