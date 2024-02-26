@@ -15,7 +15,6 @@ const classesController = new ClassesController(classesService);
 
 // 클래스 생성, 조회, 수정, 삭제
 
-router.get("/classes", classesController.getAllClassesByInvitedUser);
 router.get("/classes/:classId", classesController.getClassByClassId);
 router.post("/classes", classesController.createClass);
 router.put("/classes/:classId", classesController.updateClass);

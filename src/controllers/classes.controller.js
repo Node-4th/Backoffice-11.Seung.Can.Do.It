@@ -10,37 +10,10 @@ export class ClassesController {
   constructor(classesService) {
     this.classesService = classesService;
   }
-  getAllClassesByInvitedUser = async (req, res, next) => {
-    try {
-      //Request - classId는 1개고, 초대링크를 받아 가입한 role이 있는 사람만 조회
-      const orderKey = req.query.orderKey ?? "classId";
-      const orderValue = req.query.orderValue ?? "role";
-
-      //유효성 검사
-      if (!["classId", "role"].includes(orderKey))
-        throw new Error("orderKey가 올바르지 않습니다.");
-      if (!["admin", "tutor", "student"].includes(orderValue.toLowerCase()))
-        throw new Error("orderValue가 올바르지 않습니다.");
-
-      //클래스 조회
-      const classes = await this.classesService.getAllClassesByInvitedUser(
-        orderKey,
-        orderValue,
-      );
-
-      //Response
-      return res.json({
-        success: true,
-        data: { classes },
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
 
   getClassByClassId = async (req, res, next) => {
     try {
-      //Request
+      //Requests
       const { classId } = req.params;
 
       //유효성 검사

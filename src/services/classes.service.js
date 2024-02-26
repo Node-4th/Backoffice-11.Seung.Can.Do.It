@@ -9,21 +9,6 @@ export class ClassesService {
    * 4. Return : 컨트롤러 계층에 전달할 데이터
    */
 
-  getAllClassesByInvitedUser = async (orderKey, orderValue) => {
-    const classes = await this.classesRepository.getAllClasses(
-      orderKey,
-      orderValue,
-    );
-
-    return classes;
-  };
-
-  getClassByClassId = async (classId) => {
-    const myClass = await this.classesRepository.getClassByClassId(classId);
-    if (!classId) throw new Error("존재하지 않는 클래스입니다.");
-    return myClass;
-  };
-
   // role 체크 메서드
   checkAdminRole = async (user) => {
     const foundUser = await this.classesRepository.getUserByUserId(user.userId);

@@ -8,19 +8,6 @@ export class ClassesRepository {
    *  3. Return : 서비스 계층에 전달할 데이터
    *
    */
-  getAllClasses = async (orderKey, orderValue) => {
-    return await this.prisma.class.findMany({
-      select: {
-        classId: true,
-        name: true,
-      },
-      orderBy: [
-        {
-          [orderKey]: orderValue,
-        },
-      ],
-    });
-  };
 
   getUserByUserId = async (userId) => {
     return await this.prisma.class.findFirst({
@@ -51,7 +38,7 @@ export class ClassesRepository {
   createClass = async (name) => {
     return await this.prisma.class.create({
       data: {
-        name,
+        name: name,
       },
     });
   };
