@@ -7,11 +7,10 @@
   "scripts": {
     "dev": "nodemon src/app.js",
     "format": "prettier --write *.js **/*.js",
-    "test": "jest --watch --runInBand --detectOpenHandles --forceExit --detectOpenHandles",
-    "test:silent": "jest --silent --forceExit",
-    "test:coverage": "jest --coverage --forceExit",
-    "test:unit": "jest __tests__/unit --forceExit",
-    "test:integration": "jest __tests__/integration --forceExit"
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
+    "test:silent": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --silent --forceExit",
+    "test:coverage": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --coverage --forceExit",
+    "test:unit": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest __tests__/unit --forceExit"
   },
   "dependencies": {
     "@babel/preset-env": "^7.23.9",
@@ -30,6 +29,7 @@
     "prisma": "^5.10.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.23.9",
     "@jest/globals": "^29.7.0",
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
