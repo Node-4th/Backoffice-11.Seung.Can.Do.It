@@ -28,6 +28,7 @@ export class FeedbacksService {
       id: feedback.id,
       taskId: feedback.taskId,
       title: feedback.title,
+      userId: feedback.userId,
       name: feedback.user.name,
       rating: feedback.rating,
       status: feedback.status
@@ -84,10 +85,11 @@ export class FeedbacksService {
     return feedback;
   }
 
-  deleteFeedback = async (taskId, feedbackId) => {
+  deleteFeedback = async (taskId, feedbackId, userId) => {
     const feedback = await this.feedbacksRepository.deleteFeedback(
       taskId,
-      feedbackId
+      feedbackId,
+      userId
     );
 
     return feedback;

@@ -71,11 +71,12 @@ export class FeedbacksRepository {
     return feedback;
   }
 
-  deleteFeedback = async (taskId, feedbackId) => {
+  deleteFeedback = async (taskId, feedbackId, userId) => {
     const feedback = await this.prisma.Feedbacks.delete({
       where: {
         id: feedbackId,
-        taskId
+        taskId,
+        userId
       }
     });
 

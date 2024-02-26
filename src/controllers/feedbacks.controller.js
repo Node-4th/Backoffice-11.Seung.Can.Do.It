@@ -87,6 +87,7 @@ export class FeedbacksController {
   deleteFeedback = async (req, res, next) => {
     try{
       const { taskId, feedbackId } = req.params;
+      const { userId } = req.user;
 
       await this.feedbacksService.findTask(taskId);
       await this.feedbacksService.findFeedback(
@@ -96,7 +97,8 @@ export class FeedbacksController {
 
       const feedback = await this. feedbacksService.deleteFeedback(
         taskId,
-        feedbackId
+        feedbackId,
+        userId
       );
 
         return res.statsu(204).json({success: 'true', message: '피드백을 삭제했습니다.'});

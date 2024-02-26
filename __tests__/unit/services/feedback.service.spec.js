@@ -26,6 +26,7 @@ describe('feedback Service Unit Test', () => {
         taskId: 1,
         title: 'test',
         content: 'test',
+        userId: 1,
         name: 'name',
         rating: 'RATING_1',
         status: 'SUBMIT_REQUESTED',
@@ -73,6 +74,7 @@ describe('feedback Service Unit Test', () => {
                 id: 1,
                 taskId: 1,
                 title: 'test1',
+                userId: 1,
                 user: { name: 'name1' },
                 rating: 'RATING_1',
                 status: 'SUBMIT_REQUESTED'
@@ -81,6 +83,7 @@ describe('feedback Service Unit Test', () => {
                 id: 2,
                 taskId: 1,
                 title: 'test2',
+                userId: 2,
                 user: { name: 'name2' },
                 rating: 'RATING_1',
                 status: 'SUBMIT_REQUESTED'
@@ -92,6 +95,7 @@ describe('feedback Service Unit Test', () => {
                 id: 1,
                 taskId: 1,
                 title: 'test1',
+                userId: 1,
                 name: 'name1',
                 rating: 'RATING_1',
                 status: 'SUBMIT_REQUESTED'
@@ -100,6 +104,7 @@ describe('feedback Service Unit Test', () => {
                 id: 2,
                 taskId: 1,
                 title: 'test2',
+                userId: 2,
                 name: 'name2',
                 rating: 'RATING_1',
                 status: 'SUBMIT_REQUESTED'
@@ -155,7 +160,7 @@ describe('feedback Service Unit Test', () => {
             feedback.id,
             feedback.title,
             feedback.content,
-            feedback.name,
+            feedback.userId,
             feedback.rating
         );
 
@@ -164,7 +169,7 @@ describe('feedback Service Unit Test', () => {
             feedback.id,
             feedback.title,
             feedback.content,
-            feedback.name,
+            feedback.userId,
             feedback.rating
         );
         expect(editFeedback).toEqual(feedback);
@@ -175,17 +180,19 @@ describe('feedback Service Unit Test', () => {
     });
 
     test('deleteFeedback Method (SUCCESS)', async () => {
-        const mockdeleteFeedback = mockFeedbacksRepository.deleteFeedback.mockResolvedValue(true);
+        const mockdeleteFeedback = mockFeedbacksRepository.deleteFeedback.mockResolvedValue(feedback);
 
         const deleteFeedback = await feedbacksService.deleteFeedback(
             feedback.taskId,
-            feedback.id
+            feedback.id,
+            feedback.userId
         );
 
         expect(mockdeleteFeedback).toHaveBeenCalledWith(
             feedback.taskId,
-            feedback.id
+            feedback.id,
+            feedback.userId
         );
-        expect(deleteFeedback).toEqual(true);
+        expect(deleteFeedback).toEqual(feedback);
     })
 })
