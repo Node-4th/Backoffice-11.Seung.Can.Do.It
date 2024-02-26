@@ -13,7 +13,7 @@ const teamInfosController = new TeamInfosController(teamInfosService);
 router.get('/:teamInfoId', teamInfosController.findTeamInfos);
 
 // 팀정보 생성
-router.post('/', teamInfosController.createTeamInfos);
+router.post('/:teamId', teamInfosController.createTeamInfos);
 
 // 팀정보 수정
 router.put('/:teamInfoId', teamInfosController.editTeamInfos);

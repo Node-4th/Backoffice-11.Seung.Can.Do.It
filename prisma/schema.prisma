@@ -44,13 +44,15 @@ model Teams {
 }
 
 model TeamInfos {
-  id          Int    @id @default(autoincrement()) @map("teamInfoId")
-  teamId      Int    @map("teamId")
-  teamName    String @map("teamName")
-  groundRules String @map("groundRules")
-  goals       String @map("goals")
-  content     String @map("content")
-  teams       Teams  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  id          Int      @id @default(autoincrement()) @map("teamInfoId")
+  teamId      Int      @map("teamId")
+  teamName    String   @map("teamName")
+  groundRules String   @map("groundRules")
+  goals       String   @map("goals")
+  content     String   @map("content")
+  createdAt   DateTime @default(now()) @map("createdAt")
+  updatedAt   DateTime @updatedAt @map("updatedAt")
+  teams       Teams    @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 model Projects {
