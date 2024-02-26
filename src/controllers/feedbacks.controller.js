@@ -101,7 +101,7 @@ export class FeedbacksController {
         userId
       );
 
-        return res.statsu(204).json({success: 'true', message: '피드백을 삭제했습니다.'});
+        return res.status(204).json({success: 'true', message: '피드백을 삭제했습니다.'});
         
     } catch(err) {
       next(err);

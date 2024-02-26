@@ -63,7 +63,7 @@ describe('Feedback Repositoty Unit Test', () => {
         }
     ];
 
-    test('createFeedback, findFeedback Method (SUCCESS)', async () => {
+    test('createFeedback, findFeedback Method', async () => {
         const mockcreate = mockPrisma.Feedbacks.create.mockResolvedValue(feedback);
         const mockfindFirst = mockPrisma.Feedbacks.findFirst.mockResolvedValue(feedback);
 
