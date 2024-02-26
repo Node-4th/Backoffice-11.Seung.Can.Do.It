@@ -10,12 +10,12 @@ export class ClassesService {
    */
 
   // role 체크 메서드
-  checkAdminRole = async (user) => {
-    const foundUser = await this.classesRepository.getUserByUserId(user.userId);
+  checkAdminRole = async (userId) => {
+    const foundUser = await this.classesRepository.getUserByUserId(userId);
     if (!foundUser) {
       throw new Error("존재하지 않는 사용자입니다.");
     }
-    return foundUser.role === "admin";
+    return foundUser.role === "ADMIN";
   };
 
   getClassByClassId = async (classId) => {
@@ -24,16 +24,15 @@ export class ClassesService {
     return myClass;
   };
 
-  createClass = async (user, name) => {
+  createClass = async (userId, name) => {
     //Parameter - user.role이 admin인지 검증하기
-    const isAdmin = await this.checkAdminRole(user);
+    const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 클래스를 생성할 수 있습니다.");
     }
-    // 클래스명 중복 확인
-    const isExistClassByUser = await this.classesRepository.getUserByUserId(
-      user.userId,
-    );
+    // // 클래스명 중복 확인
+    const isExistClassByUser =
+      await this.classesRepository.getUserByUserId(userId);
     if (isExistClassByUser) {
       throw new Error("이미 클래스를 생성한 사용자입니다.");
     }
@@ -55,9 +54,9 @@ export class ClassesService {
     return createdClass;
   };
 
-  updateClass = async (user, classId, name) => {
+  updateClass = async (userId, classId, name) => {
     //Parameter - user.role이 admin인지 검증하기
-    const isAdmin = await this.checkAdminRole(user);
+    const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 클래스를 수정할 수 있습니다.");
     }
@@ -82,9 +81,9 @@ export class ClassesService {
     return updatedClass;
   };
 
-  deleteClass = async (user, classId) => {
+  deleteClass = async (userId, classId) => {
     //Parameter - user.role이 admin인지 검증하기
-    const isAdmin = await this.checkAdminRole(user);
+    const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 클래스를 삭제할 수 있습니다.");
     }

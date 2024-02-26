@@ -14,13 +14,12 @@ model Users {
   name         String     @map("name") @db.VarChar(255)
   profileImage String?    @map("profileImage") @db.VarChar(255)
   role         Role
-  classId      Int        @map("classId")
+  classId      Int?       @map("classId")
   Projects     Projects[]
   tasks        Tasks[]
   teams        Teams[]
-  class        Class      @relation(fields: [classId], references: [id], onDelete: Cascade)
+  class        Class?     @relation(fields: [classId], references: [id], onDelete: Cascade)
 
-  @@index([classId], map: "Users_classId_fkey")
   @@map("Users")
 }
 
@@ -39,7 +38,6 @@ model Teams {
   tasks  Tasks[]
   users  Users   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId], map: "Teams_userId_fkey")
   @@map("Teams")
 }
 
@@ -53,7 +51,6 @@ model Projects {
   Users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks     Tasks[]
 
-  @@index([userId], map: "Projects_userId_fkey")
   @@map("Projects")
 }
 
@@ -72,9 +69,6 @@ model Tasks {
   teams     Teams?       @relation(fields: [teamId], references: [id], onDelete: Cascade)
   users     Users?       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([projectId], map: "Tasks_projectId_fkey")
-  @@index([teamId], map: "Tasks_teamId_fkey")
-  @@index([userId], map: "Tasks_userId_fkey")
   @@map("Tasks")
 }
 
@@ -89,7 +83,6 @@ model Feedbacks {
   updatedAt DateTime         @updatedAt @map("updatedAt")
   task      Tasks            @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  @@index([taskId], map: "Feedbacks_taskId_fkey")
   @@map("Feedbacks")
 }
 
