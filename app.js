@@ -1,8 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middlewares/error-handler.Middleware.js";
-import feedbacksRouter from './src/routes/feedbacks.routes.js';
-import teamInfosRouter from './src/routes/teamInfos.router.js';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -11,6 +9,7 @@ dotenv.config();
 import ClassRoter from "./src/routes/classes.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
 import usersRouter from './src/routes/users.routes.js'
+import teamInfosRouter from './src/routes/teamInfos.router.js';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -19,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/feedback', feedbacksRouter);
+app.use('/feedbacks', feedbacksRouter);
 app.use('/users',usersRouter)
 app.use("/classes", ClassRoter);
 app.use('/teamInfos', teamInfosRouter);

@@ -9,17 +9,19 @@ datasource db {
 
 model Users {
   id           Int         @id @default(autoincrement()) @map("userId")
-  classId      Int?        @map("classId")
   email        String      @unique @map("email") @db.VarChar(255)
   password     String      @map("password") @db.VarChar(255)
   name         String      @map("name") @db.VarChar(255)
   profileImage String?     @map("profileImage") @db.VarChar(255)
   role         Role
-  class        Class?      @relation(fields: [classId], references: [id], onDelete: Cascade)
-  teams        Teams[]
-  tasks        Tasks[]
+  classId      Int?        @map("classId")
   feedbacks    Feedbacks[]
+  Projects     Projects[]
+  tasks        Tasks[]
+  teams        Teams[]
+  class        Class?      @relation(fields: [classId], references: [id], onDelete: Cascade)
 
+  @@index([classId], map: "Users_classId_fkey")
   @@map("Users")
 }
 
@@ -34,13 +36,15 @@ model Class {
 model Teams {
   id        Int         @id @default(autoincrement()) @map("teamId")
   userId    Int         @map("userId")
-  projectId Int         @map("projectId")
   name      String      @map("name") @db.VarChar(255)
+  projectId Int         @map("projectId")
   tasks     Tasks[]
-  users     Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  projects  Projects    @relation(fields: [projectId], references: [id])
   TeamInfos TeamInfos[]
+  projects  Projects    @relation(fields: [projectId], references: [id])
+  users     Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([projectId], map: "Teams_projectId_fkey")
+  @@index([userId], map: "Teams_userId_fkey")
   @@map("Teams")
 }
 
@@ -55,50 +59,61 @@ model TeamInfos {
   updatedAt   DateTime @updatedAt @map("updatedAt")
   teams       Teams    @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
+  @@index([teamId], map: "TeamInfos_teamId_fkey")
   @@map("TeamInfos")
 }
 
 model Projects {
   id        Int      @id @default(autoincrement()) @map("projectId")
+  userId    Int
   title     String   @map("title") @db.VarChar(255)
-  deadline  DateTime @map("deadline")
   createdAt DateTime @default(now()) @map("createdAt")
   category  Category
+  deadline  DateTime @map("deadline")
+  Users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks     Tasks[]
   teams     Teams[]
 
+  @@index([userId], map: "Projects_userId_fkey")
   @@map("Projects")
 }
 
 model Tasks {
-  id        Int         @id @default(autoincrement()) @map("taskId")
-  userId    Int?        @map("userId")
-  teamId    Int?        @map("teamId")
-  projectId Int         @map("projectId")
-  content   String      @map("content") @db.VarChar(255)
-  submitUrl String      @map("submitUrl") @db.VarChar(255)
-  createdAt DateTime    @default(now()) @map("createdAt")
-  updatedAt DateTime    @updatedAt @map("updatedAt")
-  users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  projects  Projects    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id        Int          @id @default(autoincrement()) @map("taskId")
+  userId    Int?         @map("userId")
+  teamId    Int?         @map("teamId")
+  content   String       @map("content") @db.VarChar(255)
+  submitUrl String       @map("submitUrl") @db.VarChar(255)
+  createdAt DateTime     @default(now()) @map("createdAt")
+  status    Tasks_status
+  projectId Int          @map("projectId")
+  updatedAt DateTime     @updatedAt @map("updatedAt")
   Feedbacks Feedbacks[]
+  projects  Projects     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teams     Teams?       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  users     Users?       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([projectId], map: "Tasks_projectId_fkey")
+  @@index([teamId], map: "Tasks_teamId_fkey")
+  @@index([userId], map: "Tasks_userId_fkey")
   @@map("Tasks")
 }
 
 model Feedbacks {
-  id        Int      @id @default(autoincrement()) @map("feedbackId")
-  taskId    Int      @map("taskId")
-  userId    Int      @map("userId")
-  title     String   @map("title") @db.VarChar(255)
-  content   String   @map("content") @db.VarChar(255)
+  id        Int              @id @default(autoincrement()) @map("feedbackId")
+  taskId    Int              @map("taskId")
+  title     String           @map("title") @db.VarChar(255)
+  content   String           @map("content") @db.VarChar(255)
   rating    Rating
-  createdAt DateTime @default(now()) @map("createdAt")
-  updatedAt DateTime @updatedAt @map("updatedAt")
-  task      Tasks    @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now()) @map("createdAt")
+  status    Feedbacks_status
+  updatedAt DateTime         @updatedAt @map("updatedAt")
+  userId    Int              @map("userId")
+  task      Tasks            @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      Users            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([taskId], map: "Feedbacks_taskId_fkey")
+  @@index([userId], map: "Feedbacks_userId_fkey")
   @@map("Feedbacks")
 }
 
@@ -125,4 +140,16 @@ enum Rating {
   RATING_8
   RATING_9
   RATING_10
+}
+
+enum Tasks_status {
+  SUBMIT_REQUESTED
+  IN_PROGRESS
+  SUBMIT_COMPLETED
+}
+
+enum Feedbacks_status {
+  SUBMIT_REQUESTED
+  IN_PROGRESS
+  SUBMIT_COMPLETED
 }
