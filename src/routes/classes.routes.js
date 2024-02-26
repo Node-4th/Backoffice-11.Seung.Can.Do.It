@@ -5,6 +5,7 @@ import { prisma } from "../models/index.js";
 import { ClassesRepository } from "../repositories/classes.repository.js";
 import { ClassesService } from "../services/classes.service.js";
 import { ClassesController } from "../controllers/classes.controller.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -14,18 +15,14 @@ const classesService = new ClassesService(classesRepository);
 const classesController = new ClassesController(classesService);
 
 // 클래스 생성, 조회, 수정, 삭제
-router.post("/classes", classesController.createClass);
-router.put("/classes/:classId", classesController.updateClass);
-router.delete("/classes/:classId", classesController.deleteClass);
 
-// 클래스에 유저 초대 및 등록
-// router.get("/classes", classesController.getClassById);
-router.post("/class/:classId/invite", classesController.inviteUserToClass);
-
-// 팀 매칭
-router.get("/class/:classId/match-teams", classesController.matchTeams);
-
-// 팀원 정보 확인
-router.get("/team/:teamId/members", classesController.getTeamMembers);
+router.get("/classes/:classId", classesController.getClassByClassId);
+router.post("/classes", authMiddleware, classesController.createClass);
+router.put("/classes/:classId", authMiddleware, classesController.updateClass);
+router.delete(
+  "/classes/:classId",
+  authMiddleware,
+  classesController.deleteClass,
+);
 
 export default router;
