@@ -10,6 +10,7 @@ import classRoter from "./src/routes/classes.routes.js";
 import projectRouter from "./src/routes/projects.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
 import eamilRouter from "./src/routes/emailservice.routes.js";
+import usersRouter from "./src/routes/users.routes.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -18,9 +19,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/feedback/:projectId", feedbacksRouter);
+app.use("/users", usersRouter);
 app.use("/classes", classRoter);
 app.use("/projects", projectRouter);
+app.use("/feedback/:projectId", feedbacksRouter);
 app.use("/api", eamilRouter);
 
 app.use(errorHandlerMiddleware);
