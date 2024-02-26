@@ -9,6 +9,7 @@ dotenv.config();
 import classRoter from "./src/routes/classes.routes.js";
 import projectRouter from "./src/routes/projects.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
+import tasksRouter from "./src/routes/tasks.router.js";
 import teamInfosRouter from "./src/routes/teamInfos.router.js";
 import eamilRouter from "./src/routes/emailservice.routes.js";
 import usersRouter from "./src/routes/users.routes.js";
@@ -27,6 +28,7 @@ app.use("/projects", projectRouter);
 app.use("/feedbacks", feedbacksRouter);
 app.use("/teamInfos", teamInfosRouter);
 app.use("/api", eamilRouter);
+app.use("/tasks", tasksRouter);
 
 app.use(errorHandlerMiddleware);
 

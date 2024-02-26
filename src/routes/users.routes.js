@@ -3,6 +3,7 @@ import { prisma } from "../models/index.js";
 import { UsersController } from "../controllers/users.controller.js";
 import { UsersService } from "../services/users.service.js";
 import { UsersRepository } from "../repositories/users.repository.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -13,6 +14,6 @@ const usersController = new UsersController(usersService);
 //회원가입
 router.post("/sign-up", usersController.signUp);
 //로그인
-router.post("/sign-in", usersController.signIn);
+router.post("/sign-in", authMiddleware, usersController.signIn);
 
 export default router;
