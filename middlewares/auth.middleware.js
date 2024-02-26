@@ -13,10 +13,10 @@ export default async function (req, res, next) {
     if (tokenType !== "Bearer") throw new Error("토큰 타입이 틀립니다.");
 
     const decodedToken = jwt.verify(token, process.env.CUSTOM_SECRET_KEY);
-    const userId = decodedToken.id;
+    const userId = decodedToken.id; // {"iat": 1708963710, "exp": 1708964610 }
 
     const user = await prisma.users.findFirst({
-      where: { userId: token.userId },
+      where: { userId: token.userId }, // {"id": 1, "iat": 1708963710, "exp": 1708964610 }
     });
 
     if (!user) throw new Error("토큰 사용자 없음!");

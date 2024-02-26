@@ -2,12 +2,12 @@ export class ProjectsService {
   constructor(projectsRepository) {
     this.projectsRepository = projectsRepository;
   }
-  checkAdminRole = async (user) => {
-    const foundUser = await this.classesRepository.getUserByUserId(user.userId);
+  checkAdminRole = async (userId) => {
+    const foundUser = await this.projectsRepository.getUserByUserId(userId);
     if (!foundUser) {
       throw new Error("존재하지 않는 사용자입니다.");
     }
-    return foundUser.role === "admin";
+    return foundUser.role === "ADMIN";
   };
 
   getAllProjects = async (orderKey, orderValue) => {
@@ -26,9 +26,9 @@ export class ProjectsService {
     return project;
   };
 
-  createProject = async (user, title, category, deadline) => {
+  createProject = async (userId, title, category, deadline) => {
     //Parameter - user.role이 admin인지 검증하기
-    const isAdmin = await this.checkAdminRole(user);
+    const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 프로젝트를 생성할 수 있습니다.");
     }
@@ -54,9 +54,9 @@ export class ProjectsService {
     return createdProject;
   };
 
-  updateProject = async (user, projectId, title, category, deadline) => {
+  updateProject = async (userId, projectId, title, category, deadline) => {
     //Parameter - user.role이 admin인지 검증하기
-    const isAdmin = await this.checkAdminRole(user);
+    const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 프로젝트를 수정할 수 있습니다.");
     }
@@ -83,9 +83,9 @@ export class ProjectsService {
     return updatedProject;
   };
 
-  deleteProject = async (user, projectId) => {
+  deleteProject = async (userId, projectId) => {
     //Parameter - user.role이 admin인지 검증하기
-    const isAdmin = await this.checkAdminRole(user);
+    const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 프로젝트를 삭제할 수 있습니다.");
     }

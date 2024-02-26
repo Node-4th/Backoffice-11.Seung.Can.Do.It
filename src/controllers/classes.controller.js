@@ -32,7 +32,6 @@ export class ClassesController {
   createClass = async (req, res, next) => {
     try {
       //Request
-
       const { userId } = req.user;
       const { name } = req.body;
 
