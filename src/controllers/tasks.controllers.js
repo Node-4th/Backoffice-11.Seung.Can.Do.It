@@ -5,7 +5,7 @@ export class TasksController {
   submitTask = async (req, res, next) => {
     try {
       const projectId = req.params.projectId;
-      // const user = res.locals.user;
+      // const user = req.user;
       const { content, submitUrl, userId } = req.body;
       if (!content || !submitUrl)
         return res
