@@ -9,24 +9,25 @@ datasource db {
 
 model Users {
   id           Int        @id @default(autoincrement()) @map("userId")
-  email        String     @map("email") @db.VarChar(255)
+  classId      Int?       @map("classId")
+  email        String     @unique @map("email") @db.VarChar(255)
   password     String     @map("password") @db.VarChar(255)
   name         String     @map("name") @db.VarChar(255)
-  profileImage String     @map("profileImage") @db.VarChar(255) // ERD에 profileImage 빠짐.
+  profileImage String?    @map("profileImage") @db.VarChar(255)
   role         Role
-  class        Class[]
+  class        Class?     @relation(fields: [classId], references: [id], onDelete: Cascade)
   projects     Projects[]
   teams        Teams[]
   tasks        Tasks[]
+  feedbacks    Feedbacks[]
 
   @@map("Users")
 }
 
 model Class {
-  id     Int    @id @default(autoincrement()) @map("classId")
-  userId Int    @map("userId")
-  name   String @map("name") @db.VarChar(255)
-  users  Users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id    Int     @id @default(autoincrement()) @map("classId")
+  name  String  @map("name") @db.VarChar(255)
+  users Users[]
 
   @@map("Class")
 }
@@ -75,6 +76,7 @@ model Tasks {
 model Feedbacks {
   id        Int      @id @default(autoincrement()) @map("feedbackId")
   taskId    Int      @map("taskId")
+  userId    Int      @map("userId")
   title     String   @map("title") @db.VarChar(255)
   content   String   @map("content") @db.VarChar(255)
   rating    Rating
@@ -82,6 +84,7 @@ model Feedbacks {
   updatedAt DateTime @updatedAt @map("updatedAt")
   status    Status
   task      Tasks    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("Feedbacks")
 }
@@ -116,4 +119,3 @@ enum Rating {
   RATING_9
   RATING_10
 }
-

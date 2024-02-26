@@ -7,7 +7,7 @@ export class FeedbacksController {
     try {
       const { taskId } = req.params;
 
-      const task = await this.feedbacksService.findTask(taskId);
+      await this.feedbacksService.findTask(taskId);
       const feedback = await this.feedbacksService.findAllFeedback(taskId);
 
       return res.status(200).json({data: feedback});
@@ -21,7 +21,7 @@ export class FeedbacksController {
     try {
       const { taskId, feedbackId } = req.params;
 
-      const task = await this.feedbacksService.findTask(taskId);
+      await this.feedbacksService.findTask(taskId);
       const feedback = await this.feedbacksService.findFeedback(
         taskId,
         feedbackId
@@ -38,13 +38,15 @@ export class FeedbacksController {
     try{
       const { taskId } = req.params;
       const {title, content, rating} = req.body;
+      const { userId } = req.user;
 
-      const task = await this.feedbacksService.findTask(taskId);
-      const feedback = await this.feedbacksService.createFeedback(
+      await this.feedbacksService.findTask(taskId);
+      await this.feedbacksService.createFeedback(
         taskId,
         title,
         content,
-        rating
+        rating,
+        userId
       );
 
       return res.status(201).json({success: 'true', message: '피드백을 작성하였습니다.'});
@@ -57,10 +59,11 @@ export class FeedbacksController {
   editFeedback = async (req, res, next) => {
     try{
       const { taskId, feedbackId } = req.params;
-      const  {title, content, rating} = req.body;
+      const {title, content, rating} = req.body;
+      const { userId } = req.user;
 
-      const task = await this.feedbacksService.findTask(taskId);
-      const findfeedback = await this.feedbacksService.findFeedback(
+      await this.feedbacksService.findTask(taskId);
+      await this.feedbacksService.findFeedback(
         taskId,
         feedbackId
       );
@@ -70,7 +73,8 @@ export class FeedbacksController {
         feedbackId,
         title,
         content,
-        rating
+        rating,
+        userId
       );
 
       return res.status(200).json({success: 'true', message: '피드백을 수정했습니다.', data: feedback});
@@ -84,8 +88,8 @@ export class FeedbacksController {
     try{
       const { taskId, feedbackId } = req.params;
 
-      const task = await this.feedbacksService.findTask(taskId);
-      const findfeedback = await this.feedbacksService.findFeedback(
+      await this.feedbacksService.findTask(taskId);
+      await this.feedbacksService.findFeedback(
         taskId,
         feedbackId
       );

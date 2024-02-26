@@ -18,13 +18,20 @@ export class FeedbacksService {
   }
 
   findAllFeedback = async (taskId) => {
-    const feedback = await this.feedbacksRepository.findAllFeedback(taskId);
+    const feedbacks = await this.feedbacksRepository.findAllFeedback(taskId);
 
-    if(!feedback) {
+    if(!feedbacks || !feedbacks.length === 0) {
       throw new Error('피드백이 존재하지 않습니다.');
     }
 
-    return feedback;
+    return feedbacks.map(feedback => ({
+      id: feedback.id,
+      taskId: feedback.taskId,
+      title: feedback.title,
+      name: feedback.user.name,
+      rating: feedback.rating,
+      status: feedback.status
+    }));
   }
 
   findFeedback = async (taskId, feedbackId) => {
@@ -44,7 +51,7 @@ export class FeedbacksService {
     return feedback;  
   }
 
-  createFeedback = async (taskId, title, content, rating) => {
+  createFeedback = async (taskId, title, content, rating, userId) => {
     if(!title || !content || !rating) {
       throw new Error('필수 값이 입력되지 않았습니다.')
     }
@@ -53,13 +60,14 @@ export class FeedbacksService {
       taskId,
       title,
       content,
-      rating
+      rating,
+      userId
     );
 
     return feedback;
   }
 
-  editFeedback = async (taskId, feedbackId, title, content, rating) => {
+  editFeedback = async (taskId, feedbackId, title, content, rating, userId) => {
     if(!title || !content || !rating) {
       throw new Error('필수 값이 입력되지 않았습니다.')
     }
@@ -69,7 +77,8 @@ export class FeedbacksService {
       feedbackId,
       title,
       content,
-      rating
+      rating,
+      userId
     );
 
     return feedback;

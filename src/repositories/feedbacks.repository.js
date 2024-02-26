@@ -5,7 +5,12 @@ export class FeedbacksRepository {
 
   findAllFeedback = async (taskId) => {
     const feedback = await this.prisma.Feedbacks.findMany({
-      where: { taskId }
+      where: { 
+        taskId 
+      },
+      include: {
+        user: { select: { name: true } }
+      }
     })
 
     return feedback;
@@ -16,6 +21,9 @@ export class FeedbacksRepository {
       where: {
         id: feedbackId,
         taskId
+      },
+      include: {
+        user: { select: { name: true } }
       }
     })
 
@@ -32,24 +40,26 @@ export class FeedbacksRepository {
     return task;
   }
 
-  createFeedback = async (taskId, title, content, rating) => {
+  createFeedback = async (taskId, title, content, rating, userId) => {
     const feedback = await this.prisma.Feedbacks.create({
       data: {
         taskId,
         title,
         content,
-        rating
+        rating,
+        userId
       }
     })
 
     return feedback;
   }
 
-  editFeedback = async (taskId, feedbackId, title, content, rating) => {
+  editFeedback = async (taskId, feedbackId, title, content, rating, userId) => {
     const feedback = await this.prisma.Feedbacks.update({
       where: {
         id: feedbackId,
-        taskId
+        taskId,
+        userId
       },
       data: {
         title,

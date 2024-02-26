@@ -26,6 +26,7 @@ describe('feedback Service Unit Test', () => {
         taskId: 1,
         title: 'test',
         content: 'test',
+        name: 'name',
         rating: 'RATING_1',
         status: 'SUBMIT_REQUESTED',
         createdAt: '2024-02-05T06:44:59.380Z',
@@ -36,21 +37,17 @@ describe('feedback Service Unit Test', () => {
             id: 1,
             taskId: 1,
             title: 'test1',
-            content: 'test1',
+            name: 'name1',
             rating: 'RATING_1',
-            status: 'SUBMIT_REQUESTED',
-            createdAt: '2024-02-05T06:44:59.380Z',
-            updatedAt: '2024-02-05T06:44:59.380Z'
+            status: 'SUBMIT_REQUESTED'
         },
         {
             id: 2,
             taskId: 1,
             title: 'test2',
-            content: 'test2',
+            name: 'name2',
             rating: 'RATING_1',
-            status: 'SUBMIT_REQUESTED',
-            createdAt: '2024-02-05T06:44:59.380Z',
-            updatedAt: '2024-02-05T06:44:59.380Z'
+            status: 'SUBMIT_REQUESTED'
         }
     ];
 
@@ -62,13 +59,14 @@ describe('feedback Service Unit Test', () => {
             feedback.id,
             feedback.title,
             feedback.content,
+            feedback.name,
             feedback.rating
         );
 
         const findFeedback = await feedbacksService.findFeedback(
             feedback.taskId,
             feedback.id
-        )
+        );
 
         expect(createfeedback).toEqual(feedback);
         expect(findFeedback).toEqual(createfeedback);
@@ -77,7 +75,7 @@ describe('feedback Service Unit Test', () => {
     test('findAllFeedback Method (SUCCESS)', async () => {
         const mockfindAllFeedback = mockFeedbacksRepository.findAllFeedback.mockResolvedValue(feedbacks);
 
-        const findAllFeedback = await feedbacksService.findAllFeedback(1);
+        const findAllFeedback = await feedbacksService.findAllFeedback(feedback.taskId);
 
         expect(mockfindAllFeedback).toHaveBeenCalled();
         expect(findAllFeedback).toEqual(feedbacks);
@@ -110,6 +108,7 @@ describe('feedback Service Unit Test', () => {
             feedback.id,
             feedback.title,
             feedback.content,
+            feedback.name,
             feedback.rating
         );
 
@@ -118,6 +117,7 @@ describe('feedback Service Unit Test', () => {
             feedback.id,
             feedback.title,
             feedback.content,
+            feedback.name,
             feedback.rating
         );
         expect(editFeedback).toEqual(feedback);
