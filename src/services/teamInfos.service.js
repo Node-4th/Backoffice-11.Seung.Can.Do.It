@@ -1,11 +1,11 @@
-export class FeedbacksService {
+export class TeamInfosService {
     constructor(teamInfosRepository) {
         this.teamInfosRepository = teamInfosRepository;
     }
 
     findTeamInfos = async (teamInfoId) => {
         if (!teamInfoId) {
-            throw new Error('팀 소개페이지를 선택하세요.')
+            throw new Error('팀 소개페이지를 선택하세요.');
         }
 
         const teamInfo = await this.teamInfosRepository.findTeamInfos(teamInfoId);
@@ -19,16 +19,16 @@ export class FeedbacksService {
 
     findTeam = async (teamId, userId) => {
         if (!teamId) {
-            throw new Error('팀을 선택하세요.')
+            throw new Error('팀을 선택하세요.');
         }
 
         const team = await this.teamInfosRepository.findTeam(teamId);
 
         if (!team) {
-            throw new Error('팀이 없습니다.')
+            throw new Error('팀이 없습니다.');
         }
 
-        if (!team.userId.includes(userId)) {
+        if (!(team.userId.includes(userId))) {
             throw new Error('팀 소개페이지에 대한 권한이 없습니다.');
         }
 
@@ -37,10 +37,10 @@ export class FeedbacksService {
 
     createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
         if (!teamName || !groundRules || !goals || !content) {
-            throw new Error('필수 값이 입력되지 않았습니다.')
+            throw new Error('필수 값이 입력되지 않았습니다.');
         }
 
-        const teamInfo = await this.teamInfosRepository.createFeedback(
+        const teamInfo = await this.teamInfosRepository.createTeamInfos(
             teamId,
             teamName,
             groundRules,

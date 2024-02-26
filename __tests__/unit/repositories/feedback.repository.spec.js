@@ -95,7 +95,7 @@ describe('Feedback Repositoty Unit Test', () => {
             include: {
                 user: { select: { name: true } }
             }
-        })
+        });
 
         expect(createFeedback).toEqual(feedback);
         expect(findFeedback).toEqual(createFeedback);
@@ -113,7 +113,7 @@ describe('Feedback Repositoty Unit Test', () => {
             include: {
                 user: { select: { name: true } }
             }
-        })
+        });
 
         expect(findAllFeedback).toEqual(feedbacks);
     })
@@ -164,7 +164,7 @@ describe('Feedback Repositoty Unit Test', () => {
                 content: feedback.content,
                 rating: feedback.rating
             }
-        })
+        });
         expect(editFeedback).toEqual(feedback);
     });
 
@@ -184,4 +184,4 @@ describe('Feedback Repositoty Unit Test', () => {
         });
         expect(deleteFeedback).toEqual(feedback);
     });
-})
+});

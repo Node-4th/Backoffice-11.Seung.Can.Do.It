@@ -16,14 +16,14 @@ export class TeamInfosRepository {
     findTeam = async (teamId) => {
         const team = await this.prisma.Teams.findFirst({
             where: {
-                team
+                teamId
             }
         });
 
         return team;
     }
 
-    createFeedback = async (teamId, teamName, groundRules, goals, content) => {
+    createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
         const teamInfo = await this.prisma.TeamInfos.create({
             data: {
                 teamId,

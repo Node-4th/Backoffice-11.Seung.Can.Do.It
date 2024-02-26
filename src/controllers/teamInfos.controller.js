@@ -9,7 +9,7 @@ export class TeamInfosController {
 
             const teamInfo = await this.teamInfosService.findTeamInfos(teamInfoId);
 
-            return res.status(200).json({ data: teamInfo })
+            return res.status(200).json({ data: teamInfo });
         } catch (err) {
             next(err);
         }

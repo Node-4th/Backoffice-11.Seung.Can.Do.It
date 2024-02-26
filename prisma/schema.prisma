@@ -35,9 +35,11 @@ model Class {
 model Teams {
   id        Int         @id @default(autoincrement()) @map("teamId")
   userId    Int         @map("userId")
+  projectId Int         @map("projectId")
   name      String      @map("name") @db.VarChar(255)
   tasks     Tasks[]
   users     Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects  Projects    @relation(fields: [projectId], references: [id])
   TeamInfos TeamInfos[]
 
   @@map("Teams")
@@ -53,6 +55,8 @@ model TeamInfos {
   createdAt   DateTime @default(now()) @map("createdAt")
   updatedAt   DateTime @updatedAt @map("updatedAt")
   teams       Teams    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@map("TeamInfos")
 }
 
 model Projects {
@@ -64,6 +68,7 @@ model Projects {
   category  Category
   users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   Tasks     Tasks[]
+  teams     Teams[]
 
   @@map("Projects")
 }
