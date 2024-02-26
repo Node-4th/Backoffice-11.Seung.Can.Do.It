@@ -5,7 +5,7 @@ export class FeedbacksService {
 
   findTask = async (taskId) => {
     if(!taskId) {
-      throw new Error('과제를 선택하세요.')
+      throw new Error('프로젝트를 선택하세요.');
     }
 
     const task = await this.feedbacksRepository.findTask(taskId);
@@ -69,7 +69,7 @@ export class FeedbacksService {
 
   editFeedback = async (taskId, feedbackId, title, content, rating, userId) => {
     if(!title || !content || !rating) {
-      throw new Error('필수 값이 입력되지 않았습니다.')
+      throw new Error('필수 값이 입력되지 않았습니다.');
     }
     
     const feedback = await this.feedbacksRepository.editFeedback(
