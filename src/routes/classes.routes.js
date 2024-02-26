@@ -1,4 +1,3 @@
-// router.js
 import express from "express";
 
 /**PrismaORM -> 3계층 의존성 주입 */
@@ -16,11 +15,11 @@ const classesController = new ClassesController(classesService);
 
 // 클래스 생성, 조회, 수정, 삭제
 router.post("/classes", classesController.createClass);
-// router.get("/classes", classesController.getAllClasses);
-// router.put("/classes/:classId", classesController.updateClass);
-// router.delete("/classes/:classId", classesController.deleteClass);
+router.put("/classes/:classId", classesController.updateClass);
+router.delete("/classes/:classId", classesController.deleteClass);
 
 // 클래스에 유저 초대 및 등록
+// router.get("/classes", classesController.getClassById);
 router.post("/class/:classId/invite", classesController.inviteUserToClass);
 
 // 팀 매칭

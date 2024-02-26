@@ -9,22 +9,53 @@ export class ClassesRepository {
    *
    */
 
-  getUserById = async (userId) => {
-    return await this.prisma.users.findFirst({
+  getUserByUserId = async (userId) => {
+    return await this.prisma.class.findFirst({
       where: {
-        id: userId,
-      },
-      select: {
-        role: true,
+        userId: +userId,
       },
     });
   };
 
-  createClass = async (adminUserId, className) => {
+  getClassByName = async (name) => {
+    return await this.prisma.class.findFirst({
+      where: {
+        name,
+      },
+    });
+  };
+
+  getClassByClassId = async (classId) => {
+    return await this.prisma.class.findUnique({
+      where: {
+        classId: +classId,
+      },
+    });
+  };
+  createClass = async (user, name) => {
     return await this.prisma.class.create({
       data: {
-        name: className,
-        userId: adminUserId,
+        name: name,
+        userId: user.userId,
+      },
+    });
+  };
+
+  updateClass = async (classId, name) => {
+    return await this.prisma.class.update({
+      where: {
+        classId: +classId,
+      },
+      data: {
+        name: name,
+      },
+    });
+  };
+
+  deleteClass = async (classId) => {
+    return await this.prisma.class.delete({
+      where: {
+        classId: +classId,
       },
     });
   };

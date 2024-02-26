@@ -4,6 +4,7 @@ import { FeedbacksController } from '../controllers/feedbacks.controller.js';
 import { FeedbacksService } from '../services/feedbacks.service.js';
 import { FeedbacksRepository } from '../repositories/feedbacks.repository.js';
 
+
 const router = express.Router();
 const feedbacksRepository = new FeedbacksRepository(prisma);
 const feedbacksService = new FeedbacksService(feedbacksRepository);

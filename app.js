@@ -9,6 +9,7 @@ dotenv.config();
 /**라우터 모듈 마운트 */
 
 import ClassRoter from "./src/routes/classes.routes.js";
+import feedbacksRouter from "./src/routes/feedbacks.routes.js";
 
 const app = express();
 const PORT = process.env.PORT;

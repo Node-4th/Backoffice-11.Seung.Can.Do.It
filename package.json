@@ -13,6 +13,7 @@
     "test:unit": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest __tests__/unit --forceExit"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.23.9",
     "@prisma/client": "^5.10.2",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",

@@ -10,9 +10,8 @@ export class FeedbacksController {
       await this.feedbacksService.findTask(taskId);
       const feedback = await this.feedbacksService.findAllFeedback(taskId);
 
-      return res.status(200).json({data: feedback});
-
-    } catch(err) {
+      return res.status(200).json({ data: feedback });
+    } catch (err) {
       next(err);
     }
   }
@@ -94,5 +93,5 @@ export class FeedbacksController {
     } catch(err) {
       next(err);
     }
-  }
+  };
 }
