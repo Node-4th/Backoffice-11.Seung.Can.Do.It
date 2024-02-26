@@ -3,7 +3,7 @@ export class UsersRepository {
     this.prisma = prisma;
   }
 
-  createUser = async ({ name, email, password, profileImg, role }) => {
+  createUser = async ( name, email, password, profileImg, role ) => {
     const user = await this.prisma.users.create({
       data: {
         name,
