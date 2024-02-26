@@ -17,8 +17,8 @@ export class UsersRepository {
   };
 
   findUniqueUser = async (email) => {
-    const user = await this.prisma.users.findFirst({
-      where: { email: email }
+    const user = await this.prisma.users.findUnique({
+      where: { email: email },
     });
 
     return user;

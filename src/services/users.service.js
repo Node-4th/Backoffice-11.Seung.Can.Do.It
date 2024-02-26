@@ -5,7 +5,14 @@ export class UsersService {
     this.usersRepository = usersRepository;
   }
 
-  signUpUser = async (name, email, password, pwConfirm, profileImg, role) => {
+  signUpUser = async ({
+    name,
+    email,
+    password,
+    pwConfirm,
+    profileImg,
+    role,
+  }) => {
     if (!name || !email || !password || !pwConfirm || !role) {
       throw new Error("필수항목을 체크해주세요");
     }
