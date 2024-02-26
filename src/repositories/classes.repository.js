@@ -8,7 +8,7 @@ export class ClassesRepository {
    *  3. Return : 서비스 계층에 전달할 데이터
    *
    */
-
+  // 이거 문제있음 class 테이블에서 userId 삭제
   getUserByUserId = async (userId) => {
     return await this.prisma.class.findFirst({
       where: {
@@ -20,23 +20,26 @@ export class ClassesRepository {
   getClassByName = async (name) => {
     return await this.prisma.class.findFirst({
       where: {
-        name,
+        name: name,
       },
     });
   };
 
   getClassByClassId = async (classId) => {
-    return await this.prisma.class.findUnique({
+    return await this.prisma.class.findFirst({
       where: {
         classId: +classId,
       },
+      select: {
+        name: true,
+      },
     });
   };
-  createClass = async (user, name) => {
+
+  createClass = async (name) => {
     return await this.prisma.class.create({
       data: {
-        name: name,
-        userId: user.userId,
+        name,
       },
     });
   };
@@ -47,7 +50,7 @@ export class ClassesRepository {
         classId: +classId,
       },
       data: {
-        name: name,
+        name,
       },
     });
   };
@@ -58,42 +61,5 @@ export class ClassesRepository {
         classId: +classId,
       },
     });
-  };
-
-  inviteUserToClass = async (classId, userId, role) => {
-    const user = await this.prisma.users.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user || user.role !== role) {
-      return null;
-    }
-
-    return await this.prisma.users.update({
-      where: { id: userId },
-      data: {
-        class: {
-          connect: { id: classId },
-        },
-        role: role,
-      },
-    });
-  };
-
-  matchTeams = async (classId) => {
-    const studentsInClass = await this.prisma.users.findMany({
-      where: {
-        AND: [{ class: { id: classId } }, { role: "STUDENT" }],
-      },
-    });
-
-    return teams;
-  };
-
-  getTeamMembers = async (teamId) => {
-    return await this.prisma.teams.findUnique({
-      where: { id: teamId },
-      include: { users: true },
-    }).users;
   };
 }
