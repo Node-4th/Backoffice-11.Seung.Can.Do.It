@@ -10,6 +10,7 @@ dotenv.config();
 
 import ClassRoter from "./src/routes/classes.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
+import usersRouter from './src/routes/users.routes.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/feedback', feedbacksRouter);
+app.use('/users',usersRouter)
 app.use("/classes", ClassRoter);
 app.use('/teamInfos', teamInfosRouter);
 
