@@ -10,13 +10,13 @@ const feedbacksService = new FeedbacksService(feedbacksRepository);
 const feedbacksController = new FeedbacksController(feedbacksService);
 
 // 피드백 전체 조회
-router.get('/', feedbacksController.findAllFeedback);
+router.get('/:taskId', feedbacksController.findAllFeedback);
 
 // 피드백 상세 조회
 router.get('/:feedbackId', feedbacksController.findFeedback);
 
 // 피드백 생성
-router.post('/', feedbacksController.createFeedback);
+router.post('/:taskId', feedbacksController.createFeedback);
 
 // 피드백 수정
 router.put('/:feedbackId', feedbacksController.editFeedback);

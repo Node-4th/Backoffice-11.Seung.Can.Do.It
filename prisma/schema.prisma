@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Users {
-  id           Int        @id @default(autoincrement()) @map("userId")
-  classId      Int?       @map("classId")
-  email        String     @unique @map("email") @db.VarChar(255)
-  password     String     @map("password") @db.VarChar(255)
-  name         String     @map("name") @db.VarChar(255)
-  profileImage String?    @map("profileImage") @db.VarChar(255)
+  id           Int         @id @default(autoincrement()) @map("userId")
+  classId      Int?        @map("classId")
+  email        String      @unique @map("email") @db.VarChar(255)
+  password     String      @map("password") @db.VarChar(255)
+  name         String      @map("name") @db.VarChar(255)
+  profileImage String?     @map("profileImage") @db.VarChar(255)
   role         Role
-  class        Class?     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  class        Class?      @relation(fields: [classId], references: [id], onDelete: Cascade)
   projects     Projects[]
   teams        Teams[]
   tasks        Tasks[]
@@ -33,13 +33,24 @@ model Class {
 }
 
 model Teams {
-  id     Int     @id @default(autoincrement()) @map("teamId")
-  userId Int     @map("userId")
-  name   String  @map("name") @db.VarChar(255)
-  tasks  Tasks[]
-  users  Users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int         @id @default(autoincrement()) @map("teamId")
+  userId    Int         @map("userId")
+  name      String      @map("name") @db.VarChar(255)
+  tasks     Tasks[]
+  users     Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TeamInfos TeamInfos[]
 
   @@map("Teams")
+}
+
+model TeamInfos {
+  id          Int    @id @default(autoincrement()) @map("teamInfoId")
+  teamId      Int    @map("teamId")
+  teamName    String @map("teamName")
+  groundRules String @map("groundRules")
+  goals       String @map("goals")
+  content     String @map("content")
+  teams       Teams  @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 model Projects {

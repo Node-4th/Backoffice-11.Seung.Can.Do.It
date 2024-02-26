@@ -27,7 +27,7 @@ describe('Feedback Controller Unit Test', () => {
         feedbacksController = new FeedbacksController(mockFeedbacksService);
     });
     const feedback = {
-        id: 1,
+        feedbackId: 1,
         taskId: 1,
         title: 'test',
         content: 'test',
@@ -39,7 +39,7 @@ describe('Feedback Controller Unit Test', () => {
         updatedAt: '2024-02-05T06:44:59.380Z'
     };
     const task = {
-        id: 1,
+        taskId: 1,
         userId: 1,
         projectId: 1,
         content: 'content',
@@ -65,6 +65,7 @@ describe('Feedback Controller Unit Test', () => {
             rating: feedback.rating
         };
 
+        const mockfindTask = mockFeedbacksService.findTask.mockResolvedValue(task);
         const mockcreateFeedback = mockFeedbacksService.createFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.createFeedback(mockReq, mockRes, mocknext);
@@ -81,12 +82,12 @@ describe('Feedback Controller Unit Test', () => {
             feedback.rating,
             feedback.userId
         );
+        expect(mockfindTask).toHaveBeenCalledWith(feedback.taskId);
     });
 
     test('findFeedback Method', async () => {
         mockReq.params = {
-            taskId: feedback.taskId,
-            feedbackId: feedback.id
+            feedbackId: feedback.feedbackId
         };
 
         const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue(feedback);
@@ -98,15 +99,14 @@ describe('Feedback Controller Unit Test', () => {
             data: feedback
         });
         expect(mockfindFeedback).toHaveBeenCalledWith(
-            feedback.taskId,
-            feedback.id
+            feedback.feedbackId
         );
     });
 
     test('findAllFeedback Method', async () => {
         const feedbacks = [
             {
-                id: 1,
+                feedbackId: 1,
                 taskId: 1,
                 title: 'test1',
                 userId: 1,
@@ -115,7 +115,7 @@ describe('Feedback Controller Unit Test', () => {
                 status: 'SUBMIT_REQUESTED'
             },
             {
-                id: 2,
+                feedbackId: 2,
                 taskId: 1,
                 title: 'test2',
                 userId: 2,
@@ -142,8 +142,7 @@ describe('Feedback Controller Unit Test', () => {
 
     test('editFeedback Method', async () => {
         mockReq.params = {
-            taskId: feedback.taskId,
-            feedbackId: feedback.id
+            feedbackId: feedback.feedbackId
         };
         
         mockReq.user = {
@@ -156,6 +155,7 @@ describe('Feedback Controller Unit Test', () => {
             rating: feedback.rating
         };
 
+        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue(feedback);
         const mockeditFeedback = mockFeedbacksService.editFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.editFeedback(mockReq, mockRes, mocknext);
@@ -167,25 +167,27 @@ describe('Feedback Controller Unit Test', () => {
             data: feedback
         });
         expect(mockeditFeedback).toHaveBeenCalledWith(
-            feedback.taskId, 
-            feedback.id,
+            feedback.feedbackId,
             feedback.title,
             feedback.content,
             feedback.rating,
             feedback.userId
         );
+        expect(mockfindFeedback).toHaveBeenCalledWith(
+            feedback.feedbackId
+        );
     });
 
     test('deleteFeedback Method', async () => {
         mockReq.params = {
-            taskId: feedback.taskId,
-            feedbackId: feedback.id
+            feedbackId: feedback.feedbackId
         };
         
         mockReq.user = {
             userId: feedback.userId,
         };
 
+        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue(feedback);
         const mockdeleteFeedback = mockFeedbacksService.deleteFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.deleteFeedback(mockReq, mockRes, mocknext);
@@ -196,9 +198,11 @@ describe('Feedback Controller Unit Test', () => {
             message: '피드백을 삭제했습니다.'
         });
         expect(mockdeleteFeedback).toHaveBeenCalledWith(
-            feedback.taskId, 
-            feedback.id,
+            feedback.feedbackId,
             feedback.userId
+        );
+        expect(mockfindFeedback).toHaveBeenCalledWith(
+            feedback.feedbackId
         );
     });
 })

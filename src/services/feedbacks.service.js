@@ -25,7 +25,7 @@ export class FeedbacksService {
     }
 
     return feedbacks.map(feedback => ({
-      id: feedback.id,
+      feedbackId: feedback.feedbackId,
       taskId: feedback.taskId,
       title: feedback.title,
       userId: feedback.userId,
@@ -35,13 +35,12 @@ export class FeedbacksService {
     }));
   }
 
-  findFeedback = async (taskId, feedbackId) => {
+  findFeedback = async (feedbackId) => {
     if (!feedbackId) {
       throw new Error('피드백을 선택하세요');
     }
 
     const feedback = await this.feedbacksRepository.findFeedback(
-      taskId, 
       feedbackId
     );
 
@@ -68,13 +67,12 @@ export class FeedbacksService {
     return feedback;
   }
 
-  editFeedback = async (taskId, feedbackId, title, content, rating, userId) => {
+  editFeedback = async (feedbackId, title, content, rating, userId) => {
     if(!title || !content || !rating) {
       throw new Error('필수 값이 입력되지 않았습니다.');
     }
     
     const feedback = await this.feedbacksRepository.editFeedback(
-      taskId,
       feedbackId,
       title,
       content,
@@ -85,9 +83,8 @@ export class FeedbacksService {
     return feedback;
   }
 
-  deleteFeedback = async (taskId, feedbackId, userId) => {
+  deleteFeedback = async (feedbackId, userId) => {
     const feedback = await this.feedbacksRepository.deleteFeedback(
-      taskId,
       feedbackId,
       userId
     );

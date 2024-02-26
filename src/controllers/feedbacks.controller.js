@@ -19,13 +19,9 @@ export class FeedbacksController {
 
   findFeedback = async (req, res, next) => {
     try {
-      const { taskId, feedbackId } = req.params;
+      const { feedbackId } = req.params;
 
-      await this.feedbacksService.findTask(taskId);
-      const feedback = await this.feedbacksService.findFeedback(
-        taskId,
-        feedbackId
-      );
+      const feedback = await this.feedbacksService.findFeedback(feedbackId);
 
       return res.status(200).json({data: feedback})
 
@@ -58,18 +54,13 @@ export class FeedbacksController {
 
   editFeedback = async (req, res, next) => {
     try{
-      const { taskId, feedbackId } = req.params;
+      const { feedbackId } = req.params;
       const {title, content, rating} = req.body;
       const { userId } = req.user;
 
-      await this.feedbacksService.findTask(taskId);
-      await this.feedbacksService.findFeedback(
-        taskId,
-        feedbackId
-      );
+      await this.feedbacksService.findFeedback(feedbackId);
 
       const feedback = await this.feedbacksService.editFeedback(
-        taskId,
         feedbackId,
         title,
         content,
@@ -86,17 +77,12 @@ export class FeedbacksController {
 
   deleteFeedback = async (req, res, next) => {
     try{
-      const { taskId, feedbackId } = req.params;
+      const { feedbackId } = req.params;
       const { userId } = req.user;
 
-      await this.feedbacksService.findTask(taskId);
-      await this.feedbacksService.findFeedback(
-        taskId,
-        feedbackId
-      );
+      await this.feedbacksService.findFeedback(feedbackId);
 
       const feedback = await this. feedbacksService.deleteFeedback(
-        taskId,
         feedbackId,
         userId
       );

@@ -22,7 +22,7 @@ describe('feedback Service Unit Test', () => {
         feedbacksService = new FeedbacksService(mockFeedbacksRepository);
     });
     const feedback = {
-        id: 1,
+        feedbackId: 1,
         taskId: 1,
         title: 'test',
         content: 'test',
@@ -39,7 +39,7 @@ describe('feedback Service Unit Test', () => {
         mockFeedbacksRepository.findFeedback.mockResolvedValue(feedback);
         
         const createfeedback = await feedbacksService.createFeedback(
-            feedback.id,
+            feedback.taskId,
             feedback.title,
             feedback.content,
             feedback.name,
@@ -47,8 +47,7 @@ describe('feedback Service Unit Test', () => {
         );
 
         const findFeedback = await feedbacksService.findFeedback(
-            feedback.taskId,
-            feedback.id
+            feedback.feedbackId
         );
 
         expect(createfeedback).toEqual(feedback);
@@ -60,7 +59,7 @@ describe('feedback Service Unit Test', () => {
     });
 
     test('findFeedback Method (Missing feedbackId)', async () => {
-        await expect(feedbacksService.findFeedback(1, null)).rejects.toThrowError('피드백을 선택하세요');
+        await expect(feedbacksService.findFeedback(null)).rejects.toThrowError('피드백을 선택하세요');
     });
 
     test('findFeedback Method (No Feedback)', async () => {
@@ -71,7 +70,7 @@ describe('feedback Service Unit Test', () => {
     test('findAllFeedback Method (SUCCESS)', async () => {
         const mockfeedbacks = [
             {
-                id: 1,
+                feedbackId: 1,
                 taskId: 1,
                 title: 'test1',
                 userId: 1,
@@ -80,7 +79,7 @@ describe('feedback Service Unit Test', () => {
                 status: 'SUBMIT_REQUESTED'
             },
             {
-                id: 2,
+                feedbackId: 2,
                 taskId: 1,
                 title: 'test2',
                 userId: 2,
@@ -92,7 +91,7 @@ describe('feedback Service Unit Test', () => {
     
         const feedbacks = [
             {
-                id: 1,
+                feedbackId: 1,
                 taskId: 1,
                 title: 'test1',
                 userId: 1,
@@ -101,7 +100,7 @@ describe('feedback Service Unit Test', () => {
                 status: 'SUBMIT_REQUESTED'
             },
             {
-                id: 2,
+                feedbackId: 2,
                 taskId: 1,
                 title: 'test2',
                 userId: 2,
@@ -126,7 +125,7 @@ describe('feedback Service Unit Test', () => {
 
     test('findTask Method (SUCCESS)', async () => {
         const task = {
-            id: 1,
+            taskId: 1,
             userId: 1,
             projectId: 1,
             content: 'content',
@@ -137,7 +136,7 @@ describe('feedback Service Unit Test', () => {
         };
         const mockfindTask = mockFeedbacksRepository.findTask.mockResolvedValue(task);
 
-        const findTask = await feedbacksService.findTask(task.id);
+        const findTask = await feedbacksService.findTask(task.taskId);
 
         expect(mockfindTask).toHaveBeenCalled();
         expect(findTask).toEqual(task);
@@ -156,8 +155,7 @@ describe('feedback Service Unit Test', () => {
         const mockeditFeedback = mockFeedbacksRepository.editFeedback.mockResolvedValue(feedback);
 
         const editFeedback = await feedbacksService.editFeedback(
-            feedback.taskId,
-            feedback.id,
+            feedback.feedbackId,
             feedback.title,
             feedback.content,
             feedback.userId,
@@ -165,8 +163,7 @@ describe('feedback Service Unit Test', () => {
         );
 
         expect(mockeditFeedback).toHaveBeenCalledWith(
-            feedback.taskId,
-            feedback.id,
+            feedback.feedbackId,
             feedback.title,
             feedback.content,
             feedback.userId,
@@ -183,14 +180,12 @@ describe('feedback Service Unit Test', () => {
         const mockdeleteFeedback = mockFeedbacksRepository.deleteFeedback.mockResolvedValue(feedback);
 
         const deleteFeedback = await feedbacksService.deleteFeedback(
-            feedback.taskId,
-            feedback.id,
+            feedback.feedbackId,
             feedback.userId
         );
 
         expect(mockdeleteFeedback).toHaveBeenCalledWith(
-            feedback.taskId,
-            feedback.id,
+            feedback.feedbackId,
             feedback.userId
         );
         expect(deleteFeedback).toEqual(feedback);

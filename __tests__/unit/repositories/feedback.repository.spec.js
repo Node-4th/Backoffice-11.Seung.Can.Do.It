@@ -25,7 +25,7 @@ describe('Feedback Repositoty Unit Test', () => {
         feedbacksRepositoy = new FeedbacksRepository(mockPrisma);
     });
     const feedback = {
-        id: 1,
+        feedbackId: 1,
         taskId: 1,
         title: 'test',
         content: 'test',
@@ -38,7 +38,7 @@ describe('Feedback Repositoty Unit Test', () => {
     };
     const feedbacks = [
         {
-            id: 1,
+            feedbackId: 1,
             taskId: 1,
             title: 'test1',
             content: 'test1',
@@ -50,7 +50,7 @@ describe('Feedback Repositoty Unit Test', () => {
             updatedAt: '2024-02-05T06:44:59.380Z'
         },
         {
-            id: 2,
+            feedbackId: 2,
             taskId: 1,
             title: 'test2',
             content: 'test2',
@@ -76,8 +76,7 @@ describe('Feedback Repositoty Unit Test', () => {
         );
 
         const findFeedback = await feedbacksRepositoy.findFeedback(
-            feedback.taskId,
-            feedback.id
+            feedback.feedbackId
         );
 
         expect(mockcreate).toHaveBeenCalledWith({
@@ -91,8 +90,7 @@ describe('Feedback Repositoty Unit Test', () => {
         });
         expect(mockfindFirst).toHaveBeenCalledWith({
             where: {
-                id: feedback.id,
-                taskId: feedback.taskId
+                feedbackId: feedback.feedbackId
             },
             include: {
                 user: { select: { name: true } }
@@ -122,7 +120,7 @@ describe('Feedback Repositoty Unit Test', () => {
 
     test('findTask Method', async () => {
         const task = {
-            id: 1,
+            taskId: 1,
             userId: 1,
             projectId: 1,
             content: 'content',
@@ -138,7 +136,7 @@ describe('Feedback Repositoty Unit Test', () => {
 
         expect(mockfindFirst).toHaveBeenCalledWith({
             where: {
-                id: feedback.taskId
+                taskId: feedback.taskId
             }
         });
 
@@ -149,8 +147,7 @@ describe('Feedback Repositoty Unit Test', () => {
         const mockupdate = mockPrisma.Feedbacks.update.mockResolvedValue(feedback);
 
         const editFeedback = await feedbacksRepositoy.editFeedback(
-            feedback.taskId,
-            feedback.id,
+            feedback.feedbackId,
             feedback.title,
             feedback.content,
             feedback.rating,
@@ -159,8 +156,7 @@ describe('Feedback Repositoty Unit Test', () => {
 
         expect(mockupdate).toHaveBeenCalledWith({
             where: {
-                id: feedback.id,
-                taskId: feedback.taskId,
+                feedbackId: feedback.feedbackId,
                 userId: feedback.userId
             },
             data: {
@@ -176,15 +172,13 @@ describe('Feedback Repositoty Unit Test', () => {
         const mockdelete = mockPrisma.Feedbacks.delete.mockResolvedValue(feedback);
 
         const deleteFeedback = await feedbacksRepositoy.deleteFeedback(
-            feedback.taskId,
-            feedback.id,
+            feedback.feedbackId,
             feedback.userId
         );
 
         expect(mockdelete).toHaveBeenCalledWith({
             where: {
-                id: feedback.id,
-                taskId: feedback.taskId,
+                feedbackId: feedback.feedbackId,
                 userId: feedback.userId
             }
         });
