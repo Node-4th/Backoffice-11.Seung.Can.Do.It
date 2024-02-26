@@ -58,14 +58,15 @@ export class FeedbacksController {
       const {title, content, rating} = req.body;
       const { userId } = req.user;
 
-      await this.feedbacksService.findFeedback(feedbackId);
+      const findFeedback = await this.feedbacksService.findFeedback(feedbackId);
 
       const feedback = await this.feedbacksService.editFeedback(
         feedbackId,
         title,
         content,
         rating,
-        userId
+        userId,
+        findFeedback.userId
       );
 
       return res.status(200).json({success: 'true', message: '피드백을 수정했습니다.', data: feedback});
@@ -80,11 +81,12 @@ export class FeedbacksController {
       const { feedbackId } = req.params;
       const { userId } = req.user;
 
-      await this.feedbacksService.findFeedback(feedbackId);
+      const findFeedback = await this.feedbacksService.findFeedback(feedbackId);
 
-      const feedback = await this. feedbacksService.deleteFeedback(
+      await this. feedbacksService.deleteFeedback(
         feedbackId,
-        userId
+        userId,
+        findFeedback.userId
       );
 
         return res.status(204).json({success: 'true', message: '피드백을 삭제했습니다.'});

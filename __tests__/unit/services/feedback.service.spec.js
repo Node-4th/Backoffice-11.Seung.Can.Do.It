@@ -158,22 +158,27 @@ describe('feedback Service Unit Test', () => {
             feedback.feedbackId,
             feedback.title,
             feedback.content,
+            feedback.rating,
             feedback.userId,
-            feedback.rating
+            feedback.userId
         );
 
         expect(mockeditFeedback).toHaveBeenCalledWith(
             feedback.feedbackId,
             feedback.title,
             feedback.content,
-            feedback.userId,
-            feedback.rating
+            feedback.rating,
+            feedback.userId
         );
         expect(editFeedback).toEqual(feedback);
     });
 
-    test('createFeedback Method (Missing required values)', async () => {
+    test('editFeedback Method (Missing required values)', async () => {
         await expect(feedbacksService.editFeedback('taskId', 'feedbackId', 'title', null, 'rating', 'userId')).rejects.toThrowError('필수 값이 입력되지 않았습니다.');
+    });
+
+    test('editFeedback Method (Permission Denied)', async () => {
+        await expect(feedbacksService.editFeedback('taskId', 'feedbackId', 'title', 'content', 'rating', '1', '2')).rejects.toThrowError('피드백을 수정할 수 있는 권한이 없습니다.');
     });
 
     test('deleteFeedback Method (SUCCESS)', async () => {
@@ -181,6 +186,7 @@ describe('feedback Service Unit Test', () => {
 
         const deleteFeedback = await feedbacksService.deleteFeedback(
             feedback.feedbackId,
+            feedback.userId,
             feedback.userId
         );
 
@@ -189,5 +195,9 @@ describe('feedback Service Unit Test', () => {
             feedback.userId
         );
         expect(deleteFeedback).toEqual(feedback);
-    })
+    });
+
+    test('deleteFeedback Method (Permission Denied)', async () => {
+        await expect(feedbacksService.deleteFeedback('feedbackId', '1', '2')).rejects.toThrowError('피드백을 수정할 수 있는 권한이 없습니다.');
+    });
 })

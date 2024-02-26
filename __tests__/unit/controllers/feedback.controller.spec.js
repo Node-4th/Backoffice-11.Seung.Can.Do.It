@@ -155,7 +155,7 @@ describe('Feedback Controller Unit Test', () => {
             rating: feedback.rating
         };
 
-        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue(feedback);
+        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue({feedback});
         const mockeditFeedback = mockFeedbacksService.editFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.editFeedback(mockReq, mockRes, mocknext);
@@ -171,7 +171,8 @@ describe('Feedback Controller Unit Test', () => {
             feedback.title,
             feedback.content,
             feedback.rating,
-            feedback.userId
+            feedback.userId,
+            mockfindFeedback.userId
         );
         expect(mockfindFeedback).toHaveBeenCalledWith(
             feedback.feedbackId
@@ -187,7 +188,7 @@ describe('Feedback Controller Unit Test', () => {
             userId: feedback.userId,
         };
 
-        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue(feedback);
+        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue({feedback});
         const mockdeleteFeedback = mockFeedbacksService.deleteFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.deleteFeedback(mockReq, mockRes, mocknext);
@@ -199,7 +200,8 @@ describe('Feedback Controller Unit Test', () => {
         });
         expect(mockdeleteFeedback).toHaveBeenCalledWith(
             feedback.feedbackId,
-            feedback.userId
+            feedback.userId,
+            mockfindFeedback.userId
         );
         expect(mockfindFeedback).toHaveBeenCalledWith(
             feedback.feedbackId

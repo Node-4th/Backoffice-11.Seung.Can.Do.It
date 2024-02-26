@@ -67,9 +67,13 @@ export class FeedbacksService {
     return feedback;
   }
 
-  editFeedback = async (feedbackId, title, content, rating, userId) => {
+  editFeedback = async (feedbackId, title, content, rating, userId, checkUserId) => {
     if(!title || !content || !rating) {
       throw new Error('필수 값이 입력되지 않았습니다.');
+    }
+
+    if(userId !== checkUserId) {
+      throw new Error('피드백을 수정할 수 있는 권한이 없습니다.');
     }
     
     const feedback = await this.feedbacksRepository.editFeedback(
@@ -83,7 +87,11 @@ export class FeedbacksService {
     return feedback;
   }
 
-  deleteFeedback = async (feedbackId, userId) => {
+  deleteFeedback = async (feedbackId, userId, checkUserId) => {
+    if(userId !== checkUserId) {
+      throw new Error('피드백을 수정할 수 있는 권한이 없습니다.');
+    }
+
     const feedback = await this.feedbacksRepository.deleteFeedback(
       feedbackId,
       userId
