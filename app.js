@@ -6,7 +6,8 @@ dotenv.config();
 
 /**라우터 모듈 마운트 */
 
-import ClassRoter from "./src/routes/classes.routes.js";
+import classRoter from "./src/routes/classes.routes.js";
+import projectRouter from "./src/routes/projects.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
 import eamilRouter from "./src/routes/emailservice.routes.js";
 
@@ -18,7 +19,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/feedback/:projectId", feedbacksRouter);
-app.use("/classes", ClassRoter);
+app.use("/classes", classRoter);
+app.use("/projects", projectRouter);
 app.use("/api", eamilRouter);
 
 app.use(errorHandlerMiddleware);

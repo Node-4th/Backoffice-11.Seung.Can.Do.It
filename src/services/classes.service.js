@@ -18,6 +18,12 @@ export class ClassesService {
     return foundUser.role === "admin";
   };
 
+  getClassByClassId = async (classId) => {
+    const myClass = await this.classesRepository.getClassByClassId(classId);
+    if (!classId) throw new Error("존재하지 않는 클래스입니다.");
+    return myClass;
+  };
+
   createClass = async (user, name) => {
     //Parameter - user.role이 admin인지 검증하기
     const isAdmin = await this.checkAdminRole(user);

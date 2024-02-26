@@ -23,7 +23,7 @@ export class ClassesController {
       const myClass = await this.classesService.getClassByClassId(classId);
 
       //Response
-      return res.status(200).json({ data: myClass });
+      return res.status(200).json({ success: true, data: myClass });
     } catch (error) {
       next(error);
     }
@@ -41,12 +41,12 @@ export class ClassesController {
       }
 
       //서비스 계층에 클래스 생성 요청
-      const createdClass = await this.classesService.createClass(name);
+      const createdClass = await this.classesService.createClass(user, name);
       //Response
       res.status(201).json({
         success: true,
         message: "클래스가 성공적으로 생성되었습니다.",
-        createdClass,
+        data: createdClass,
       });
     } catch (error) {
       next(error);
@@ -72,7 +72,7 @@ export class ClassesController {
       res.status(200).json({
         success: true,
         message: "클래스가 성공적으로 수정되었습니다.",
-        updatedClass,
+        data: updatedClass,
       });
     } catch (error) {
       next(error);

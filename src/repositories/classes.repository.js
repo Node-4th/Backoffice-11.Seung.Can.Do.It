@@ -8,7 +8,7 @@ export class ClassesRepository {
    *  3. Return : 서비스 계층에 전달할 데이터
    *
    */
-
+  // 이거 문제있음 class 테이블에서 userId 삭제
   getUserByUserId = async (userId) => {
     return await this.prisma.class.findFirst({
       where: {
@@ -35,10 +35,11 @@ export class ClassesRepository {
       },
     });
   };
+
   createClass = async (name) => {
     return await this.prisma.class.create({
       data: {
-        name: name,
+        name,
       },
     });
   };
@@ -49,7 +50,7 @@ export class ClassesRepository {
         classId: +classId,
       },
       data: {
-        name: name,
+        name,
       },
     });
   };
