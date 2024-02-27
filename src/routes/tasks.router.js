@@ -15,13 +15,13 @@ const tasksController = new TasksController(tasksService);
 router.post("/:projectId", authMiddleware, tasksController.submitTask);
 
 // 카테고리별 과제 API
-//router.get("/", tasksController.findTaskCategory);
+router.get("/", tasksController.findTaskCategory);
 
 //과제 상세 조회 API
 router.get("/:taskId", tasksController.findTask);
 
 //과제 수정 API
-//router.put("/:taskId", tasksController.editTask);
+router.put("/:taskId", tasksController.updateTask);
 
 //과제 삭제 API
 router.delete("/:taskId", authMiddleware, tasksController.deleteTask);

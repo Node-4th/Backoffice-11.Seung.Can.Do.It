@@ -15,6 +15,25 @@ export class TasksRepository {
     });
     return team;
   };
+
+  findProjectByCategory = async (category) => {
+    const projects = await this.prisma.projects.findMany({
+      where: { category },
+    });
+    return projects;
+  };
+
+  findTaskByProjectId = async (projectId) => {
+    const tasks = await this.prisma.tasks.findMany({
+      where: { projectId },
+      select: {
+        content: true,
+        submitUrl: true,
+      },
+    });
+    return tasks;
+  };
+
   submitTask = async (data) => {
     const submitTask = await this.prisma.tasks.create({
       data,
@@ -27,6 +46,15 @@ export class TasksRepository {
       where: { id: +taskId },
     });
     return task;
+  };
+
+  updateTask = async (taskId, userId, content, submitUrl) => {
+    const updateTask = await this.prisma.tasks.update({
+      where: { id: +taskId, userId },
+      content,
+      submitUrl,
+    });
+    return updateTask;
   };
 
   deleteTask = async (taskId, userId) => {

@@ -5,10 +5,7 @@ export class TasksService {
   submitTask = async (projectId, userId, teamId, content, submitUrl) => {
     const project = await this.tasksRepository.findProjectById(projectId);
     if (!project) {
-      throw {
-        code: 400,
-        message: "프로젝트 조회에 실패하였습니다.",
-      };
+      throw new Error("프로젝트 조회에 실패하였습니다.");
     }
     if (teamId === undefined) {
       const submitTask = await this.tasksRepository.submitTask({
@@ -21,11 +18,7 @@ export class TasksService {
     } else {
       const team = await this.tasksRepository.findTeamById(teamId);
       if (!team) {
-        throw {
-          code: 400,
-          success: false,
-          message: "팀 조회에 실패하였습니다.",
-        };
+        throw new Error("팀 조회에 실패하였습니다.");
       }
       const submitTask = await this.tasksRepository.submitTask({
         projectId: +projectId,
@@ -37,34 +30,40 @@ export class TasksService {
     }
   };
 
-  // findTaskCategory = async(category) {
-  //   const project = await this.tasksRepository.findProjectByCategory(category);
-
-  // }
+  findTaskCategory = async (category) => {
+    const projects = await this.tasksRepository.findProjectByCategory(category);
+    const findTaskByProjectId = await this.tasksRepository.findTaskByProjectId(
+      projects.id,
+    );
+    return findTaskByProjectId;
+  };
 
   findTask = async (taskId) => {
     const task = await this.tasksRepository.findTask(taskId);
     if (!task) {
-      throw {
-        code: 400,
-        success: false,
-        message: "과제 조회에 실패하였습니다.",
-      };
+      throw new Error("과제 조회에 실패하였습니다.");
     }
     return task;
   };
 
-  // editTask = async(taskId) => {
+  updateTask = async (taskId, userId, taskUserId, content, submitUrl) => {
+    if (userId !== taskUserId) {
+      throw new Error("과제를 삭제할 권한이 없습니다.");
+    }
 
-  // }
+    const updateTask = await this.tasksRepository.updateTask(
+      taskId,
+      userId,
+      content,
+      submitUrl,
+    );
+
+    return updateTask;
+  };
 
   deleteTask = async (taskId, userId, taskUserId) => {
     if (userId !== taskUserId) {
-      throw {
-        code: 400,
-        success: false,
-        message: "과제를 삭제할 권한이 없습니다.",
-      };
+      throw new Error("과제를 삭제할 권한이 없습니다.");
     }
 
     const task = await this.tasksRepository.deleteTask(taskId, userId);
