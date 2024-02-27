@@ -42,8 +42,7 @@ export class TeamsController {
   };
   createTeam = async (req, res, next) => {
     try {
-      const { id } = req.user;
-      const userId = id;
+      const userId = req.user.id;
       const { projectId, name, memberList } = req.body;
 
       //유효성 검사
@@ -69,8 +68,7 @@ export class TeamsController {
   };
   updateTeam = async (req, res, next) => {
     try {
-      const { id } = req.user;
-      const userId = id;
+      const userId = req.user.id;
       const { teamId } = req.params;
       const { projectId, name, memberList } = req.body;
 
@@ -98,8 +96,7 @@ export class TeamsController {
   };
   deleteTeam = async (req, res, next) => {
     try {
-      const { id } = req.user;
-      const userId = id;
+      const userId = req.user.id;
       const { teamId } = req.params;
 
       //서비스 계층에 팀 생성 요청

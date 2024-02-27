@@ -28,6 +28,10 @@ export class TeamsService {
   createTeam = async (userId, projectId, name, memberList) => {
     //Parameter - user.role이 admin인지 검증하기
     await this.checkAdminRole(userId);
+
+    const project = await this.teamsRepository.getProjectByProjectId(projectId);
+    if (!project) throw new Error("존재하지 않는 프로젝트 입니다.");
+
     //레파지토리 계층에 클래스 생성 요청
     const createdTeam = await this.teamsRepository.createTeam(
       projectId,
@@ -41,6 +45,9 @@ export class TeamsService {
   updateTeam = async (userId, teamId, projectId, name, memberList) => {
     //Parameter - user.role이 admin인지 검증하기
     await this.checkAdminRole(userId);
+
+    const project = await this.teamsRepository.getProjectByProjectId(projectId);
+    if (!project) throw new Error("존재하지 않는 프로젝트 입니다.");
 
     // 클래스 존재 확인
     await this.getTeamByTeamId(teamId);

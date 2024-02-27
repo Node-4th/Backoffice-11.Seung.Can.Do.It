@@ -9,6 +9,15 @@ export class TeamsRepository {
       },
     });
   };
+
+  getProjectByProjectId = async (projectId) => {
+    return await this.prisma.projects.findUnique({
+      where: {
+        id: +projectId,
+      },
+    });
+  };
+
   getAllTeams = async (orderKey, orderValue) => {
     const teams = await this.prisma.teams.findMany({
       select: {
@@ -37,7 +46,7 @@ export class TeamsRepository {
       },
     });
   };
-  createTeam = async (name, projectId, memberList) => {
+  createTeam = async (name, userId, projectId, memberList) => {
     return await this.prisma.teams.create({
       data: {
         name,
