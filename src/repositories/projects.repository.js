@@ -6,7 +6,7 @@ export class ProjectsRepository {
   getUserByUserId = async (userId) => {
     return await this.prisma.users.findFirst({
       where: {
-        userId: userId,
+        id: +userId,
       },
     });
   };

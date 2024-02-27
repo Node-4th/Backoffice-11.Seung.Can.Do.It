@@ -19,7 +19,6 @@ model Users {
   tasks        Tasks[]
   class        Class?      @relation(fields: [classId], references: [id], onDelete: Cascade)
 
-  @@index([classId], map: "Users_classId_fkey")
   @@map("Users")
 }
 
@@ -40,7 +39,6 @@ model Teams {
   projects   Projects    @relation(fields: [projectId], references: [id])
   TeamInfos  TeamInfos[]
 
-  @@index([projectId], map: "Teams_projectId_fkey")
   @@map("Teams")
 }
 
@@ -84,9 +82,6 @@ model Tasks {
   teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([projectId], map: "Tasks_projectId_fkey")
-  @@index([teamId], map: "Tasks_teamId_fkey")
-  @@index([userId], map: "Tasks_userId_fkey")
   @@map("Tasks")
 }
 
@@ -102,8 +97,6 @@ model Feedbacks {
   task      Tasks    @relation(fields: [taskId], references: [id], onDelete: Cascade)
   user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([taskId], map: "Feedbacks_taskId_fkey")
-  @@index([userId], map: "Feedbacks_userId_fkey")
   @@map("Feedbacks")
 }
 

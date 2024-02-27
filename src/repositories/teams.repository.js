@@ -46,23 +46,23 @@ export class TeamsRepository {
       },
     });
   };
-  createTeam = async (name, userId, projectId, memberList) => {
+  createTeam = async (projectId, name, memberList) => {
     return await this.prisma.teams.create({
       data: {
-        name,
         projectId,
+        name,
         memberList,
       },
     });
   };
-  updateTeam = async (teamId, name, projectId, memberList) => {
+  updateTeam = async (teamId, projectId, name, memberList) => {
     return await this.prisma.teams.update({
       where: {
         id: +teamId,
       },
       data: {
-        name,
         projectId,
+        name,
         memberList,
       },
     });
