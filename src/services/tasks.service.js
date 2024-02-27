@@ -32,8 +32,17 @@ export class TasksService {
 
   findTaskCategory = async (category) => {
     const projects = await this.tasksRepository.findProjectByCategory(category);
-    const findTaskByProjectId = await this.tasksRepository.findTaskByProjectId(
-      projects.id,
+    if (!projects || projects.length === 0) {
+      throw new Error("해당 카테고리의 프로젝트가 존재하지 않습니다.");
+    }
+    const projectIds = projects.map((project) => project.id);
+
+    const findTaskByProjectId = await Promise.all(
+      projectIds.map(async (projectId) => {
+        const tasks = await this.tasksRepository.findTaskByProjectId(projectId);
+
+        return tasks;
+      }),
     );
     return findTaskByProjectId;
   };

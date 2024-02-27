@@ -27,8 +27,14 @@ export class TasksRepository {
     const tasks = await this.prisma.tasks.findMany({
       where: { projectId },
       select: {
+        id: true,
         content: true,
         submitUrl: true,
+        projects: {
+          select: {
+            title: true,
+          },
+        },
       },
     });
     return tasks;
