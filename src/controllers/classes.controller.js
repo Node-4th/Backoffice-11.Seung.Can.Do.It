@@ -32,7 +32,8 @@ export class ClassesController {
   createClass = async (req, res, next) => {
     try {
       //Request
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { name } = req.body;
 
       //유효성 검사
@@ -41,7 +42,7 @@ export class ClassesController {
       }
 
       //서비스 계층에 클래스 생성 요청
-      const createdClass = await this.classesService.createClass(user, name);
+      const createdClass = await this.classesService.createClass(userId, name);
       //Response
       res.status(201).json({
         success: true,
@@ -55,16 +56,15 @@ export class ClassesController {
 
   updateClass = async (req, res, next) => {
     try {
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { classId } = req.params;
       const { name } = req.body;
 
-      if (!name) {
-        throw new Error("클래스명은 필수 입력 항목입니다.");
-      }
+      if (!name) throw new Error("클래스명은 필수 입력 항목입니다.");
 
       const updatedClass = await this.classesService.updateClass(
-        user,
+        userId,
         classId,
         name,
       );
@@ -81,10 +81,11 @@ export class ClassesController {
 
   deleteClass = async (req, res, next) => {
     try {
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { classId } = req.params;
 
-      await this.classesService.deleteClass(user, classId);
+      await this.classesService.deleteClass(userId, classId);
 
       res.status(200).json({
         success: true,

@@ -2,11 +2,11 @@ export class ProjectsRepository {
   constructor(prisma) {
     this.prisma = prisma;
   }
-  // 이거 문제있음 projects 테이블에는 userId 없음
+
   getUserByUserId = async (userId) => {
-    return await this.prisma.projects.findFirst({
+    return await this.prisma.users.findFirst({
       where: {
-        userId: +userId,
+        id: +userId,
       },
     });
   };
@@ -14,10 +14,11 @@ export class ProjectsRepository {
   getAllProjects = async (orderKey, orderValue) => {
     const projects = await this.prisma.projects.findMany({
       select: {
-        projectId: true,
+        id: true,
         title: true,
         category: true,
-        deadline: true,
+        start: true,
+        end: true,
         // user: {
         //   select: {
         //     name: true,
@@ -45,34 +46,46 @@ export class ProjectsRepository {
   getProjectByProjectId = async (projectId) => {
     return await this.prisma.projects.findFirst({
       where: {
-        projectId: +projectId,
+        id: +projectId,
       },
       select: {
         title: true,
         category: true,
-        deadline: true,
+        start: true,
+        end: true,
+        createdAt: true,
       },
     });
   };
-  createProject = async (title, category, deadline) => {
+  createProject = async (title, category, start, end) => {
+    // 날짜 형식 변환
+    const formattedStart = new Date(start).toISOString();
+    const formattedEnd = new Date(end).toISOString();
+
     return await this.prisma.projects.create({
       data: {
         title,
         category,
-        deadline,
+        start: formattedStart,
+        end: formattedEnd,
       },
     });
   };
 
-  updateProject = async (projectId, title, category, deadline) => {
+  updateProject = async (projectId, title, category, start, end) => {
+    // 날짜 형식 변환
+    const formattedStart = new Date(start).toISOString();
+    const formattedEnd = new Date(end).toISOString();
+
     return await this.prisma.projects.update({
       where: {
-        projectId: +projectId,
+        id: +projectId,
       },
       data: {
         title,
         category,
-        deadline,
+        start: formattedStart,
+        end: formattedEnd,
       },
     });
   };
@@ -80,7 +93,7 @@ export class ProjectsRepository {
   deleteProject = async (projectId) => {
     return await this.prisma.projects.delete({
       where: {
-        projectId: +projectId,
+        id: +projectId,
       },
     });
   };

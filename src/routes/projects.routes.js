@@ -15,22 +15,14 @@ const projectsService = new ProjectsService(projectsRepository);
 const projectsController = new ProjectsController(projectsService);
 
 // 프로젝트 생성, 조회, 수정, 삭제
-router.get("/projects", authMiddleware, projectsController.getAllProjects);
+router.get("/", authMiddleware, projectsController.getAllProjects);
 router.get(
-  "/projects/:projectId",
+  "/:projectId",
   authMiddleware,
   projectsController.getProjectByProjectId,
 );
-router.post("/projects", authMiddleware, projectsController.createProject);
-router.put(
-  "/projects/:projectId",
-  authMiddleware,
-  projectsController.updateProject,
-);
-router.delete(
-  "/projects/:projectId",
-  authMiddleware,
-  projectsController.deleteProject,
-);
+router.post("/", authMiddleware, projectsController.createProject);
+router.put("/:projectId", authMiddleware, projectsController.updateProject);
+router.delete("/:projectId", authMiddleware, projectsController.deleteProject);
 
 export default router;
