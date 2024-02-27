@@ -36,14 +36,12 @@ export class UsersService {
     if (!passwordMatch) throw new Error("비밀번호가 다릅니다.");
 
     return {
-      data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        classId: user.classId,
-        profileImage: user.profileImage,
-        role: user.role,
-      },
+      userid: user.id,
+      name: user.name,
+      email: user.email,
+      classId: user.classId,
+      profileImage: user.profileImage,
+      role: user.role,
     };
   };
 }

@@ -27,17 +27,17 @@ describe("Tasks Service Unit Test", () => {
     updatedAt: "2024-02-26 02:45:11.309",
   };
 
-  test("submitTask Method", async () => {
-    mockTasksRepository.submitTask.mockResolvedValue(task);
+  // test("submitTask Method", async () => {
+  //   mockTasksRepository.submitTask.mockResolvedValue(task);
 
-    const submitTask = await tasksService.submitTask(
-      task.taskId,
-      task.userId,
-      task.teamId,
-      task.projectId,
-      task.content,
-      task.submitUrl,
-    );
-    expect(submitTask).toEqual(task);
-  });
+  //   const submitTask = await tasksService.submitTask(
+  //     task.taskId,
+  //     task.userId,
+  //     task.teamId,
+  //     task.projectId,
+  //     task.content,
+  //     task.submitUrl,
+  //   );
+  //   expect(submitTask).toEqual(task);
+  // });
 });

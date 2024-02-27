@@ -16,6 +16,7 @@ describe("Tasks Repository Unit Test", () => {
       },
       projects: {
         findFirst: jest.fn(),
+        findMany: jest.fn(),
       },
       teams: {
         findFirst: jest.fn(),
@@ -82,5 +83,34 @@ describe("Tasks Repository Unit Test", () => {
       where: { id: +team.teamId },
     });
     expect(findTeam).toEqual(team);
+  });
+
+  test("findProjectByCategory Method", async () => {
+    const projects = [
+      {
+        projectId: 1,
+        title: "title",
+        deadline: "2024-02-26 00:00:00.000",
+        createdAt: "2024-02-26 00:00:00.000",
+        category: "TIL",
+      },
+      {
+        projectId: 2,
+        title: "title",
+        deadline: "2024-02-26 00:00:00.000",
+        createdAt: "2024-02-26 00:00:00.000",
+        category: "TEAM_PROJECT",
+      },
+    ];
+    const mockfindMany =
+      mockPrisma.projects.findMany.mockResolvedValue(projects);
+
+    const findProject = await tasksRepository.findProjectByCategory(
+      projects.category,
+    );
+    expect(mockfindMany).toHaveBeenCalledWith({
+      where: { category: projects.category },
+    });
+    expect(findProject).toEqual(projects);
   });
 });

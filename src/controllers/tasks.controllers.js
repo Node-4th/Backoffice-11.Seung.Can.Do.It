@@ -6,12 +6,13 @@ export class TasksController {
     try {
       const projectId = req.params.projectId;
       const user = req.user;
+      console.log(user);
       const { content, submitUrl } = req.body;
       if (!content || !submitUrl) throw new Error("필수값을 입력해주세요.");
       const teamId = req.query.teamId;
       const submitTask = await this.tasksService.submitTask(
         projectId,
-        user.userId,
+        user.id,
         teamId,
         content,
         submitUrl,
@@ -62,6 +63,7 @@ export class TasksController {
   updateTask = async (req, res, next) => {
     try {
       const taskId = req.params.taskId;
+      const user = req.user;
       const findTask = await this.tasksService.findTask(taskId);
       const { content, submitUrl } = req.body;
       if (!content || !submitUrl) throw new Error("필수값을 입력해주세요.");
