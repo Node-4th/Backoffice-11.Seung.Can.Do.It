@@ -1,12 +1,9 @@
 <body>
     <%- include('header.ejs') %>
 
-        <form class="form-box" action="/users/sign-up" method="POST" enctype="multipart/form-data">
+        <form class="form-box" action="/users/sign-up" method="POST">
             <div class="sign-in">
-                <div class="profileImage">
-                    프로필 사진
-                    <input class="profileImage_input" type="file" name="profileImage" accept="image/*" />
-                </div>
+                
                 <div class="email">
                     이메일
                     <input class="email_input" type="email" name="email" placeholder="이메일을 입력하세요" />
@@ -17,7 +14,7 @@
                 </div>
                 <div class="passwordConfirm">
                     비밀번호 확인
-                    <input class="passwordConfirm_input" type="password" name="passwordConfirm"
+                    <input class="passwordConfirm_input" type="password" name="pwConfirm"
                         placeholder="비밀번호 확인을 입력하세요" />
                 </div>
                 <div class="name">

@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middlewares/error-handler.Middleware.js";
 import dotenv from "dotenv";
 dotenv.config();
+import methodOverride  from'method-override';
 
 /**라우터 모듈 마운트 */
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(methodOverride('_method'));
 
 app.use("/users", usersRouter);
 app.use("/classes", classRoter);
@@ -39,6 +41,10 @@ app.use(errorHandlerMiddleware);
 
 app.get('/signup', async (req, res, next) => {
   res.render('signup.ejs');
+});
+
+app.get('/signin', async (req, res, next) => {
+  res.render('signin.ejs');
 });
 
 // student
