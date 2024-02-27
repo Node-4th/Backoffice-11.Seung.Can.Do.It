@@ -18,10 +18,6 @@ const classesController = new ClassesController(classesService);
 router.get("/:classId", classesController.getClassByClassId);
 router.post("/", authMiddleware, classesController.createClass);
 router.put("/:classId", authMiddleware, classesController.updateClass);
-router.delete(
-  "/:classId",
-  authMiddleware,
-  classesController.deleteClass,
-);
+router.delete("/:classId", authMiddleware, classesController.deleteClass);
 
 export default router;

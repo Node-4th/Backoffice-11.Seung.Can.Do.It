@@ -24,9 +24,11 @@ export class ClassesService {
     if (!classId) throw new Error("존재하지 않는 클래스입니다.");
     return myClass;
   };
+
   createClass = async (userId, name) => {
     //Parameter - user.role이 admin인지 검증하기
     await this.checkAdminRole(userId);
+
     // 클래스명 중복 확인
     const isExistClassByName =
       await this.classesRepository.getClassByName(name);
@@ -35,40 +37,36 @@ export class ClassesService {
     }
     //레파지토리 계층에 클래스 생성 요청
     const createdClass = await this.classesRepository.createClass(name);
-    // 클래스 생성 로그 기록
-    // console.log(
-    //   `${user.userId}번 관리자가 "${createdClass.name}" 클래스를 생성하였습니다.`,
-    // );
+
     //Return
     return createdClass;
   };
+
   updateClass = async (userId, classId, name) => {
     //Parameter - user.role이 admin인지 검증하기
     await this.checkAdminRole(userId);
+
     // 클래스 존재 확인
     await this.getClassByClassId(classId);
+
     //레파지토리 계층에 클래스 수정 요청
     const updatedClass = await this.classesRepository.updateClass(
       classId,
       name,
     );
-    // 클래스 수정 로그 기록
-    // console.log(
-    //   `${user.userId}번 관리자가 "${isExistClassByClassId.name}"에서 "${updatedClass.name}"으로 클래스명을 수정하였습니다.`,
-    // );
+
     //Return
     return updatedClass;
   };
+
   deleteClass = async (userId, classId) => {
     //Parameter - user.role이 admin인지 검증하기
     await this.checkAdminRole(userId);
+
     // 클래스 존재 확인
     await this.getClassByClassId(classId);
+
     //레파지토리 계층에 클래스 삭제 요청
     return await this.classesRepository.deleteClass(classId);
-    // 클래스 삭제 로그 기록
-    // console.log(
-    //   `${user.userId}번 관리자가 "${isExistClassByClassId.name}" 클래스를 삭제하였습니다.`,
-    // );
   };
 }

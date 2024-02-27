@@ -5,11 +5,11 @@ export class ProjectsController {
   getAllProjects = async (req, res, next) => {
     try {
       // Request
-      const orderKey = req.query.orderKey ?? "projectId";
+      const orderKey = req.query.orderKey ?? "id";
       const orderValue = req.query.orderValue ?? "desc";
 
       // 유효성 검사
-      if (!["projectId", "status"].includes(orderKey))
+      if (!["id"].includes(orderKey))
         throw new Error("orderKey 가 올바르지 않습니다.");
       if (!["asc", "desc"].includes(orderValue.toLowerCase()))
         throw new Error("orderValue 가 올바르지 않습니다.");
@@ -49,7 +49,8 @@ export class ProjectsController {
   createProject = async (req, res, next) => {
     try {
       //Request
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { title, category, deadline } = req.body;
 
       //유효성 검사
@@ -63,7 +64,7 @@ export class ProjectsController {
 
       //서비스 계층에 프로젝트 생성 요청
       const createdProject = await this.projectsService.createProject(
-        user,
+        userId,
         title,
         category,
         deadline,
@@ -81,7 +82,8 @@ export class ProjectsController {
 
   updateProject = async (req, res, next) => {
     try {
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { projectId } = req.params;
       const { title, category, deadline } = req.body;
 
@@ -94,7 +96,7 @@ export class ProjectsController {
         );
 
       const updatedProjcet = await this.projectsService.updateProject(
-        user,
+        userId,
         projectId,
         title,
         category,
@@ -113,10 +115,11 @@ export class ProjectsController {
 
   deleteProject = async (req, res, next) => {
     try {
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { projectId } = req.params;
 
-      await this.projectsService.deleteProject(user, projectId);
+      await this.projectsService.deleteProject(userId, projectId);
 
       res.status(200).json({
         success: true,

@@ -10,10 +10,10 @@ export class ClassesRepository {
    */
   // 이거 문제있음 class 테이블에서 userId 삭제
   getUserByUserId = async (userId) => {
-    return await this.prisma.Users.findFirst({
+    return await this.prisma.users.findFirst({
       where: {
         id: +userId,
-      }
+      },
     });
   };
 

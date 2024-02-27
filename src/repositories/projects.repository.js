@@ -2,11 +2,11 @@ export class ProjectsRepository {
   constructor(prisma) {
     this.prisma = prisma;
   }
-  // 이거 문제있음 projects 테이블에는 userId 없음
+
   getUserByUserId = async (userId) => {
-    return await this.prisma.projects.findFirst({
+    return await this.prisma.users.findFirst({
       where: {
-        userId: +userId,
+        userId: userId,
       },
     });
   };
@@ -14,7 +14,7 @@ export class ProjectsRepository {
   getAllProjects = async (orderKey, orderValue) => {
     const projects = await this.prisma.projects.findMany({
       select: {
-        projectId: true,
+        id: true,
         title: true,
         category: true,
         deadline: true,
@@ -45,12 +45,13 @@ export class ProjectsRepository {
   getProjectByProjectId = async (projectId) => {
     return await this.prisma.projects.findFirst({
       where: {
-        projectId: +projectId,
+        id: +projectId,
       },
       select: {
         title: true,
         category: true,
         deadline: true,
+        createdAt: true,
       },
     });
   };
@@ -59,7 +60,7 @@ export class ProjectsRepository {
       data: {
         title,
         category,
-        deadline,
+        deadline: new Date(deadline), // dateFormat(new DAte("2022-02-27"))
       },
     });
   };
@@ -67,12 +68,12 @@ export class ProjectsRepository {
   updateProject = async (projectId, title, category, deadline) => {
     return await this.prisma.projects.update({
       where: {
-        projectId: +projectId,
+        id: +projectId,
       },
       data: {
         title,
         category,
-        deadline,
+        deadline: new Date(deadline),
       },
     });
   };
@@ -80,7 +81,7 @@ export class ProjectsRepository {
   deleteProject = async (projectId) => {
     return await this.prisma.projects.delete({
       where: {
-        projectId: +projectId,
+        id: +projectId,
       },
     });
   };
