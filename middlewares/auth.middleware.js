@@ -14,14 +14,15 @@ export default async function (req, res, next) {
 
     const decodedToken = jwt.verify(token, process.env.CUSTOM_SECRET_KEY);
     const userId = decodedToken.id;
-
+    
     const user = await prisma.users.findFirst({
-      where: { userId: +userId },
+      where: { id: +userId },
     });
 
     if (!user) throw new Error("토큰 사용자 없음!");
 
     req.user = user;
+    
 
     if (decodedToken.exp * 1000 < Date.now()) {
       if (refreshToken) {

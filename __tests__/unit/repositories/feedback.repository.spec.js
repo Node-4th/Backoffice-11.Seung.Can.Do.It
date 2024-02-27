@@ -86,11 +86,14 @@ describe('Feedback Repositoty Unit Test', () => {
                 content: feedback.content,
                 rating: feedback.rating,
                 userId: feedback.userId
+            },
+            include: {
+              user: { select: { name: true } }
             }
         });
         expect(mockfindFirst).toHaveBeenCalledWith({
             where: {
-                feedbackId: feedback.feedbackId
+                id: feedback.feedbackId
             },
             include: {
                 user: { select: { name: true } }
@@ -136,7 +139,12 @@ describe('Feedback Repositoty Unit Test', () => {
 
         expect(mockfindFirst).toHaveBeenCalledWith({
             where: {
-                taskId: feedback.taskId
+                id: feedback.taskId
+            },
+            include: {
+              users: { select: { name: true } },
+              teams: { select: { name: true } },
+              projects: { select: { title: true } }
             }
         });
 
@@ -156,7 +164,7 @@ describe('Feedback Repositoty Unit Test', () => {
 
         expect(mockupdate).toHaveBeenCalledWith({
             where: {
-                feedbackId: feedback.feedbackId,
+                id: feedback.feedbackId,
                 userId: feedback.userId
             },
             data: {
@@ -178,7 +186,7 @@ describe('Feedback Repositoty Unit Test', () => {
 
         expect(mockdelete).toHaveBeenCalledWith({
             where: {
-                feedbackId: feedback.feedbackId,
+                id: feedback.feedbackId,
                 userId: feedback.userId
             }
         });
