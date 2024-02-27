@@ -35,6 +35,7 @@ export class ClassesService {
     if (isExistClassByName) {
       throw new Error("이미 존재하는 클래스명입니다.");
     }
+
     //레파지토리 계층에 클래스 생성 요청
     const createdClass = await this.classesRepository.createClass(userId, name);
 

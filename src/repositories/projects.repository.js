@@ -106,6 +106,7 @@ export class ProjectsRepository {
       },
     });
   };
+
   getAllNotSubmitUser = async (classId, projectId) => {
     // Projects 테이블을 통해 categoryId와 start date에 해당하는 projectId를 찾습니다.
     const project = await this.prisma.projects.findFirst({
@@ -129,7 +130,7 @@ export class ProjectsRepository {
 
     // Task들의 userId 목록을 배열로 만듭니다.
     const userIds = tasks.map((task) => task.userId);
-
+    console.log("-----ㄹㄷㄹㄹㄷㄹㄷ", userIds);
     // 해당 projectId에 해당하는 task를 수행하지 않은 유저들을 찾습니다.
     const notSubmitUsers = await this.prisma.users.findMany({
       where: {
