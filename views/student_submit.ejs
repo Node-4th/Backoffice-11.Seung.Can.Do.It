@@ -1,0 +1,16 @@
+<body>
+    <%- include('header.ejs') %>
+
+        <h1 class="teamname">과제 제출하기</h1>
+        <form class="form-box" action="/tasks/:projectId" method="POST">
+
+            <div id="content" class="createpost_content">
+                <h2 class="teamname">content</h2>
+                <input class="submitinput" type="text" name="content" placeholder="내용을 입력하세요" />
+                <h2 class="teamname">제출 링크</h2>
+                <input class="submitinput" type="text" name="submitURL" placeholder="제출링크를 입력하세요" />
+                <button class="submitBtn" type="submit">과제 제출하기</button>
+            </div>
+            </div>
+        </form>
+</body>

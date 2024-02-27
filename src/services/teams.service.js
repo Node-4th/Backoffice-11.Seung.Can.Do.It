@@ -30,8 +30,8 @@ export class TeamsService {
     await this.checkAdminRole(userId);
     //레파지토리 계층에 클래스 생성 요청
     const createdTeam = await this.teamsRepository.createTeam(
-      projectId,
       name,
+      projectId,
       memberList,
     );
     //Return
