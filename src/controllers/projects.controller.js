@@ -49,7 +49,8 @@ export class ProjectsController {
   createProject = async (req, res, next) => {
     try {
       //Request
-      const { userId } = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { title, category, deadline } = req.body;
 
       //유효성 검사
@@ -81,7 +82,8 @@ export class ProjectsController {
 
   updateProject = async (req, res, next) => {
     try {
-      const { userId } = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { projectId } = req.params;
       const { title, category, deadline } = req.body;
 
@@ -113,7 +115,8 @@ export class ProjectsController {
 
   deleteProject = async (req, res, next) => {
     try {
-      const { userId } = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { projectId } = req.params;
 
       await this.projectsService.deleteProject(userId, projectId);
