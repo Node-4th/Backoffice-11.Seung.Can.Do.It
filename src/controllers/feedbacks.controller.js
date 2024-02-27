@@ -1,6 +1,7 @@
 export class FeedbacksController {
-  constructor(feedbacksService) {
+  constructor(feedbacksService, slackMessage) {
     this.feedbacksService = feedbacksService;
+    this.slackMessage = slackMessage;
   }
 
   findAllFeedback = async (req, res, next) => {
@@ -22,39 +23,39 @@ export class FeedbacksController {
 
       const feedback = await this.feedbacksService.findFeedback(feedbackId);
 
-      return res.status(200).json({data: feedback})
+      return res.status(200).json({ data: feedback })
 
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
   }
 
   createFeedback = async (req, res, next) => {
-    try{
+    try {
       const { taskId } = req.params;
-      const {title, content, rating} = req.body;
+      const { title, content, rating } = req.body;
       const { userId } = req.user;
 
-      await this.feedbacksService.findTask(taskId);
-      await this.feedbacksService.createFeedback(
+      const task = await this.feedbacksService.findTask(taskId);
+      const feedback = await this.feedbacksService.createFeedback(
         taskId,
         title,
         content,
         rating,
         userId
       );
+      // await this.feedbackMessage.feedbackSlack(feedback, task);
 
-      return res.status(201).json({success: 'true', message: '피드백을 작성하였습니다.'});
-
-    } catch(err) {
+      return res.status(201).json({ success: 'true', message: '피드백을 작성하였습니다.' });
+    } catch (err) {
       next(err);
     }
   }
 
   editFeedback = async (req, res, next) => {
-    try{
+    try {
       const { feedbackId } = req.params;
-      const {title, content, rating} = req.body;
+      const { title, content, rating } = req.body;
       const { userId } = req.user;
 
       const findFeedback = await this.feedbacksService.findFeedback(feedbackId);
@@ -68,29 +69,29 @@ export class FeedbacksController {
         findFeedback.userId
       );
 
-      return res.status(200).json({success: 'true', message: '피드백을 수정했습니다.', data: feedback});
+      return res.status(200).json({ success: 'true', message: '피드백을 수정했습니다.', data: feedback });
 
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
   }
 
   deleteFeedback = async (req, res, next) => {
-    try{
+    try {
       const { feedbackId } = req.params;
       const { userId } = req.user;
 
       const findFeedback = await this.feedbacksService.findFeedback(feedbackId);
 
-      await this. feedbacksService.deleteFeedback(
+      await this.feedbacksService.deleteFeedback(
         feedbackId,
         userId,
         findFeedback.userId
       );
 
-        return res.status(204).json({success: 'true', message: '피드백을 삭제했습니다.'});
-        
-    } catch(err) {
+      return res.status(204).json({ success: 'true', message: '피드백을 삭제했습니다.' });
+
+    } catch (err) {
       next(err);
     }
   };

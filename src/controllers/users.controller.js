@@ -36,7 +36,6 @@ export class UsersController {
       const { email, password } = req.body;
 
       const user = await this.usersService.signInUser(email, password);
-
       const accessToken = createAccessToken(user.userId);
       const refreshToken = createRefreshToken(user.userId);
 

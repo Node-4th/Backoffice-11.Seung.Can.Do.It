@@ -4,14 +4,14 @@ export class UsersRepository {
   }
 
   createUser = async ({ name, email, password, profileImg, role }) => {
-    const user = await this.prisma.users.create({
+    const user = await this.prisma.Users.create({
       data: {
         name,
         email,
         password,
         profileImg,
-        role,
-      },
+        role
+      }
     });
     return user;
   };

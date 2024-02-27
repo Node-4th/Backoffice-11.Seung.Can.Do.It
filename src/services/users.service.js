@@ -31,15 +31,12 @@ export class UsersService {
       throw new Error("필수 항목을 체크해주세요");
     }
     const user = await this.usersRepository.findUniqueUser(email);
-
     if (!user) throw new Error("로그인 정보가 틀립니다.");
-
     const passwordMatch = await bcrypt.compare(password, user.password);
-
     if (!passwordMatch) throw new Error("비밀번호가 다릅니다.");
 
     return {
-      userId: user.id, // id
+      userId: user.id,
       name: user.name,
       email: user.email,
       classId: user.classId,

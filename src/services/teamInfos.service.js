@@ -17,7 +17,7 @@ export class TeamInfosService {
         return teamInfo;
     };
 
-    findTeam = async (teamId, userId) => {
+    findTeam = async (teamId) => {
         if (!teamId) {
             throw new Error('팀을 선택하세요.');
         }
@@ -26,10 +26,6 @@ export class TeamInfosService {
 
         if (!team) {
             throw new Error('팀이 없습니다.');
-        }
-
-        if (!(team.userId.includes(userId))) {
-            throw new Error('팀 소개페이지에 대한 권한이 없습니다.');
         }
 
         return team;

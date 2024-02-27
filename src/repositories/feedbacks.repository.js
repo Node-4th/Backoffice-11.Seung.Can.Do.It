@@ -6,7 +6,7 @@ export class FeedbacksRepository {
   findAllFeedback = async (taskId) => {
     const feedback = await this.prisma.Feedbacks.findMany({
       where: { 
-        taskId 
+        taskId: +taskId 
       },
       include: {
         user: { select: { name: true } }
@@ -19,7 +19,7 @@ export class FeedbacksRepository {
   findFeedback = async (feedbackId) => {
     const task = await this.prisma.Feedbacks.findFirst({
       where: {
-        feedbackId
+        id: +feedbackId
       },
       include: {
         user: { select: { name: true } }
@@ -32,7 +32,12 @@ export class FeedbacksRepository {
   findTask = async (taskId) => {
     const task = await this.prisma.Tasks.findFirst({
       where: {
-        taskId
+        id: +taskId
+      },
+      include: {
+        users: { select: { name: true } },
+        teams: { select: { name: true } },
+        projects: { select: { title: true } }
       }
     })
 
@@ -47,6 +52,9 @@ export class FeedbacksRepository {
         content,
         rating,
         userId
+      },
+      include: {
+        user: { select: { name: true } }
       }
     })
 
@@ -56,7 +64,7 @@ export class FeedbacksRepository {
   editFeedback = async (feedbackId, title, content, rating, userId) => {
     const feedback = await this.prisma.Feedbacks.update({
       where: {
-        feedbackId,
+        id: +feedbackId,
         userId
       },
       data: {
@@ -72,7 +80,7 @@ export class FeedbacksRepository {
   deleteFeedback = async (feedbackId, userId) => {
     const feedback = await this.prisma.Feedbacks.delete({
       where: {
-        feedbackId,
+        id: +feedbackId,
         userId
       }
     });
