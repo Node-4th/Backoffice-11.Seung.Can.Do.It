@@ -32,7 +32,7 @@ export class TeamsController {
       if (!teamId) throw new Error("teamId는 필수값입니다.");
 
       //프로젝트 상세조회
-      const team = await this.teamsService.getProjectByTeamId(teamId);
+      const team = await this.teamsService.getTeamByTeamId(teamId);
 
       //Response
       return res.status(200).json({ success: true, data: team });
