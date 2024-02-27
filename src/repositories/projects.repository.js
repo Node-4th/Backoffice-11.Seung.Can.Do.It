@@ -17,7 +17,8 @@ export class ProjectsRepository {
         id: true,
         title: true,
         category: true,
-        deadline: true,
+        start: true,
+        end: true,
         // user: {
         //   select: {
         //     name: true,
@@ -50,30 +51,32 @@ export class ProjectsRepository {
       select: {
         title: true,
         category: true,
-        deadline: true,
+        start: true,
+        end: true,
         createdAt: true,
       },
     });
   };
-  createProject = async (title, category, deadline) => {
+  createProject = async (title, category, start, end) => {
     // 날짜 형식 변환
-    const formattedDeadline = new Date(deadline).toISOString().split("T")[0];
-    const formattedCreatedAt = new Date()
-      .toISOString()
-      .replace(/T/, " ")
-      .replace(/\..+/, "");
+    const formattedStart = new Date(start).toISOString();
+    const formattedEnd = new Date(end).toISOString();
 
     return await this.prisma.projects.create({
       data: {
         title,
         category,
-        deadline: formattedDeadline,
-        createdAt: formattedCreatedAt,
+        start: formattedStart,
+        end: formattedEnd,
       },
     });
   };
 
-  updateProject = async (projectId, title, category, deadline) => {
+  updateProject = async (projectId, title, category, start, end) => {
+    // 날짜 형식 변환
+    const formattedStart = new Date(start).toISOString();
+    const formattedEnd = new Date(end).toISOString();
+
     return await this.prisma.projects.update({
       where: {
         id: +projectId,
@@ -81,7 +84,8 @@ export class ProjectsRepository {
       data: {
         title,
         category,
-        deadline: new Date(deadline),
+        start: formattedStart,
+        end: formattedEnd,
       },
     });
   };

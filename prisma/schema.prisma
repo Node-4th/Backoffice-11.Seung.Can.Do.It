@@ -59,7 +59,8 @@ model TeamInfos {
 model Projects {
   id        Int      @id @default(autoincrement()) @map("projectId")
   title     String   @map("title") @db.VarChar(255)
-  deadline  DateTime @map("deadline")
+  start     DateTime @map("start")
+  end       DateTime @map("end")
   createdAt DateTime @default(now()) @map("createdAt")
   category  Category
   tasks     Tasks[]

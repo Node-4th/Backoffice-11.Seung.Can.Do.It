@@ -26,7 +26,7 @@ export class ProjectsService {
     return project;
   };
 
-  createProject = async (userId, title, category, deadline) => {
+  createProject = async (userId, title, category, start, end) => {
     //Parameter - user.role이 admin인지 검증하기
     const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
@@ -42,7 +42,8 @@ export class ProjectsService {
     const createdProject = await this.projectsRepository.createProject(
       title,
       category,
-      deadline,
+      start,
+      end,
     );
 
     // 프로젝트 생성 로그 기록
@@ -54,7 +55,7 @@ export class ProjectsService {
     return createdProject;
   };
 
-  updateProject = async (userId, projectId, title, category, deadline) => {
+  updateProject = async (userId, projectId, title, category, start, end) => {
     //Parameter - user.role이 admin인지 검증하기
     const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
@@ -71,7 +72,8 @@ export class ProjectsService {
       projectId,
       title,
       category,
-      deadline,
+      start,
+      end,
     );
 
     // 프로젝트 수정 로그 기록

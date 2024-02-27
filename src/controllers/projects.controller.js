@@ -50,12 +50,13 @@ export class ProjectsController {
     try {
       //Request
       const userId = req.user.id;
-      const { title, category, deadline } = req.body;
+      const { title, category, start, end } = req.body;
 
       //유효성 검사
       if (!title) throw new Error("프로젝트명은 필수 입력 항목입니다.");
       if (!category) throw new Error("프로젝트 유형은 필수 입력 항목입니다.");
-      if (!deadline) throw new Error("프로젝트 기한은 필수 입력 항목입니다.");
+      if (!start) throw new Error("프로젝트 시작일은 필수 입력 항목입니다.");
+      if (!end) throw new Error("프로젝트 종료일은 필수 입력 항목입니다.");
       if (!["TIL", "PERSONAL_PROJECT", "TEAM_PROJECT"].includes(category))
         throw new Error(
           "올바르지 않은 프로젝트 유형입니다. 프로젝트 유형은 'TIL', 'PERSONAL_PROJECT', 'TEAM_PROJECT' 중 하나의 항목만 기재하실 수 있습니다.",
@@ -66,7 +67,8 @@ export class ProjectsController {
         userId,
         title,
         category,
-        deadline,
+        start,
+        end,
       );
       //Response
       res.status(201).json({
@@ -83,7 +85,7 @@ export class ProjectsController {
     try {
       const userId = req.user.id;
       const { projectId } = req.params;
-      const { title, category, deadline } = req.body;
+      const { title, category, start, end } = req.body;
 
       if (!title) throw new Error("프로젝트명은 필수 입력 항목입니다.");
       if (!category) throw new Error("프로젝트 유형은 필수 입력 항목입니다.");
@@ -98,7 +100,8 @@ export class ProjectsController {
         projectId,
         title,
         category,
-        deadline,
+        start,
+        end,
       );
 
       res.status(200).json({

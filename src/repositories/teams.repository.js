@@ -61,6 +61,11 @@ export class TeamsRepository {
     });
   };
   updateTeam = async (teamId, projectId, name, memberList) => {
+    //memberList를 배열 형태로 변환
+    const members = Array.isArray(memberList)
+      ? memberList
+      : memberList.split(",").map((member) => member.trim());
+
     return await this.prisma.teams.update({
       where: {
         id: +teamId,
@@ -68,7 +73,7 @@ export class TeamsRepository {
       data: {
         projectId,
         name,
-        memberList,
+        memberList: members,
       },
     });
   };

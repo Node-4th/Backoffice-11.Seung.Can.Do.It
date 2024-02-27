@@ -17,7 +17,7 @@ export function createAccessToken(id) {
 export function createVerifyToken(email) {
   try {
     const verifyToken = jwt.sign({ email }, process.env.CUSTOM_SECRET_KEY, {
-      expiresIn: "5h", //5m
+      expiresIn: "1d", //5m
     });
     return verifyToken;
   } catch (error) {
@@ -27,6 +27,6 @@ export function createVerifyToken(email) {
 
 export function createRefreshToken(id) {
   return jwt.sign({ id }, process.env.CUSTOM_SECRET_KEY, {
-    expiresIn: "12h",
+    expiresIn: "12d",
   });
 }
