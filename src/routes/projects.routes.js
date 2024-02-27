@@ -15,6 +15,7 @@ const projectsService = new ProjectsService(projectsRepository);
 const projectsController = new ProjectsController(projectsService);
 
 // 프로젝트 생성, 조회, 수정, 삭제
+router.get("/submit", authMiddleware, projectsController.getAllNotSubmitUser);
 router.get("/", authMiddleware, projectsController.getAllProjects);
 router.get(
   "/:projectId",

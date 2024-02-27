@@ -117,6 +117,7 @@ export class ProjectsController {
   deleteProject = async (req, res, next) => {
     try {
       const userId = req.user.id;
+
       const { projectId } = req.params;
 
       await this.projectsService.deleteProject(userId, projectId);
@@ -127,6 +128,34 @@ export class ProjectsController {
       });
     } catch (error) {
       next(error);
+    }
+  };
+
+  getAllNotSubmitUser = async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const userId = id;
+      console.log("----------1-----------", userId);
+      const { category, start } = req.body;
+
+      // const userId = req.user.id;
+      console.log("User ID:", id);
+      console.log("Category:", category);
+      console.log("Start:---------여기까지 컨트롤러", start);
+      const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
+        id,
+        category,
+        start,
+      );
+      console.log("이제 정말 끝임:", notSubmitUsers);
+      res.status(200).json({
+        success: true,
+        message: "미제출자 인간들을 성공적으로 가려냈습니다.",
+        data: notSubmitUsers,
+      });
+    } catch (error) {
+      console.error("Error in getAllNotSubmitUser:", error);
+      res.status(400).json({ message: "컨트롤러에서 터짐" });
     }
   };
 }
