@@ -34,7 +34,7 @@ model Teams {
   id         Int         @id @default(autoincrement()) @map("teamId")
   name       String      @map("name") @db.VarChar(255)
   projectId  Int         @map("projectId")
-  memberList String      @map("memberList")
+  memberList Json        @map("memberList")
   tasks      Tasks[]
   projects   Projects    @relation(fields: [projectId], references: [id])
   TeamInfos  TeamInfos[]

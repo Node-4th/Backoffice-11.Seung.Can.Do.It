@@ -47,11 +47,16 @@ export class TeamsRepository {
     });
   };
   createTeam = async (projectId, name, memberList) => {
+    //memberList를 배열 형태로 변환
+    const members = Array.isArray(memberList)
+      ? memberList
+      : memberList.split(",").map((member) => member.trim());
+
     return await this.prisma.teams.create({
       data: {
         projectId,
         name,
-        memberList,
+        memberList: members,
       },
     });
   };

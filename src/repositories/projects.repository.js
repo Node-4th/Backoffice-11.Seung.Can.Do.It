@@ -56,11 +56,19 @@ export class ProjectsRepository {
     });
   };
   createProject = async (title, category, deadline) => {
+    // 날짜 형식 변환
+    const formattedDeadline = new Date(deadline).toISOString().split("T")[0];
+    const formattedCreatedAt = new Date()
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/, "");
+
     return await this.prisma.projects.create({
       data: {
         title,
         category,
-        deadline: new Date(deadline), // dateFormat(new DAte("2022-02-27"))
+        deadline: formattedDeadline,
+        createdAt: formattedCreatedAt,
       },
     });
   };
