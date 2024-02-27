@@ -8,6 +8,7 @@ dotenv.config();
 
 import classRoter from "./src/routes/classes.routes.js";
 import projectRouter from "./src/routes/projects.routes.js";
+import teamsRouter from "./src/routes/teams.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
 import tasksRouter from "./src/routes/tasks.router.js";
 import teamInfosRouter from "./src/routes/teamInfos.router.js";
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/users", usersRouter);
 app.use("/classes", classRoter);
 app.use("/projects", projectRouter);
+app.use("/teams", teamsRouter);
 app.use("/feedbacks", feedbacksRouter);
 app.use("/teamInfos", teamInfosRouter);
 app.use("/api", eamilRouter);

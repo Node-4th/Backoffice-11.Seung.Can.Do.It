@@ -32,7 +32,8 @@ export class ClassesController {
   createClass = async (req, res, next) => {
     try {
       //Request
-      const { userId } = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { name } = req.body;
 
       //유효성 검사
@@ -55,13 +56,12 @@ export class ClassesController {
 
   updateClass = async (req, res, next) => {
     try {
-      const { userId } = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { classId } = req.params;
       const { name } = req.body;
 
-      if (!name) {
-        throw new Error("클래스명은 필수 입력 항목입니다.");
-      }
+      if (!name) throw new Error("클래스명은 필수 입력 항목입니다.");
 
       const updatedClass = await this.classesService.updateClass(
         userId,
@@ -81,7 +81,8 @@ export class ClassesController {
 
   deleteClass = async (req, res, next) => {
     try {
-      const { userId } = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { classId } = req.params;
 
       await this.classesService.deleteClass(userId, classId);
