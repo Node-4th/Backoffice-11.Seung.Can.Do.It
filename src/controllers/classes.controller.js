@@ -32,8 +32,9 @@ export class ClassesController {
   createClass = async (req, res, next) => {
     try {
       //Request
-      const user = req.user;
+      const { id } = req.user;
       const { name } = req.body;
+      const userId = id;
 
       //유효성 검사
       if (!name) {
@@ -41,7 +42,7 @@ export class ClassesController {
       }
 
       //서비스 계층에 클래스 생성 요청
-      const createdClass = await this.classesService.createClass(user, name);
+      const createdClass = await this.classesService.createClass(userId, name);
       //Response
       res.status(201).json({
         success: true,

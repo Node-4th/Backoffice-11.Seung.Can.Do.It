@@ -15,12 +15,11 @@ const classesService = new ClassesService(classesRepository);
 const classesController = new ClassesController(classesService);
 
 // 클래스 생성, 조회, 수정, 삭제
-
-router.get("/classes/:classId", classesController.getClassByClassId);
-router.post("/classes", authMiddleware, classesController.createClass);
-router.put("/classes/:classId", authMiddleware, classesController.updateClass);
+router.get("/:classId", classesController.getClassByClassId);
+router.post("/", authMiddleware, classesController.createClass);
+router.put("/:classId", authMiddleware, classesController.updateClass);
 router.delete(
-  "/classes/:classId",
+  "/:classId",
   authMiddleware,
   classesController.deleteClass,
 );

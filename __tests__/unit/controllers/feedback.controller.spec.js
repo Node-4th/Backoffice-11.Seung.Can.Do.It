@@ -54,11 +54,11 @@ describe('Feedback Controller Unit Test', () => {
         mockReq.params = {
             taskId: feedback.taskId
         };
-        
+
         mockReq.user = {
             userId: feedback.userId,
         };
-        
+
         mockReq.body = {
             title: feedback.title,
             content: feedback.content,
@@ -72,11 +72,11 @@ describe('Feedback Controller Unit Test', () => {
 
         expect(mockRes.status).toHaveBeenCalledWith(201);
         expect(mockRes.json).toHaveBeenCalledWith({
-            success: 'true', 
+            success: 'true',
             message: '피드백을 작성하였습니다.'
         });
         expect(mockcreateFeedback).toHaveBeenCalledWith(
-            feedback.taskId, 
+            feedback.taskId,
             feedback.title,
             feedback.content,
             feedback.rating,
@@ -144,25 +144,25 @@ describe('Feedback Controller Unit Test', () => {
         mockReq.params = {
             feedbackId: feedback.feedbackId
         };
-        
+
         mockReq.user = {
             userId: feedback.userId,
         };
-        
+
         mockReq.body = {
             title: feedback.title,
             content: feedback.content,
             rating: feedback.rating
         };
 
-        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue({feedback});
+        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue({ feedback });
         const mockeditFeedback = mockFeedbacksService.editFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.editFeedback(mockReq, mockRes, mocknext);
 
         expect(mockRes.status).toHaveBeenCalledWith(200);
         expect(mockRes.json).toHaveBeenCalledWith({
-            success: 'true', 
+            success: 'true',
             message: '피드백을 수정했습니다.',
             data: feedback
         });
@@ -183,19 +183,19 @@ describe('Feedback Controller Unit Test', () => {
         mockReq.params = {
             feedbackId: feedback.feedbackId
         };
-        
+
         mockReq.user = {
             userId: feedback.userId,
         };
 
-        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue({feedback});
+        const mockfindFeedback = mockFeedbacksService.findFeedback.mockResolvedValue({ feedback });
         const mockdeleteFeedback = mockFeedbacksService.deleteFeedback.mockResolvedValue(feedback);
 
         await feedbacksController.deleteFeedback(mockReq, mockRes, mocknext);
 
         expect(mockRes.status).toHaveBeenCalledWith(204);
         expect(mockRes.json).toHaveBeenCalledWith({
-            success: 'true', 
+            success: 'true',
             message: '피드백을 삭제했습니다.'
         });
         expect(mockdeleteFeedback).toHaveBeenCalledWith(
