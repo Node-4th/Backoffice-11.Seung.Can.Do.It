@@ -34,9 +34,10 @@ export class FeedbacksController {
     try {
       const { taskId } = req.params;
       const { title, content, rating } = req.body;
-      const { userId } = req.user;
+      const userId = req.user.id;
 
       const task = await this.feedbacksService.findTask(taskId);
+      await this.feedbacksService.findUser(userId);
       const feedback = await this.feedbacksService.createFeedback(
         taskId,
         title,
@@ -44,7 +45,7 @@ export class FeedbacksController {
         rating,
         userId
       );
-      await this.feedbackMessage.feedbackSlack(feedback, task);
+      // await this.feedbackMessage.feedbackSlack(feedback, task);
 
       return res.status(201).json({ success: 'true', message: '피드백을 작성하였습니다.' });
 
@@ -57,7 +58,7 @@ export class FeedbacksController {
     try {
       const { feedbackId } = req.params;
       const { title, content, rating } = req.body;
-      const { userId } = req.user;
+      const userId = req.user.id;
 
       const findFeedback = await this.feedbacksService.findFeedback(feedbackId);
 
@@ -80,7 +81,7 @@ export class FeedbacksController {
   deleteFeedback = async (req, res, next) => {
     try {
       const { feedbackId } = req.params;
-      const { userId } = req.user;
+      const userId = req.user.id;
 
       const findFeedback = await this.feedbacksService.findFeedback(feedbackId);
 

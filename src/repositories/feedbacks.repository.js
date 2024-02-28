@@ -47,7 +47,7 @@ export class FeedbacksRepository {
   createFeedback = async (taskId, title, content, rating, userId) => {
     const feedback = await this.prisma.Feedbacks.create({
       data: {
-        taskId,
+        taskId: +taskId,
         title,
         content,
         rating,
@@ -88,4 +88,13 @@ export class FeedbacksRepository {
     return feedback;
   }
 
+  findUser = async (userId) => {
+    const user = await this.prisma.Users.findFirst({
+      where: {
+        id: userId
+      }
+    });
+
+    return user; 
+  }
 }

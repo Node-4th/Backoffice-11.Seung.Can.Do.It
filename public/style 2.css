@@ -1,0 +1,290 @@
+button {
+  cursor: pointer;
+}
+
+.header {
+  width: auto;
+  height: 80px;
+  position: relative;
+  margin-top: 30px;
+}
+
+.logo {
+  font-size: 38px;
+  margin-left: 50px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.sign_in,
+.sign_up,
+.sign_out {
+  border: 1px solid black;
+  border-radius: 50px;
+  background-color: transparent;
+  text-align: center;
+
+  padding: 8px;
+
+  width: 80px;
+}
+
+.sign_in {
+  margin-right: 25px;
+}
+
+.sign_in {
+  position: absolute;
+  right: 13%;
+  top: 25px;
+
+  display: block;
+}
+
+.sign_up {
+  position: absolute;
+  right: 7.5%;
+  top: 25px;
+
+  display: block;
+}
+
+.sign_out {
+  position: absolute;
+  right: 6%;
+  top: 25px;
+
+  font-size: 15px;
+  width: 100px;
+
+  display: none;
+}
+
+.user {
+  position: absolute;
+  right: 14%;
+  top: 28px;
+
+  font-size: 25px;
+  width: 25px;
+  padding: 5px;
+
+  display: none;
+}
+
+.move {
+  padding: 8px;
+
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.cates {
+  margin-left: 41%;
+}
+
+/* -----로그인페이지----- */
+
+.sign-in {
+  border: 1px solid black;
+  padding: 30px;
+
+  width: 30%;
+  height: 550px;
+  margin-left: 32%;
+  margin-top: 50px;
+}
+
+.email,
+.password,
+.name,
+.profileImage {
+  margin: 30px 0 30px 50px;
+}
+
+.passwordConfirm {
+  margin: 30px 0 30px 18px;
+}
+
+.phone {
+  margin: 30px 0 30px 30px;
+}
+
+.email_input {
+  margin-left: 23px;
+  width: 300px;
+  height: 30px;
+  padding: 5px;
+}
+
+.name_input {
+  margin-left: 38px;
+  width: 300px;
+  height: 30px;
+  padding: 5px;
+}
+
+.password_input,
+.passwordConfirm_input {
+  margin-left: 10px;
+  width: 300px;
+  height: 30px;
+  padding: 5px;
+}
+
+.sign-btn {
+  border: 1px solid black;
+
+  background-color: transparent;
+
+  padding: 15px;
+
+  margin-left: 40%;
+  margin-top: 25px;
+}
+
+/* -------- student main ---------- */
+
+.boxs {
+  border: 1px solid black;
+  height: 560px;
+  width: 80%;
+
+  display: flex;
+
+  margin-left: 10%;
+  margin-top: 100px;
+}
+
+.selectbox {
+  border: 1px solid black;
+  border-radius: 50px;
+  padding: 15px;
+
+  width: 300px;
+  height: 400px;
+
+  margin: 50px 60px 0 60px;
+
+  font-size: 30px;
+  font: bold;
+  text-align: center;
+  line-height: 400px;
+}
+
+.tasks {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 100px;
+
+  border: 1px solid black;
+}
+
+.task {
+  width: 60%;
+  height: 200px;
+
+  border: 1px solid black;
+
+  margin-left: 20%;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+  text-align: center;
+  line-height: 100px;
+}
+
+.teamname {
+  margin-top: 50px;
+  margin-left: 100px;
+}
+
+.Infos {
+  width: 90%;
+  padding: 50px;
+}
+
+.Infos div {
+  height: 300px;
+  font-size: 28px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  padding: 50px;
+  border: 1px solid black;
+}
+
+.submitbtn {
+  position: relative;
+  padding: 15px;
+  width: 150px;
+  height: 50px;
+
+  left: 80%;
+  bottom: 80px;
+}
+
+.createTeamInfo {
+  position: relative;
+  padding: 15px;
+  width: 150px;
+  height: 50px;
+
+  left: 78%;
+  bottom: 80px;
+}
+
+.submitinput {
+  height: 80px;
+  width: 80%;
+
+  margin-left: 50px;
+}
+
+.submitBtn {
+  margin-top: 100px;
+}
+
+.taskbtn {
+  padding: 10px;
+  width: 120px;
+  height: 40px;
+
+  position: relative;
+  bottom: 150px;
+  left: 42%;
+}
+
+.result {
+  display: flex;
+  border: 1px solid black;
+
+  padding: 30px;
+
+  margin-top: 50px;
+}
+
+.result div {
+  border: 1px solid black;
+  width: 30%;
+  height: 500px;
+
+  margin-left: 10%;
+  margin-right: 10%;
+
+  padding: 30px;
+}
+
+.team_input {
+  margin-left: 50px;
+
+  height: 60%;
+  width: 80%;
+}
+
+.main_title {
+  text-align: center;
+  margin-top: 100px;
+}

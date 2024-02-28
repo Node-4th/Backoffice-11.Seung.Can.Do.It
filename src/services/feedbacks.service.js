@@ -99,5 +99,16 @@ export class FeedbacksService {
 
     return feedback;
   }
+
+  findUser = async (userId) => {
+    const user = await this.feedbacksRepository.findUser(userId);
+
+    console.log(user);
+    if(user.role !== "TUTOR") {
+      throw new Error ('피드백을 작성할 권한이 없습니다.');
+    };
+
+    return user;
+  }
 }
 
