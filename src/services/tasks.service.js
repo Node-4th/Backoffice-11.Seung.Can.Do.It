@@ -7,6 +7,9 @@ export class TasksService {
     if (!project) {
       throw new Error("프로젝트 조회에 실패하였습니다.");
     }
+    if (project.category === "TEAM_PROJECT" && teamId === undefined) {
+      throw new Error("teamId를 입력해주세요.");
+    }
     if (teamId === undefined) {
       const submitTask = await this.tasksRepository.submitTask({
         projectId: +projectId,
