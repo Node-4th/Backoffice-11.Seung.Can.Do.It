@@ -1,4 +1,7 @@
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
+
 const slackSender = async (text) => {
   const data = {
     channel: "backoffice",
@@ -14,7 +17,7 @@ const slackSender = async (text) => {
     url: "https://slack.com/api/chat.postMessage",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer xoxb-6671511498391-6708577263974-BOHUyRQsbUynZt1c3MkGCbm5`,
+      Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
     },
     data,
   };
