@@ -59,7 +59,6 @@ export class TasksRepository {
       where: { id: +taskId, userId: +userId },
       data: { content, submitUrl },
     });
-    console.log("Aaa", updateTask);
     return updateTask;
   };
 
@@ -68,7 +67,6 @@ export class TasksRepository {
       where: { id: +taskId, teamId: +teamId },
       data: { content, submitUrl },
     });
-    console.log("Aaa", updateTask);
     return updateTask;
   };
 
