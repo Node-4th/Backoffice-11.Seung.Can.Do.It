@@ -46,7 +46,7 @@ export class TeamsRepository {
       },
     });
   };
-  createTeam = async (projectId, name, memberList) => {
+  createTeam = async (name, projectId, memberList) => {
     //memberList를 배열 형태로 변환
     const members = Array.isArray(memberList)
       ? memberList
