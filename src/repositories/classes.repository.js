@@ -37,20 +37,32 @@ export class ClassesRepository {
   };
 
   createClass = async (userId, name) => {
-    const newClass = await this.prisma.class.create({
-      data: {
-        name,
-      },
-    });
-    const user = await this.prisma.users.update({
+    const hasClassUser = await this.prisma.users.findFirst({
       where: {
         id: +userId,
       },
-      data: {
-        classId: +newClass.id,
+      select: {
+        classId: true,
       },
     });
-    return newClass;
+    if (!hasClassUser) {
+      const newClass = await this.prisma.class.create({
+        data: {
+          name,
+        },
+      });
+      const user = await this.prisma.users.update({
+        where: {
+          id: +userId,
+        },
+        data: {
+          classId: +newClass.id,
+        },
+      });
+      return newClass;
+    } else {
+      return null;
+    }
   };
 
   updateClass = async (classId, name) => {
