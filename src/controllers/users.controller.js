@@ -11,6 +11,7 @@ export class UsersController {
     try {
       const { name, email, password, pwConfirm, profileImg } = req.body;
       const role = req.query.role ?? "ADMIN";
+      const adminId = req.query.adminId;
 
       const user = await this.usersService.signUpUser(
         name,
@@ -19,6 +20,7 @@ export class UsersController {
         pwConfirm,
         profileImg,
         role,
+        adminId
       );
 
       return res

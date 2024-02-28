@@ -1,8 +1,5 @@
-import { describe, jest } from "@jest/globals";
+import { jest } from "@jest/globals";
 import { UsersService } from "../../../src/services/users.service";
-import bcrypt from "bcrypt";
-
-jest.mock("bcrypt");
 
 let mockusersRepository = {
   createUser: jest.fn(),
@@ -20,10 +17,66 @@ describe("users service unit test", () => {
     const params = {
       name: "이름",
       email: "이메일",
-      password: "비밀번호",
-      pwConfirm: "비밀번호",
+      password: '123456',
+      pwConfirm: '123456',
       profileImg: null,
       role: "admin",
+    };
+
+    const result = {
+      id: 1,
+      classId: null,
+      name: "이름",
+      email: "이메일",
+      password: "$2b$10$JUdmCI4ZisaYdIMb4Gc7tubkfZZOTw8dGNcyahNArySGAl7gkGIby",
+      profileImg: null,
+      role: "ADMIN",
+    };
+
+
+    mockusersRepository.createUser.mockReturnValue(result);
+    
+
+    await expect(async () => {
+      await usersService.signUpUser();
+    }).rejects.toThrow("필수항목을 체크해주세요");
+
+    await expect(async () => {
+      await usersService.signUpUser(
+        params.name,
+        params.email,
+        params.password,
+        params.pwConfirm + "a",
+        params.profileImg,
+        params.role,
+      );
+    }).rejects.toThrow("비밀번호가 비밀번호 확인과 다릅니다.");
+
+    const createUser = await usersService.signUpUser(
+      params.name,
+      params.email,
+      params.password,
+      params.pwConfirm,
+      params.profileImg,
+      params.role,
+    );
+
+    expect(mockusersRepository.createUser).toHaveBeenCalledTimes(1);
+
+    expect(createUser).toEqual({
+      user: {
+        name: result.name,
+        email: result.email,
+        profileImg: result.profileImg,
+        role: result.role,
+      },
+    });
+  });
+
+  test("signInUser Method", async () => {
+    const params = {
+      email: "이메일",
+      password: "비밀번호",
     };
 
     const result = {
@@ -35,35 +88,22 @@ describe("users service unit test", () => {
       profileImg: null,
       role: "admin",
     };
-
-    const hashedPassword = "해쉬된 비밀번호";
-
-    mockusersRepository.createUser.mockReturnValue(result);
-
-    bcrypt.hash.mockReturnValue(hashedPassword);
+    // expect.any(String)
+    mockusersRepository.findUniqueUser.mockReturnValue(result);
 
     await expect(async () => {
-      await usersService.signUpUser({});
-    }).rejects.toThrow("필수항목을 체크해주세요");
+      await usersService.signInUser();
+    }).rejects.toThrow("필수 항목을 체크해주세요");
 
-    const createUser = await usersService.signUpUser(params);
 
-    expect(mockusersRepository.createUser).toHaveBeenCalledTimes(1);
-    expect(mockusersRepository.createUser).toHaveBeenCalledWith({
-      name: "이름",
-      email: "이메일",
-      password: hashedPassword,
-      profileImg: null,
-      role: "admin",
-    });
+    await expect(async () => {
+      await usersService.signInUser(params.email, params.password);
+    }).rejects.toThrow("비밀번호가 다릅니다.");
 
-    expect(createUser).toEqual({
-      user: {
-        name: result.name,
-        email: result.email,
-        profileImg: result.profileImg,
-        role: result.role,
-      },
-    });
+    expect(mockusersRepository.findUniqueUser).toHaveBeenCalledTimes(1);
+    expect(mockusersRepository.findUniqueUser).toHaveBeenCalledWith(
+      params.email,
+    );
+
   });
 });
