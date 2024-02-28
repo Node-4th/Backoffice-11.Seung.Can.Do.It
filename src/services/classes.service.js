@@ -8,7 +8,6 @@ export class ClassesService {
    * 3. 레파지토리 계층에 DB 사용 요청
    * 4. Return : 컨트롤러 계층에 전달할 데이터
    */
-
   // role 체크 메서드
   checkAdminRole = async (userId) => {
     const isAdmin = await this.classesRepository.getUserByUserId(userId);
@@ -20,7 +19,6 @@ export class ClassesService {
     }
     return isAdmin;
   };
-
   getClassByClassId = async (classId) => {
     const myClass = await this.classesRepository.getClassByClassId(classId);
     if (!classId) throw new Error("존재하지 않는 클래스입니다.");
@@ -37,8 +35,9 @@ export class ClassesService {
     if (isExistClassByName) {
       throw new Error("이미 존재하는 클래스명입니다.");
     }
+
     //레파지토리 계층에 클래스 생성 요청
-    const createdClass = await this.classesRepository.createClass(name);
+    const createdClass = await this.classesRepository.createClass(userId, name);
 
     //Return
     return createdClass;
@@ -47,7 +46,6 @@ export class ClassesService {
   updateClass = async (userId, classId, name) => {
     //Parameter - user.role이 admin인지 검증하기
     await this.checkAdminRole(userId);
-
     // 클래스 존재 확인
     await this.getClassByClassId(classId);
 
@@ -56,7 +54,6 @@ export class ClassesService {
       classId,
       name,
     );
-
     //Return
     return updatedClass;
   };

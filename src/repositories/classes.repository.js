@@ -10,7 +10,7 @@ export class ClassesRepository {
    */
   // 이거 문제있음 class 테이블에서 userId 삭제
   getUserByUserId = async (userId) => {
-    return await this.prisma.users.findFirst({
+    return await this.prisma.Users.findFirst({
       where: {
         id: +userId,
       },
@@ -36,12 +36,21 @@ export class ClassesRepository {
     });
   };
 
-  createClass = async (name) => {
-    return await this.prisma.class.create({
+  createClass = async (userId, name) => {
+    const newClass = await this.prisma.class.create({
       data: {
         name,
       },
     });
+    const user = await this.prisma.users.update({
+      where: {
+        id: +userId,
+      },
+      data: {
+        classId: +newClass.id,
+      },
+    });
+    return newClass;
   };
 
   updateClass = async (classId, name) => {

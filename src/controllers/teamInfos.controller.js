@@ -19,11 +19,9 @@ export class TeamInfosController {
         try {
             const { teamId } = req.params;
             const { teamName, groundRules, goals, content } = req.body;
-            const { userId } = req.user;
 
             await this.teamInfosService.findTeam(
-                teamId,
-                userId
+                teamId
             );
             await this.teamInfosService.createTeamInfos(
                 teamId,
@@ -44,12 +42,10 @@ export class TeamInfosController {
         try {
             const { teamInfoId } = req.params;
             const { teamName, groundRules, goals, content } = req.body;
-            const { userId } = req.user;
 
             const findTeamInfos = await this.teamInfosService.findTeamInfos(teamInfoId);
             await this.teamInfosService.findTeam(
-                findTeamInfos.teamId,
-                userId
+                findTeamInfos.teamId
             );
             const editTeamInfos = await this.teamInfosService.editTeamInfos(
                 teamInfoId,
@@ -69,12 +65,10 @@ export class TeamInfosController {
     deleteTeamInfos = async (req, res, next) => {
         try {
             const { teamInfoId } = req.params;
-            const { userId } = req.user;
 
             const findTeamInfos = await this.teamInfosService.findTeamInfos(teamInfoId);
             await this.teamInfosService.findTeam(
-                findTeamInfos.teamId,
-                userId
+                findTeamInfos.teamId
             );
             await this.teamInfosService.deleteTeamInfos(teamInfoId);
 
