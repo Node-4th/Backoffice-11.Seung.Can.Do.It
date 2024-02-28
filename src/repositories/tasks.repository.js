@@ -56,16 +56,25 @@ export class TasksRepository {
 
   updateTask = async (taskId, userId, content, submitUrl) => {
     const updateTask = await this.prisma.tasks.update({
-      where: { id: +taskId, userId },
-      content,
-      submitUrl,
+      where: { id: +taskId, userId: +userId },
+      data: { content, submitUrl },
     });
+    console.log("Aaa", updateTask);
     return updateTask;
   };
 
-  deleteTask = async (taskId, userId) => {
+  updateTeamTask = async (taskId, teamId, content, submitUrl) => {
+    const updateTask = await this.prisma.tasks.update({
+      where: { id: +taskId, teamId: +teamId },
+      data: { content, submitUrl },
+    });
+    console.log("Aaa", updateTask);
+    return updateTask;
+  };
+
+  deleteTask = async (taskId) => {
     const task = await this.prisma.tasks.delete({
-      where: { id: +taskId, userId },
+      where: { id: +taskId },
     });
     return task;
   };
