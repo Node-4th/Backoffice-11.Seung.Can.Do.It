@@ -6,7 +6,7 @@ export class TeamInfosRepository {
     findTeamInfos = async (teamInfoId) => {
         const teamInfo = await this.prisma.TeamInfos.findFirst({
             where: {
-                teamInfoId
+                id: +teamInfoId
             }
         });
 
@@ -16,7 +16,7 @@ export class TeamInfosRepository {
     findTeam = async (teamId) => {
         const team = await this.prisma.Teams.findFirst({
             where: {
-                teamId
+                id: +teamId
             }
         });
 
@@ -26,7 +26,7 @@ export class TeamInfosRepository {
     createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
         const teamInfo = await this.prisma.TeamInfos.create({
             data: {
-                teamId,
+                teamId: +teamId,
                 teamName,
                 groundRules,
                 goals,
@@ -40,7 +40,7 @@ export class TeamInfosRepository {
     editTeamInfos = async (teamInfoId, teamName, groundRules, goals, content) => {
         const teamInfo = await this.prisma.TeamInfos.update({
             where: {
-                teamInfoId
+                id: +teamInfoId
             },
             data: {
                 teamName,
@@ -56,7 +56,7 @@ export class TeamInfosRepository {
     deleteTeamInfos = async (teamInfoId) => {
         const teamInfo = await this.prisma.TeamInfos.delete({
             where: {
-                teamInfoId
+                id: +teamInfoId
             }
         });
 
