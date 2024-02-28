@@ -6,7 +6,7 @@ export class UsersService {
   }
 
   signUpUser = async (name, email, password, pwConfirm, profileImg, role,adminId) => {
-    if (!name || !email || !password || !pwConfirm || !role || !adminId) {
+    if (!name || !email || !password || !pwConfirm || !role) {
       throw new Error("필수항목을 체크해주세요");
     }
     if (password !== pwConfirm) {

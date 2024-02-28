@@ -1,8 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import { SpreadsheetService } from "../services/spread-sheet.service.js";
-import { EmailController } from "../controllers/email.controller.js";
-import { EmailService } from "../services/emailservice.service.js";
 import emailSender from "../utils/nodemailer.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
 
