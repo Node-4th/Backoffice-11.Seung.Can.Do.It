@@ -15,6 +15,7 @@ import tasksRouter from "./src/routes/tasks.router.js";
 import teamInfosRouter from "./src/routes/teamInfos.router.js";
 import eamilRouter from "./src/routes/emailservice.routes.js";
 import usersRouter from "./src/routes/users.routes.js";
+import notSumitUserRouter from "./src/routes/projects.routes.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -33,6 +34,8 @@ app.use("/feedbacks", feedbacksRouter);
 app.use("/teamInfos", teamInfosRouter);
 app.use("/api", eamilRouter);
 app.use("/tasks", tasksRouter);
+
+app.use("/projects", notSumitUserRouter);
 
 app.use(errorHandlerMiddleware);
 

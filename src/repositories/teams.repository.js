@@ -9,6 +9,15 @@ export class TeamsRepository {
       },
     });
   };
+
+  getProjectByProjectId = async (projectId) => {
+    return await this.prisma.projects.findUnique({
+      where: {
+        id: +projectId,
+      },
+    });
+  };
+
   getAllTeams = async (orderKey, orderValue) => {
     const teams = await this.prisma.teams.findMany({
       select: {
@@ -37,24 +46,34 @@ export class TeamsRepository {
       },
     });
   };
-  createTeam = async (name, projectId, memberList) => {
+  createTeam = async (projectId, name, memberList) => {
+    //memberList를 배열 형태로 변환
+    const members = Array.isArray(memberList)
+      ? memberList
+      : memberList.split(",").map((member) => member.trim());
+
     return await this.prisma.teams.create({
       data: {
-        name,
         projectId,
-        memberList,
+        name,
+        memberList: members,
       },
     });
   };
-  updateTeam = async (teamId, name, projectId, memberList) => {
+  updateTeam = async (teamId, projectId, name, memberList) => {
+    //memberList를 배열 형태로 변환
+    const members = Array.isArray(memberList)
+      ? memberList
+      : memberList.split(",").map((member) => member.trim());
+
     return await this.prisma.teams.update({
       where: {
         id: +teamId,
       },
       data: {
-        name,
         projectId,
-        memberList,
+        name,
+        memberList: members,
       },
     });
   };

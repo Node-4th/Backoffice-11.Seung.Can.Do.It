@@ -33,8 +33,8 @@ export class ClassesController {
     try {
       //Request
       const { id } = req.user;
-      const { name } = req.body;
       const userId = id;
+      const { name } = req.body;
 
       //유효성 검사
       if (!name) {

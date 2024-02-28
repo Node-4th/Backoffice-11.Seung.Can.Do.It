@@ -1,195 +1,199 @@
-import { test } from '@jest/globals';
-import { beforeEach } from '@jest/globals';
-import { expect } from '@jest/globals';
-import { jest } from '@jest/globals';
-import { FeedbacksRepository } from '../../../src/repositories/feedbacks.repository.js'
+import { test } from "@jest/globals";
+import { beforeEach } from "@jest/globals";
+import { expect } from "@jest/globals";
+import { jest } from "@jest/globals";
+import { FeedbacksRepository } from "../../../src/repositories/feedbacks.repository.js";
 
-describe('Feedback Repositoty Unit Test', () => {
-    let mockPrisma;
-    let feedbacksRepositoy;
+describe("Feedback Repositoty Unit Test", () => {
+  let mockPrisma;
+  let feedbacksRepositoy;
 
-    beforeEach(() => {
-        jest.resetAllMocks();
-        mockPrisma = {
-            Feedbacks: {
-                create: jest.fn(),
-                findMany: jest.fn(),
-                findFirst: jest.fn(),
-                update: jest.fn(),
-                delete: jest.fn()
-            },
-            Tasks: {
-                findFirst: jest.fn()
-            }
-        };
-        feedbacksRepositoy = new FeedbacksRepository(mockPrisma);
-    });
-    const feedback = {
-        feedbackId: 1,
-        taskId: 1,
-        title: 'test',
-        content: 'test',
-        userId: 1,
-        name: 'name',
-        rating: 'RATING_1',
-        status: 'SUBMIT_REQUESTED',
-        createdAt: '2024-02-05T06:44:59.380Z',
-        updatedAt: '2024-02-05T06:44:59.380Z'
+  beforeEach(() => {
+    jest.resetAllMocks();
+    mockPrisma = {
+      Feedbacks: {
+        create: jest.fn(),
+        findMany: jest.fn(),
+        findFirst: jest.fn(),
+        update: jest.fn(),
+        delete: jest.fn(),
+      },
+      Tasks: {
+        findFirst: jest.fn(),
+      },
     };
-    const feedbacks = [
-        {
-            feedbackId: 1,
-            taskId: 1,
-            title: 'test1',
-            content: 'test1',
-            userId: 1,
-            user: { name: 'name1' },
-            rating: 'RATING_1',
-            status: 'SUBMIT_REQUESTED',
-            createdAt: '2024-02-05T06:44:59.380Z',
-            updatedAt: '2024-02-05T06:44:59.380Z'
-        },
-        {
-            feedbackId: 2,
-            taskId: 1,
-            title: 'test2',
-            content: 'test2',
-            userId: 1,
-            user: { name: 'name2' },
-            rating: 'RATING_1',
-            status: 'SUBMIT_REQUESTED',
-            createdAt: '2024-02-05T06:44:59.380Z',
-            updatedAt: '2024-02-05T06:44:59.380Z'
-        }
-    ];
+    feedbacksRepositoy = new FeedbacksRepository(mockPrisma);
+  });
+  const feedback = {
+    feedbackId: 1,
+    taskId: 1,
+    title: "test",
+    content: "test",
+    userId: 1,
+    name: "name",
+    rating: "RATING_1",
+    status: "SUBMIT_REQUESTED",
+    createdAt: "2024-02-05T06:44:59.380Z",
+    updatedAt: "2024-02-05T06:44:59.380Z",
+  };
+  const feedbacks = [
+    {
+      feedbackId: 1,
+      taskId: 1,
+      title: "test1",
+      content: "test1",
+      userId: 1,
+      user: { name: "name1" },
+      rating: "RATING_1",
+      status: "SUBMIT_REQUESTED",
+      createdAt: "2024-02-05T06:44:59.380Z",
+      updatedAt: "2024-02-05T06:44:59.380Z",
+    },
+    {
+      feedbackId: 2,
+      taskId: 1,
+      title: "test2",
+      content: "test2",
+      userId: 1,
+      user: { name: "name2" },
+      rating: "RATING_1",
+      status: "SUBMIT_REQUESTED",
+      createdAt: "2024-02-05T06:44:59.380Z",
+      updatedAt: "2024-02-05T06:44:59.380Z",
+    },
+  ];
 
-    test('createFeedback, findFeedback Method', async () => {
-        const mockcreate = mockPrisma.Feedbacks.create.mockResolvedValue(feedback);
-        const mockfindFirst = mockPrisma.Feedbacks.findFirst.mockResolvedValue(feedback);
+  test("createFeedback, findFeedback Method", async () => {
+    const mockcreate = mockPrisma.Feedbacks.create.mockResolvedValue(feedback);
+    const mockfindFirst =
+      mockPrisma.Feedbacks.findFirst.mockResolvedValue(feedback);
 
-        const createFeedback = await feedbacksRepositoy.createFeedback(
-            feedback.taskId,
-            feedback.title,
-            feedback.content,
-            feedback.rating,
-            feedback.userId
-        );
+    const createFeedback = await feedbacksRepositoy.createFeedback(
+      feedback.taskId,
+      feedback.title,
+      feedback.content,
+      feedback.rating,
+      feedback.userId,
+    );
 
-        const findFeedback = await feedbacksRepositoy.findFeedback(
-            feedback.feedbackId
-        );
+    const findFeedback = await feedbacksRepositoy.findFeedback(
+      feedback.feedbackId,
+    );
 
-        expect(mockcreate).toHaveBeenCalledWith({
-            data: {
-                taskId: feedback.taskId,
-                title: feedback.title,
-                content: feedback.content,
-                rating: feedback.rating,
-                userId: feedback.userId
-            },
-            include: {
-              user: { select: { name: true } }
-            }
-        });
-        expect(mockfindFirst).toHaveBeenCalledWith({
-            where: {
-                id: feedback.feedbackId
-            },
-            include: {
-                user: { select: { name: true } }
-            }
-        });
-
-        expect(createFeedback).toEqual(feedback);
-        expect(findFeedback).toEqual(createFeedback);
+    expect(mockcreate).toHaveBeenCalledWith({
+      data: {
+        taskId: feedback.taskId,
+        title: feedback.title,
+        content: feedback.content,
+        rating: feedback.rating,
+        userId: feedback.userId,
+      },
+      include: {
+        user: { select: { name: true } },
+      },
+    });
+    expect(mockfindFirst).toHaveBeenCalledWith({
+      where: {
+        id: feedback.feedbackId,
+      },
+      include: {
+        user: { select: { name: true } },
+      },
     });
 
-    test('findAllFeedback Method', async () => {
-        const mockfindMany = mockPrisma.Feedbacks.findMany.mockResolvedValue(feedbacks);
+    expect(createFeedback).toEqual(feedback);
+    expect(findFeedback).toEqual(createFeedback);
+  });
 
-        const findAllFeedback = await feedbacksRepositoy.findAllFeedback(feedback.taskId);
+  test("findAllFeedback Method", async () => {
+    const mockfindMany =
+      mockPrisma.Feedbacks.findMany.mockResolvedValue(feedbacks);
 
-        expect(mockfindMany).toHaveBeenCalledWith({
-            where: {
-                taskId: feedback.taskId
-            },
-            include: {
-                user: { select: { name: true } }
-            }
-        });
+    const findAllFeedback = await feedbacksRepositoy.findAllFeedback(
+      feedback.taskId,
+    );
 
-        expect(findAllFeedback).toEqual(feedbacks);
-    })
-
-    test('findTask Method', async () => {
-        const task = {
-            taskId: 1,
-            userId: 1,
-            projectId: 1,
-            content: 'content',
-            submitUrl: 'submitUrl',
-            createdAt: '2024-02-05T06:44:59.380Z',
-            updatedAt: '2024-02-05T06:44:59.380Z',
-            status: 'SUBMIT_REQUESTED'
-        };
-
-        const mockfindFirst = mockPrisma.Tasks.findFirst.mockResolvedValue(task);
-
-        const findTask = await feedbacksRepositoy.findTask(feedback.taskId);
-
-        expect(mockfindFirst).toHaveBeenCalledWith({
-            where: {
-                id: feedback.taskId
-            },
-            include: {
-              users: { select: { name: true } },
-              teams: { select: { name: true } },
-              projects: { select: { title: true } }
-            }
-        });
-
-        expect(findTask).toEqual(task);
-    })
-
-    test('editFeedback Method', async () => {
-        const mockupdate = mockPrisma.Feedbacks.update.mockResolvedValue(feedback);
-
-        const editFeedback = await feedbacksRepositoy.editFeedback(
-            feedback.feedbackId,
-            feedback.title,
-            feedback.content,
-            feedback.rating,
-            feedback.userId
-        );
-
-        expect(mockupdate).toHaveBeenCalledWith({
-            where: {
-                id: feedback.feedbackId,
-                userId: feedback.userId
-            },
-            data: {
-                title: feedback.title,
-                content: feedback.content,
-                rating: feedback.rating
-            }
-        });
-        expect(editFeedback).toEqual(feedback);
+    expect(mockfindMany).toHaveBeenCalledWith({
+      where: {
+        taskId: feedback.taskId,
+      },
+      include: {
+        user: { select: { name: true } },
+      },
     });
 
-    test('deleteFeedback Method', async () => {
-        const mockdelete = mockPrisma.Feedbacks.delete.mockResolvedValue(feedback);
+    expect(findAllFeedback).toEqual(feedbacks);
+  });
 
-        const deleteFeedback = await feedbacksRepositoy.deleteFeedback(
-            feedback.feedbackId,
-            feedback.userId
-        );
+  test("findTask Method", async () => {
+    const task = {
+      taskId: 1,
+      userId: 1,
+      projectId: 1,
+      content: "content",
+      submitUrl: "submitUrl",
+      createdAt: "2024-02-05T06:44:59.380Z",
+      updatedAt: "2024-02-05T06:44:59.380Z",
+      status: "SUBMIT_REQUESTED",
+    };
 
-        expect(mockdelete).toHaveBeenCalledWith({
-            where: {
-                id: feedback.feedbackId,
-                userId: feedback.userId
-            }
-        });
-        expect(deleteFeedback).toEqual(feedback);
+    const mockfindFirst = mockPrisma.Tasks.findFirst.mockResolvedValue(task);
+
+    const findTask = await feedbacksRepositoy.findTask(feedback.taskId);
+
+    expect(mockfindFirst).toHaveBeenCalledWith({
+      where: {
+        id: feedback.taskId,
+      },
+      include: {
+        users: { select: { name: true } },
+        teams: { select: { name: true } },
+        projects: { select: { title: true } },
+      },
     });
+
+    expect(findTask).toEqual(task);
+  });
+
+  test("editFeedback Method", async () => {
+    const mockupdate = mockPrisma.Feedbacks.update.mockResolvedValue(feedback);
+
+    const editFeedback = await feedbacksRepositoy.editFeedback(
+      feedback.feedbackId,
+      feedback.title,
+      feedback.content,
+      feedback.rating,
+      feedback.userId,
+    );
+
+    expect(mockupdate).toHaveBeenCalledWith({
+      where: {
+        id: feedback.feedbackId,
+        userId: feedback.userId,
+      },
+      data: {
+        title: feedback.title,
+        content: feedback.content,
+        rating: feedback.rating,
+      },
+    });
+    expect(editFeedback).toEqual(feedback);
+  });
+
+  test("deleteFeedback Method", async () => {
+    const mockdelete = mockPrisma.Feedbacks.delete.mockResolvedValue(feedback);
+
+    const deleteFeedback = await feedbacksRepositoy.deleteFeedback(
+      feedback.feedbackId,
+      feedback.userId,
+    );
+
+    expect(mockdelete).toHaveBeenCalledWith({
+      where: {
+        id: feedback.feedbackId,
+        userId: feedback.userId,
+      },
+    });
+    expect(deleteFeedback).toEqual(feedback);
+  });
 });

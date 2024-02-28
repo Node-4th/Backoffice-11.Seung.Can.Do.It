@@ -18,7 +18,6 @@ export default async function (req, res, next) {
     const user = await prisma.users.findFirst({
       where: { id: +userId },
     });
-
     if (!user) throw new Error("토큰 사용자 없음!");
 
     req.user = user;
