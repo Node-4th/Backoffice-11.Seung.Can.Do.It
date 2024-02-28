@@ -5,25 +5,27 @@ export class UsersService {
     this.usersRepository = usersRepository;
   }
 
-  signUpUser = async (name, email, password, pwConfirm, profileImg, role) => {
-    if (!name || !email || !password || !pwConfirm || !role) {
+  signUpUser = async (name, email, password, pwConfirm, profileImg, role,adminId) => {
+    if (!name || !email || !password || !pwConfirm || !role || !adminId) {
       throw new Error("필수항목을 체크해주세요");
     }
     if (password !== pwConfirm) {
       throw new Error("비밀번호가 비밀번호 확인과 다릅니다.");
     }
+    let upperRole = role.toUpperCase();
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.usersRepository.createUser({
       name,
       email,
       password: hashedPassword,
       profileImg,
-      role,
+      role: upperRole,
+      adminId
     });
     if (!user) {
       throw new Error("회원가입에 실패했습니다.");
     }
-    return { user: { name, email, profileImg, role } };
+    return { user: { name, email, profileImg, role: user.role } };
   };
 
   signInUser = async (email, password) => {

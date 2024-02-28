@@ -2,6 +2,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middlewares/error-handler.Middleware.js";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
+
 dotenv.config();
 import methodOverride  from'method-override';
 
@@ -13,7 +15,7 @@ import teamsRouter from "./src/routes/teams.routes.js";
 import feedbacksRouter from "./src/routes/feedbacks.routes.js";
 import tasksRouter from "./src/routes/tasks.router.js";
 import teamInfosRouter from "./src/routes/teamInfos.router.js";
-import eamilRouter from "./src/routes/emailservice.routes.js";
+import emailRouter from "./src/routes/emailservice.routes.js";
 import usersRouter from "./src/routes/users.routes.js";
 import notSumitUserRouter from "./src/routes/projects.routes.js";
 
@@ -25,6 +27,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
+app.use(bodyParser.json());
 
 app.use("/users", usersRouter);
 app.use("/classes", classRoter);
@@ -32,7 +35,7 @@ app.use("/projects", projectRouter);
 app.use("/teams", teamsRouter);
 app.use("/feedbacks", feedbacksRouter);
 app.use("/teamInfos", teamInfosRouter);
-app.use("/api", eamilRouter);
+app.use("/send-emails", emailRouter);
 app.use("/tasks", tasksRouter);
 
 app.use("/projects", notSumitUserRouter);

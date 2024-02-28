@@ -3,17 +3,22 @@ import dotenv from "dotenv";
 import { SpreadsheetService } from "../services/spread-sheet.service.js";
 import { EmailController } from "../controllers/email.controller.js";
 import { EmailService } from "../services/emailservice.service.js";
+import emailSender from "../utils/nodemailer.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
 
 dotenv.config();
+
 const router = express.Router();
 
-const spreadsheetService = new SpreadsheetService(
-  process.env.CLIENT_EMAIL,
-  process.env.PRIVATE_KEY,
-);
-const emailService = new EmailService();
-const emailController = new EmailController(spreadsheetService, emailService);
+router.post("/",authMiddleware, async (req, res) => {
+  const {emails} = req.body;
+  const user = req.user;
 
-router.post("/send-emails", emailController.sendEmails);
+  const emailArray = Array.isArray(emails) ? emails : [emails];
+
+  await emailSender(emailArray,user.id);
+
+  return res.status(200).json({ message: "이메일 발송 완료" });
+});
 
 export default router;
