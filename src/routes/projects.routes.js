@@ -29,22 +29,41 @@ router.post("/", authMiddleware, projectsController.createProject);
 router.put("/:projectId", authMiddleware, projectsController.updateProject);
 router.delete("/:projectId", authMiddleware, projectsController.deleteProject);
 
-router.post(
-  "/submit/slack",
-  authMiddleware,
-  projectsController.notSubmitUserSendSlack,
-  async (req, res, next) => {
-    try {
-      const text = req.notSubmitUsers;
-      let nameArr = text.map((item) => item.name);
-      let resultString = nameArr.join(", ");
-      console.log("resultString: ", resultString);
-      await slackSender(resultString);
-      return res.status(200).json({ message: "슬랙으로 메세지 발송완료" });
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+// router.post(
+//   "/submit/slack",
+//   authMiddleware,
+//   projectsController.notSubmitUserSendSlack,
+//   async (req, res, next) => {
+//     try {
+//       const text = req.notSubmitUsers;
+//       let nameArr = text.map((item) => item.name);
+//       let resultString = nameArr.join(", ");
+//       console.log("resultString: ", resultString);
+//       await slackSender(resultString);
+//       return res.status(200).json({ message: "슬랙으로 메세지 발송완료" });
+//     } catch (error) {
+//       next(error);
+//     }
+//   },
+// );
+
+router.post("/submit/slack", async (req, res, next) => {
+  try {
+    const { category, start, end, classId } = req.body;
+    const notSubmitUsers = await projectsRepository.getAllNotSubmitUser(
+      category,
+      start,
+      end,
+      classId,
+    );
+    const text = notSubmitUsers;
+    let nameArr = text.map((item) => item.name);
+    let resultString = nameArr.join(", ");
+    await slackSender(resultString);
+    return res.status(200).json({ message: "슬랙으로 메세지 발송완료" });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;

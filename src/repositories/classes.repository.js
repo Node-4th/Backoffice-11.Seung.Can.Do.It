@@ -45,6 +45,7 @@ export class ClassesRepository {
         classId: true,
       },
     });
+
     if (!hasClassUser.classId) {
       const newClass = await this.prisma.class.create({
         data: {
@@ -59,6 +60,7 @@ export class ClassesRepository {
           classId: +newClass.id,
         },
       });
+
       return newClass;
     } else {
       return null;
