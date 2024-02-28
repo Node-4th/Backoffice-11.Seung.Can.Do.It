@@ -100,17 +100,22 @@ app.get("/admins/til", async (req, res, next) => {
 });
 
 ////////////////////////////////
-// const job = schedule.scheduleJob("*/5 * * * * *", async () => {
-//   const response = await axios.post(
-//     "http://localhost:3000/projects/submit/slack",
-//     {
-//       category: "PERSONAL_PROJECT",
-//       start: "2024-02-02T15:00:00.000Z",
-//       end: "2024-02-29T15:00:00.000Z",
-//       classId: 1,
-//     },
-//   );
-// });
+const rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(1, 5)];
+rule.hour = [9, 12, 21];
+rule.minute = 0;
+rule.tz = "Asia/Seoul";
+const job = schedule.scheduleJob(rule, async () => {
+  const response = await axios.post(
+    "http://localhost:3000/projects/submit/slack",
+    {
+      category: "PERSONAL_PROJECT",
+      start: "2024-02-02T15:00:00.000Z",
+      end: "2024-02-29T15:00:00.000Z",
+      classId: 1,
+    },
+  );
+});
 
 app.listen(PORT, () => {
   console.log(PORT, "번 포트로 서버가 열렸어요! http://localhost:3000/");
