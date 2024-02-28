@@ -77,8 +77,8 @@ a {
 .move {
   padding: 8px;
 
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 60px;
+  margin-right: 60px;
 }
 
 .cates {
@@ -150,9 +150,11 @@ a {
 .boxs {
   border: 1px solid black;
   height: 560px;
+  width: 80%;
 
   display: flex;
 
+  margin-left: 10%;
   margin-top: 100px;
 }
 
@@ -182,7 +184,7 @@ a {
 
 .task {
   width: 60%;
-  height: 100px;
+  height: 200px;
 
   border: 1px solid black;
 
@@ -215,11 +217,23 @@ a {
 }
 
 .submitbtn {
+  position: relative;
   padding: 15px;
   width: 150px;
   height: 50px;
 
-  margin-left: 80%;
+  left: 80%;
+  bottom: 80px;
+}
+
+.createTeamInfo {
+  position: relative;
+  padding: 15px;
+  width: 150px;
+  height: 50px;
+
+  left: 78%;
+  bottom: 80px;
 }
 
 .submitinput {
@@ -231,6 +245,16 @@ a {
 
 .submitBtn {
   margin-top: 100px;
+}
+
+.taskbtn {
+  padding: 10px;
+  width: 120px;
+  height: 40px;
+
+  position: relative;
+  bottom: 150px;
+  left: 42%;
 }
 
 .result {
@@ -251,4 +275,16 @@ a {
   margin-right: 10%;
 
   padding: 30px;
+}
+
+.team_input {
+  margin-left: 50px;
+
+  height: 60%;
+  width: 80%;
+}
+
+.main_title {
+  text-align: center;
+  margin-top: 100px;
 }

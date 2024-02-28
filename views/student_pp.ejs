@@ -1,8 +1,11 @@
 <body>
-    <%- include('header.ejs') %>
+    <%- include('student_header.ejs') %>
 
+    <h1 class="main_title">개인과제</h1>
         <div class="tasks">
-            <a href="/tasks/:taskId" ><div class="task">노드 숙련 주차</div></a>
+            <div class="task"><a href="/tasks/:taskId" >노드 숙련 주차</a></div>
+            <a href="/students/submit"><button class="taskbtn">과제 제출하기</button></a>
+            <a href="/students/feedback"><button class="taskbtn">피드백 확인하기</button></a>
             <a href="/til/students" ><div class="task">노드 숙련 주차</div></a>
         </div>
 

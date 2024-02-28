@@ -16,7 +16,6 @@ import teamInfosRouter from "./src/routes/teamInfos.router.js";
 import eamilRouter from "./src/routes/emailservice.routes.js";
 import usersRouter from "./src/routes/users.routes.js";
 
-
 const app = express();
 const PORT = process.env.PORT;
 
@@ -48,7 +47,7 @@ app.get('/signin', async (req, res, next) => {
 });
 
 // student
-app.get('/main/students', async (req, res, next) => {
+app.get('/students/main', async (req, res, next) => {
   res.render('student_main.ejs');
 });
 
@@ -60,12 +59,25 @@ app.get('/students/personal_project', async (req, res, next) => {
   res.render('student_pp.ejs');
 });
 
+// ------------------------------------------------
 app.get('/students/team_Infos', async (req, res, next) => {
   res.render('student_teamInfos.ejs');
-});
+}); 
 
 app.get('/students/submit', async (req, res, next) => {
   res.render('student_submit.ejs');
+});
+
+app.get('/students/createteamInfo', async (req, res, next) => {
+  res.render('student_teamInfos_create.ejs');
+});
+
+app.get('/students/team', async (req, res, next) => {
+  res.render('student_team.ejs');
+});
+
+app.get('/students/feedback', async (req, res, next) => {
+  res.render('student_feedback.ejs');
 });
 
 // admin
