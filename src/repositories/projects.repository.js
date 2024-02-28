@@ -98,21 +98,23 @@ export class ProjectsRepository {
     });
   };
 
-  getProjectInfos = async (category, start, end) => {
-    return await this.prisma.projects.findFirst({
+  // getProjectInfos = async (category, start, end) => {
+  //   return await this.prisma.projects.findFirst({
+  //     where: {
+  //       category,
+  //       start,
+  //       end,
+  //     },
+  //   });
+  // };
+
+  getAllNotSubmitUser = async (category, start, end, classId) => {
+    // projectId로 프로젝트 정보 조회
+    const project = await this.prisma.projects.findFirst({
       where: {
         category,
         start,
         end,
-      },
-    });
-  };
-
-  getAllNotSubmitUser = async (classId, projectId) => {
-    // projectId로 프로젝트 정보 조회
-    const project = await this.prisma.projects.findFirst({
-      where: {
-        id: projectId,
       },
     });
 
@@ -122,7 +124,7 @@ export class ProjectsRepository {
     // projectId에 해당하는 Tasks 테이블에서 userId 조회한 결과
     const tasks = await this.prisma.tasks.findMany({
       where: {
-        projectId,
+        id: +project.id,
       },
       select: {
         userId: true, //taskId가 아닌 userId
@@ -153,9 +155,49 @@ export class ProjectsRepository {
         classId: true,
         id: true,
         name: true,
+        email: true,
       },
     });
 
     return notSubmitUsers;
+  };
+
+  getAllNotSubmitTeams = async (category, start, end, classId) => {
+    const project = await this.prisma.projects.findFirst({
+      where: {
+        category,
+        start,
+        end,
+      },
+    });
+
+    if (!project) return [];
+
+    const tasks = await this.prisma.tasks.findMany({
+      where: {
+        projectId: +project.id,
+      },
+      select: {
+        teamId: true,
+      },
+    });
+
+    const teamIdLists = tasks.map((task) => task.teamId);
+    console.log("레포tasks", tasks);
+    console.log("레포teamIdLists", teamIdLists);
+
+    // teamIdLists Console.log
+    console.log("Repository - 프로젝트 참가 팀 List:", teamIdLists);
+
+    const notSubmitTeams = await this.prisma.teams.findMany({
+      where: {
+        projectId: +project.id,
+        id: {
+          notIn: teamIdLists, // Teams-teamId - Tasks-userLists-userId = 미제출자 목록
+        },
+      },
+    });
+
+    return notSubmitTeams;
   };
 }

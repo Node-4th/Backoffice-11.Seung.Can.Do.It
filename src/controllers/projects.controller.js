@@ -146,6 +146,7 @@ export class ProjectsController {
           message: "조회할 프로젝트 유형을 입력해주세요.",
         });
       }
+
       if (!start || !end) {
         return res.status(400).json({
           message:
