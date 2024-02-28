@@ -25,5 +25,8 @@ router.get(
 router.post("/", authMiddleware, projectsController.createProject);
 router.put("/:projectId", authMiddleware, projectsController.updateProject);
 router.delete("/:projectId", authMiddleware, projectsController.deleteProject);
+router.get('/submit/email',authMiddleware , async ()=>{
+
+})
 
 export default router;

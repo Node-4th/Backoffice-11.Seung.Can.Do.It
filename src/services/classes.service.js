@@ -37,11 +37,7 @@ export class ClassesService {
     }
 
     //레파지토리 계층에 클래스 생성 요청
-<<<<<<< HEAD
-    const createdClass = await this.classesRepository.createClass(name);
-=======
     const createdClass = await this.classesRepository.createClass(userId, name);
->>>>>>> 512500e68dbfc0286a7d6914b7bb750d9d40a6b9
 
     //Return
     return createdClass;
