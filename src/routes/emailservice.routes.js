@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+
 import emailSender from "../utils/nodemailer.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
 
@@ -7,6 +8,7 @@ dotenv.config();
 
 const router = express.Router();
 
+// 회원가입 초대 메일 보내기
 router.post("/", authMiddleware, async (req, res) => {
   const { emails } = req.body;
   const user = req.user;

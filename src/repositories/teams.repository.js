@@ -54,8 +54,8 @@ export class TeamsRepository {
 
     return await this.prisma.teams.create({
       data: {
-        projectId,
         name,
+        projectId,
         memberList: members,
       },
     });
