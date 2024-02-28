@@ -98,17 +98,18 @@ export class ProjectsRepository {
     });
   };
 
-  getSubmitUser = async (category, start) => {
+  getProjectInfos = async (category, start, end) => {
     return await this.prisma.projects.findFirst({
       where: {
         category,
         start,
+        end,
       },
     });
   };
 
   getAllNotSubmitUser = async (classId, projectId) => {
-    // Projects 테이블을 통해 categoryId와 start date에 해당하는 projectId를 찾습니다.
+    // projectId로 프로젝트 정보 조회
     const project = await this.prisma.projects.findFirst({
       where: {
         id: projectId,
@@ -118,28 +119,38 @@ export class ProjectsRepository {
     // 만약 해당하는 projectId가 없다면 빈 배열을 반환합니다.
     if (!project) return [];
 
-    // Tasks 테이블에서 projectId에 해당하는 task들을 찾습니다.
+    // projectId에 해당하는 Tasks 테이블에서 userId 조회한 결과
     const tasks = await this.prisma.tasks.findMany({
       where: {
         projectId,
       },
       select: {
-        userId: true, // taskId 대신 userId를 선택합니다.
+        userId: true, //taskId가 아닌 userId
       },
     });
 
-    // Task들의 userId 목록을 배열로 만듭니다.
-    const userIds = tasks.map((task) => task.userId);
-    console.log("-----ㄹㄷㄹㄹㄷㄹㄷ", userIds);
-    // 해당 projectId에 해당하는 task를 수행하지 않은 유저들을 찾습니다.
+    // 순회하면서 배열 형태로 프로젝트 참가인원의 전체 목록을 생성
+    const userIdLists = tasks.map((task) => task.userId);
+
+    // userIdLists Console.log
+    console.log("Repository - 프로젝트 참가자 List:", userIdLists);
+
+    /** 미제출자 목록 추출
+     * 1. Users 테이블을 조회해서 classId가 있지만,
+     * 2. Tasks 테이블에서 조회한 userIdLists 배열과 비교해서
+     * 3. tasks.userId가 없는 사람은 과제를 미제출한 사람이기 때문에
+     * 4. notIn으로 userIdLists를 제외시키고,
+     * 5. Users 테이블에 있는 userId와 name을 조회해서 반환
+     */
     const notSubmitUsers = await this.prisma.users.findMany({
       where: {
         classId,
         id: {
-          notIn: userIds, // taskId가 아닌 userId를 비교합니다.
+          notIn: userIdLists, // Users-userId - Tasks-userLists-userId = 미제출자 목록
         },
       },
       select: {
+        classId: true,
         id: true,
         name: true,
       },
@@ -147,18 +158,4 @@ export class ProjectsRepository {
 
     return notSubmitUsers;
   };
-  // getAllNotSubmitUser = async (classId, projectId) => {
-  //   return await this.prisma.users.findMany({
-  //     where: {
-  //       classId,
-  //       tasks: {
-  //         projectId,
-  //       },
-  //     },
-  //     select: {
-  //       id: true,
-  //       name: true,
-  //     },
-  //   });
-  // };
 }

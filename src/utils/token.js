@@ -6,7 +6,7 @@ dotenv.config();
 export function createAccessToken(id) {
   try {
     const accessToken = jwt.sign({ id }, process.env.CUSTOM_SECRET_KEY, {
-      expiresIn: "15m",
+      expiresIn: "1d",
     });
     return accessToken;
   } catch (error) {

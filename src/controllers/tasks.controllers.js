@@ -6,7 +6,7 @@ export class TasksController {
     try {
       const projectId = req.params.projectId;
       const user = req.user;
-      console.log(user);
+
       const { content, submitUrl } = req.body;
       if (!content || !submitUrl) throw new Error("필수값을 입력해주세요.");
       const teamId = req.query.teamId;

@@ -131,31 +131,53 @@ export class ProjectsController {
     }
   };
 
+  // Task 미제출자 목록 조회 API
   getAllNotSubmitUser = async (req, res, next) => {
     try {
+      //Request
       const { id } = req.user;
       const userId = id;
-      console.log("----------1-----------", userId);
-      const { category, start } = req.body;
+      const { category, start, end } = req.body;
 
-      // const userId = req.user.id;
-      console.log("User ID:", id);
-      console.log("Category:", category);
-      console.log("Start:---------여기까지 컨트롤러", start);
+      //유효성 검사
+      if (!category) {
+        return res.status(400).json({
+          success: false,
+          message: "조회할 프로젝트 유형을 입력해주세요.",
+        });
+      }
+      if (!start || !end) {
+        return res.status(400).json({
+          message:
+            "발제한 날짜(시작일) 혹은 제출 마감일(종료일)을 입력해주세요.",
+        });
+      }
+
+      //Request Console.log
+      console.log("Controller - User ID:", id);
+      console.log("Controller - Category:", category);
+      console.log("Controller - Start:", start);
+      console.log("Controller - End:", end);
+
+      //서비스 계층에 조회 요청
       const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
-        id,
+        userId,
         category,
         start,
+        end,
       );
-      console.log("이제 정말 끝임:", notSubmitUsers);
+
+      //Response
+      console.log("Response 미제출자 목록 조회 성공:", notSubmitUsers);
+
       res.status(200).json({
         success: true,
-        message: "미제출자 인간들을 성공적으로 가려냈습니다.",
+        message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
         data: notSubmitUsers,
       });
     } catch (error) {
-      console.error("Error in getAllNotSubmitUser:", error);
-      res.status(400).json({ message: "컨트롤러에서 터짐" });
+      console.error("미제출자 목록 조회 실패:", error);
+      next(error);
     }
   };
 }

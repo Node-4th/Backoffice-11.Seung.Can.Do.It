@@ -49,11 +49,6 @@ export class ProjectsService {
       end,
     );
 
-    // 프로젝트 생성 로그 기록
-    // console.log(
-    //   `${user.userId}번 관리자가 "${createdProject.title}" 프로젝트를 생성하였습니다.`,
-    // );
-
     //Return
     return createdProject;
   };
@@ -79,11 +74,6 @@ export class ProjectsService {
       end,
     );
 
-    // 프로젝트 수정 로그 기록
-    // console.log(
-    //   `${user.userId}번 관리자가 "${isExistProjectByProjectId.title}"에서 "${updateProject.title}"으로 프로젝트명을 수정하였습니다.`,
-    // );
-
     //Return
     return updatedProject;
   };
@@ -102,29 +92,38 @@ export class ProjectsService {
     }
     //레파지토리 계층에 프로젝트 삭제 요청
     return await this.projectsRepository.deleteProject(projectId);
-
-    // 프로젝트 삭제 로그 기록
-    // console.log(
-    //   `${user.userId}번 관리자가 "${isExistProjectByProjectId.title}" 프로젝트를 삭제하였습니다.`,
-    // );
   };
 
-  getAllNotSubmitUser = async (userId, category, start) => {
-    if (!userId || !category || !start) throw new Error("서비스에서 값 걸림");
+  getAllNotSubmitUser = async (userId, category, start, end) => {
+    //Parameter Console.log
+    console.log("Service - User ID:", userId);
 
-    console.log("------여기서 유저아이디", userId);
+    //관리자인지 검증
     const isAdmin = await this.checkAdminRole(userId);
-    console.log("-------여기서 isAdmin", isAdmin);
-    const startAndCategory = await this.projectsRepository.getSubmitUser(
+    console.log("Service - isAdmin", isAdmin);
+
+    // 검색 조건으로 입력한 프로젝트 정보 조회 요청
+    const projectInfos = await this.projectsRepository.getProjectInfos(
       category,
       start,
+      end,
     );
-    console.log("-------여기 스타트", startAndCategory);
-    console.log("_______isAdmin.classId:", isAdmin.classId); //1
-    console.log("_______startAndCategory.id", startAndCategory.id); //2
+    console.log(
+      "Service - 검색 조건(카테고리, 시작일, 종료일) 조회 성공",
+      projectInfos,
+    );
+
+    // 위의 절차에서 함께 가져온 classId와 projectId
+    console.log("Service - isAdmin.classId:", isAdmin.classId); //1
+    console.log("Service - projectInfos.id", projectInfos.id); //2
+
+    // classId -> userId : 노드4기교육과정(class)에 소속된 User가 누구인지를 찾기 위함.
+
+    // projectId -> taskId :발제한 특정 프로젝트(TIL, 개인과제, 팀과제)에 소속된 Tasks가 제출/미제출 되었는지 찾기 위함.
+
     const notSubmitUsers = await this.projectsRepository.getAllNotSubmitUser(
-      isAdmin.classId,
-      startAndCategory.id,
+      isAdmin.classId, //classId
+      projectInfos.id, //projectId
     );
 
     return notSubmitUsers;
