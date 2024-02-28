@@ -1,0 +1,23 @@
+[
+  {
+    "id": 3,
+    "title": "node.js 3주차 심화(수정)",
+    "category": "PERSONAL_PROJECT",
+    "deadline": "2024-02-02T15:00:00.000Z",
+    "createdAt": "2024-02-26T16:10:44.015Z"
+  },
+  {
+    "id": 2,
+    "title": "node.js 2주차 숙련",
+    "category": "PERSONAL_PROJECT",
+    "deadline": "2024-02-01T15:00:00.000Z",
+    "createdAt": "2024-02-26T16:10:34.925Z"
+  },
+  {
+    "id": 1,
+    "title": "node.js 1주차 입문",
+    "category": "PERSONAL_PROJECT",
+    "deadline": "2024-02-01T15:00:00.000Z",
+    "createdAt": "2024-02-26T16:10:34.925Z"
+  }
+]

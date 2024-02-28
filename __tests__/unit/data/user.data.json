@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "classId": null,
+    "email": "이메일",
+    "password": "해쉬된 비밀번호",
+    "name": "이름",
+    "profileImage": null,
+    "role": "ADMIN"
+  },
+  {
+    "id": 2,
+    "classId": null,
+    "email": "이메일",
+    "password": "해쉬된 비밀번호",
+    "name": "이름",
+    "profileImage": null,
+    "role": "TUTOR"
+  }
+]

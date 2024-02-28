@@ -33,8 +33,8 @@ export class ClassesController {
     try {
       //Request
       const { id } = req.user;
-      const { name } = req.body;
       const userId = id;
+      const { name } = req.body;
 
       //유효성 검사
       if (!name) {
@@ -56,16 +56,15 @@ export class ClassesController {
 
   updateClass = async (req, res, next) => {
     try {
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { classId } = req.params;
       const { name } = req.body;
 
-      if (!name) {
-        throw new Error("클래스명은 필수 입력 항목입니다.");
-      }
+      if (!name) throw new Error("클래스명은 필수 입력 항목입니다.");
 
       const updatedClass = await this.classesService.updateClass(
-        user,
+        userId,
         classId,
         name,
       );
@@ -82,10 +81,11 @@ export class ClassesController {
 
   deleteClass = async (req, res, next) => {
     try {
-      const user = req.user;
+      const { id } = req.user;
+      const userId = id;
       const { classId } = req.params;
 
-      await this.classesService.deleteClass(user, classId);
+      await this.classesService.deleteClass(userId, classId);
 
       res.status(200).json({
         success: true,

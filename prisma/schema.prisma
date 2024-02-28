@@ -15,10 +15,9 @@ model Users {
   name         String      @map("name") @db.VarChar(255)
   profileImage String?     @map("profileImage") @db.VarChar(255)
   role         Role
-  class        Class?      @relation(fields: [classId], references: [id], onDelete: Cascade)
-  teams        Teams[]
-  tasks        Tasks[]
   feedbacks    Feedbacks[]
+  tasks        Tasks[]
+  class        Class?      @relation(fields: [classId], references: [id], onDelete: Cascade)
 
   @@map("Users")
 }
@@ -32,14 +31,13 @@ model Class {
 }
 
 model Teams {
-  id        Int         @id @default(autoincrement()) @map("teamId")
-  userId    Int         @map("userId")
-  projectId Int         @map("projectId")
-  name      String      @map("name") @db.VarChar(255)
-  tasks     Tasks[]
-  users     Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  projects  Projects    @relation(fields: [projectId], references: [id])
-  TeamInfos TeamInfos[]
+  id         Int         @id @default(autoincrement()) @map("teamId")
+  name       String      @map("name") @db.VarChar(255)
+  projectId  Int         @map("projectId")
+  memberList Json        @map("memberList")
+  tasks      Tasks[]
+  projects   Projects    @relation(fields: [projectId], references: [id])
+  TeamInfos  TeamInfos[]
 
   @@map("Teams")
 }
@@ -61,7 +59,8 @@ model TeamInfos {
 model Projects {
   id        Int      @id @default(autoincrement()) @map("projectId")
   title     String   @map("title") @db.VarChar(255)
-  deadline  DateTime @map("deadline")
+  start     DateTime @map("start")
+  end       DateTime @map("end")
   createdAt DateTime @default(now()) @map("createdAt")
   category  Category
   tasks     Tasks[]
@@ -79,10 +78,10 @@ model Tasks {
   submitUrl String      @map("submitUrl") @db.VarChar(255)
   createdAt DateTime    @default(now()) @map("createdAt")
   updatedAt DateTime    @updatedAt @map("updatedAt")
-  users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  projects  Projects    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   Feedbacks Feedbacks[]
+  projects  Projects    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teams     Teams?      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  users     Users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("Tasks")
 }

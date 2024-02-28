@@ -72,6 +72,8 @@
 - 개인 프로젝트 생성(발제)
 - 팀 프로젝트 생성(발제)
 
+-------<02.26>
+
 [카테고리] 제출 현황 조회(어드민)
 
 - 요일별 TIL 미제출자
@@ -98,3 +100,37 @@
 - Student의 역할은, 배정받은 팀과 팀원 정보 확인(조회) -> 팀소개 페이지 등록/수정 -> 제출 -> 완료상태 확인
 - Tutor의 역할은, 모든 팀과 팀원 정보 확인(조회) -> 피드백(리뷰)을 작성/수정/삭제 -> 제출 -> 완료상태 확인
 - 삭제는 ADMIN만 가능해야하겠다.
+
+프로젝트 category -> til / 개인 / 팀
+
+1. classId 가진 유저 목록을 조회한다.
+2. tasks 테이블에서 projectId를 통해서 Project 테이블의 category=TIL and endDate=27일인 조건에 해당하는 userId-> tasks 목록을 조회한다.
+3. tasks <> users 교집합이 되는 userId가 있고, outerJoin느낌으로 tasks 테이블과 관계가없는(제출이력이없는) userId들을 조회하면, 이 인간들이 미제출자 목록이다.
+
+수강생 이름 전체 목록 조회
+
+- 과제 제출 -> tasksId 생성
+- tasksId가 없는 애들이 미제출자
+
+tasksId가 없는 userId들을 조회 -> 50명
+27일에 제출안한 사람 -> 10명
+메일 발송하기 -> 제출 요청 보내기
+
+select name from users u, tasks t, projects p
+where u.userId = t.userId
+and t.projectId = p.projectId
+and p.category = "TIL"
+
+projectId - catgegory - til - tasksId X and p.end = 02.27
+
+제출을 하면? 표처럼 표시
+
+어제자 createdAt 을 find하면, greater than prisma연산자
+join을 2번한다. select category(til) -> select ->
+
+user - project를 join한 다음 없는 유저를
+
+-> 제출현황 조회
+TIL2 TIL3 TIL4 TIL5 TIL6 TIL7  
+ 1 이경복 O X X X X X
+2
