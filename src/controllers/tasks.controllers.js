@@ -6,7 +6,6 @@ export class TasksController {
     try {
       const projectId = req.params.projectId;
       const user = req.user;
-
       const { content, submitUrl } = req.body;
       if (!content || !submitUrl) throw new Error("필수값을 입력해주세요.");
       const teamId = req.query.teamId;
@@ -48,7 +47,6 @@ export class TasksController {
   findTask = async (req, res, next) => {
     try {
       const taskId = req.params.taskId;
-
       const findTask = await this.tasksService.findTask(taskId);
       return res.status(201).json({
         success: true,
@@ -64,6 +62,7 @@ export class TasksController {
     try {
       const taskId = req.params.taskId;
       const user = req.user;
+      const teamId = req.query.teamId;
       const findTask = await this.tasksService.findTask(taskId);
       const { content, submitUrl } = req.body;
       if (!content || !submitUrl) throw new Error("필수값을 입력해주세요.");
@@ -71,13 +70,15 @@ export class TasksController {
         taskId,
         user.id,
         findTask.userId,
+        teamId,
+        findTask.teamId,
         content,
         submitUrl,
       );
       return res.status(201).json({
         success: true,
-        message: "성공적으로 조회하였습니다.",
-        editTask,
+        message: "성공적으로 수정하였습니다.",
+        updateTask,
       });
     } catch (err) {
       next(err);
@@ -88,18 +89,19 @@ export class TasksController {
     try {
       const taskId = req.params.taskId;
       const user = req.user;
-
+      const teamId = req.query.teamId;
       const findTask = await this.tasksService.findTask(taskId);
-
-      const deleteTask = await this.tasksService.deleteTask(
+      await this.tasksService.deleteTask(
         taskId,
         user.id,
+        teamId,
+        user.role,
         findTask.userId,
+        findTask.teamId,
       );
-      return res.status(204).json({
-        success: true,
-        message: "성공적으로 삭제하였습니다.",
-      });
+      return res
+        .status(200)
+        .json({ success: "true", message: "성공적으로 삭제했습니다." });
     } catch (err) {
       next(err);
     }

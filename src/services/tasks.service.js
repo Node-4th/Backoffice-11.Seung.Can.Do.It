@@ -55,27 +55,61 @@ export class TasksService {
     return task;
   };
 
-  updateTask = async (taskId, userId, taskUserId, content, submitUrl) => {
-    if (userId !== taskUserId) {
-      throw new Error("과제를 삭제할 권한이 없습니다.");
+  updateTask = async (
+    taskId,
+    userId,
+    taskUserId,
+    teamId,
+    taskTeamId,
+    content,
+    submitUrl,
+  ) => {
+    if (teamId === undefined) {
+      if (userId !== taskUserId) {
+        throw new Error("과제를 수정할 권한이 없습니다.");
+      }
+      const updateTask = await this.tasksRepository.updateTask(
+        taskId,
+        userId,
+        content,
+        submitUrl,
+      );
+      return updateTask;
+    } else {
+      if (+teamId !== taskTeamId) {
+        throw new Error("과제를 수정할 권한이 없습니다.");
+      }
+      const updateTask = await this.tasksRepository.updateTeamTask(
+        taskId,
+        teamId,
+        content,
+        submitUrl,
+      );
+      return updateTask;
     }
-
-    const updateTask = await this.tasksRepository.updateTask(
-      taskId,
-      userId,
-      content,
-      submitUrl,
-    );
-
-    return updateTask;
   };
 
-  deleteTask = async (taskId, userId, taskUserId) => {
-    if (userId !== taskUserId) {
-      throw new Error("과제를 삭제할 권한이 없습니다.");
+  deleteTask = async (
+    taskId,
+    userId,
+    teamId,
+    userRole,
+    taskUserId,
+    taskTeamId,
+  ) => {
+    if (userRole !== "ADMIN") {
+      if (teamId === undefined) {
+        if (userId !== taskUserId) {
+          throw new Error("과제를 삭제할 권한이 없습니다.");
+        }
+      } else {
+        if (+teamId !== taskTeamId) {
+          throw new Error("과제를 삭제할 권한이 없습니다.");
+        }
+      }
     }
 
-    const task = await this.tasksRepository.deleteTask(taskId, userId);
+    const task = await this.tasksRepository.deleteTask(taskId);
 
     return task;
   };
