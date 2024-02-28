@@ -44,9 +44,10 @@ export class FeedbacksController {
         rating,
         userId
       );
-      // await this.feedbackMessage.feedbackSlack(feedback, task);
+      await this.feedbackMessage.feedbackSlack(feedback, task);
 
       return res.status(201).json({ success: 'true', message: '피드백을 작성하였습니다.' });
+
     } catch (err) {
       next(err);
     }

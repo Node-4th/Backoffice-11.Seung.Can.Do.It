@@ -34,8 +34,8 @@ export class TeamsService {
 
     //레파지토리 계층에 클래스 생성 요청
     const createdTeam = await this.teamsRepository.createTeam(
-      projectId,
       name,
+      projectId,
       memberList,
     );
     //Return
