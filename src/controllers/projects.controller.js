@@ -28,7 +28,7 @@ export class ProjectsController {
         tasks[0].map((task) => {
           if (task.projectId === project.id) {
             if (task.userId === req.user.id) {
-              project.Status = '제출완료';
+              project.Status = "제출완료";
               return project;
             }
           }
@@ -41,29 +41,29 @@ export class ProjectsController {
       // return res.json({ success: true, data: projects });
       // return res.render('admin_projects.ejs', { projects: projects });
       switch (role) {
-        case 'ADMIN':
-          res.render('admin_projects.ejs', { projects });
+        case "ADMIN":
+          res.render("admin_projects.ejs", { projects });
           break;
-        case 'STUDENT':
+        case "STUDENT":
           switch (category) {
-            case 'TIL':
-              res.render('student_til.ejs', { projects });
+            case "TIL":
+              res.render("student_til.ejs", { projects });
               break;
-            case 'PERSONAL_PROJECT':
-              res.render('student_pps.ejs', { projects, submitP });
+            case "PERSONAL_PROJECT":
+              res.render("student_pps.ejs", { projects, submitP });
               break;
-            case 'TEAM_PROJECT':
-              res.render('student_tps.ejs', { projects });
+            case "TEAM_PROJECT":
+              res.render("student_tps.ejs", { projects });
               break;
           }
           break;
-        case 'TUTOR':
+        case "TUTOR":
           switch (category) {
-            case 'PERSONAL_PROJECT':
-              res.render('tutor_pp.ejs', { projects });
+            case "PERSONAL_PROJECT":
+              res.render("tutor_pp.ejs", { projects });
               break;
-            case 'TEAM_PROJECT':
-              res.render('tutor_tp.ejs', { projects });
+            case "TEAM_PROJECT":
+              res.render("tutor_tp.ejs", { projects });
               break;
           }
           break;
@@ -86,23 +86,23 @@ export class ProjectsController {
       const project =
         await this.projectsService.getProjectByProjectId(projectId);
 
-      const tasks = project.tasks.find(task => task.userId === req.user.id);
+      const tasks = project.tasks.find((task) => task.userId === req.user.id);
       const task = tasks || "";
 
       console.log("============", task);
       //Response
       // return res.status(200).json({ success: true, data: project });
       switch (role) {
-        case 'ADMIN':
-          res.render('admin_project.ejs', { project });
+        case "ADMIN":
+          res.render("admin_project.ejs", { project });
           break;
-        case 'STUDENT':
+        case "STUDENT":
           switch (project.category) {
-            case 'PERSONAL_PROJECT':
-              res.render('student_pp.ejs', { project, task });
+            case "PERSONAL_PROJECT":
+              res.render("student_pp.ejs", { project, task });
               break;
-            case 'TEAM_PROJECT':
-              res.render('student_tp.ejs', { project });
+            case "TEAM_PROJECT":
+              res.render("student_tp.ejs", { project });
               break;
           }
           break;
@@ -142,7 +142,7 @@ export class ProjectsController {
       //   message: "프로젝트가 성공적으로 생성되었습니다.",
       //   data: createdProject,
       // });
-      res.redirect('/projects');
+      res.redirect("/projects");
     } catch (error) {
       next(error);
     }
@@ -249,11 +249,44 @@ export class ProjectsController {
       //   message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
       //   data: notSubmitUsers,
       // });
-      res.render('admin_notsubmit.ejs', { notSubmitUsers: notSubmitUsers });
+      res.render("admin_notsubmit.ejs", { notSubmitUsers: notSubmitUsers });
     } catch (error) {
       console.error("미제출자 목록 조회 실패:", error);
       next(error);
     }
+  };
+
+  getAllNotSubmitUser = async (category, start, end, classId) => {
+    // projectId로 프로젝트 정보 조회
+    const project = await this.prisma.projects.findFirst({
+      where: {
+        category,
+        start,
+        end,
+      },
+    });
+    // 만약 해당하는 projectId가 없다면 빈 배열을 반환합니다.
+    if (!project) return [];
+    // projectId에 해당하는 Tasks 테이블에서 userId 조회한 결과
+    const tasks = await this.prisma.tasks.findMany({
+      where: {
+        id: +project.id,
+      },
+      select: {
+        userId: true, //taskId가 아닌 userId
+      },
+    });
+    // 순회하면서 배열 형태로 프로젝트 참가인원의 전체 목록을 생성
+    const userIdLists = tasks.map((task) => task.userId);
+    // userIdLists Console.log
+    console.log("Repository - 프로젝트 참가자 List:", userIdLists);
+    /** 미제출자 목록 추출
+     * 1. Users 테이블을 조회해서 classId가 있지만,
+     * 2. Tasks 테이블에서 조회한 userIdLists 배열과 비교해서
+     * 3. tasks.userId가 없는 사람은 과제를 미제출한 사람이기 때문에
+     * 4. notIn으로 userIdLists를 제외시키고,
+     * 5. Users 테이블에 있는 userId와 name을 조회해서 반환
+     */
   };
 
   // 미제출자 목록 슬랙
