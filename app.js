@@ -154,6 +154,25 @@ app.get('/tutor/editfeedback/:feedbackId', async (req, res, next) => {
   res.render('tutor_editfeedback.ejs', { feedback });
 });
 
+const rule = new schedule.RecurrenceRule();
+
+rule.dayOfWeek = [new schedule.Range(1, 5)];
+rule.hour = [9, 12, 21];
+rule.minute = 0;
+rule.tz = "Asia/Seoul";
+
+const job = schedule.scheduleJob(rule, async () => {
+  const response = await axios.post(
+    "http://localhost:3000/projects/submit/slack",
+    {
+      category: "PERSONAL_PROJECT",
+      start: "2024-02-02T15:00:00.000Z",
+      end: "2024-02-29T15:00:00.000Z",
+      classId: 1,
+    },
+  );
+});
+
 ////////////////////////////////
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(1, 5)];

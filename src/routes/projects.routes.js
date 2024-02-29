@@ -9,6 +9,8 @@ import { ProjectsController } from "../controllers/projects.controller.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
 import { TasksService } from "../services/tasks.service.js";
 import { TasksRepository } from "../repositories/tasks.repository.js";
+import slackSender from "../utils/slackSender.js";
+
 
 const router = express.Router();
 
