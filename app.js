@@ -3,6 +3,8 @@ import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./middlewares/error-handler.Middleware.js";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import schedule from "node-schedule";
+import axios from "axios";
 
 dotenv.config();
 import methodOverride from "method-override";
@@ -95,6 +97,25 @@ app.get("/admins/main", async (req, res, next) => {
 
 app.get("/admins/til", async (req, res, next) => {
   res.render("admin_til.ejs");
+});
+
+const rule = new schedule.RecurrenceRule();
+
+rule.dayOfWeek = [new schedule.Range(1, 5)];
+rule.hour = [9, 12, 21];
+rule.minute = 0;
+rule.tz = "Asia/Seoul";
+
+const job = schedule.scheduleJob(rule, async () => {
+  const response = await axios.post(
+    "http://localhost:3000/projects/submit/slack",
+    {
+      category: "PERSONAL_PROJECT",
+      start: "2024-02-02T15:00:00.000Z",
+      end: "2024-02-29T15:00:00.000Z",
+      classId: 1,
+    },
+  );
 });
 
 ////////////////////////////////

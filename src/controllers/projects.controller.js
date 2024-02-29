@@ -182,4 +182,40 @@ export class ProjectsController {
   };
 
   // 미제출자 목록 슬랙
+  notSubmitUserSendSlack = async (req, res, next) => {
+    try {
+      //Request
+      const { id } = req.user;
+      const userId = id;
+      const { category, start, end } = req.body;
+
+      //유효성 검사
+      if (!category) {
+        return res.status(400).json({
+          success: false,
+          message: "조회할 프로젝트 유형을 입력해주세요.",
+        });
+      }
+      if (!start || !end) {
+        return res.status(400).json({
+          message:
+            "발제한 날짜(시작일) 혹은 제출 마감일(종료일)을 입력해주세요.",
+        });
+      }
+
+      //서비스 계층에 조회 요청
+      const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
+        userId,
+        category,
+        start,
+        end,
+      );
+
+      req.notSubmitUsers = notSubmitUsers;
+      next();
+    } catch (error) {
+      console.error("미제출자 목록 조회 실패:", error);
+      next(error);
+    }
+  };
 }

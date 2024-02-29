@@ -108,33 +108,30 @@ export class ProjectsRepository {
     });
   };
 
-  getAllNotSubmitUser = async (classId, projectId) => {
+  getAllNotSubmitUser = async (category, start, end, classId) => {
     // projectId로 프로젝트 정보 조회
     const project = await this.prisma.projects.findFirst({
       where: {
-        id: projectId,
+        category,
+        start,
+        end,
       },
     });
-
     // 만약 해당하는 projectId가 없다면 빈 배열을 반환합니다.
     if (!project) return [];
-
     // projectId에 해당하는 Tasks 테이블에서 userId 조회한 결과
     const tasks = await this.prisma.tasks.findMany({
       where: {
-        projectId,
+        id: +project.id,
       },
       select: {
         userId: true, //taskId가 아닌 userId
       },
     });
-
     // 순회하면서 배열 형태로 프로젝트 참가인원의 전체 목록을 생성
     const userIdLists = tasks.map((task) => task.userId);
-
     // userIdLists Console.log
     console.log("Repository - 프로젝트 참가자 List:", userIdLists);
-
     /** 미제출자 목록 추출
      * 1. Users 테이블을 조회해서 classId가 있지만,
      * 2. Tasks 테이블에서 조회한 userIdLists 배열과 비교해서
@@ -153,9 +150,9 @@ export class ProjectsRepository {
         classId: true,
         id: true,
         name: true,
+        email: true,
       },
     });
-
     return notSubmitUsers;
   };
 }

@@ -6,6 +6,7 @@ import { ProjectsRepository } from "../repositories/projects.repository.js";
 import { ProjectsService } from "../services/projects.service.js";
 import { ProjectsController } from "../controllers/projects.controller.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
+import slackSender from "../utils/slackSender.js";
 
 const router = express.Router();
 
@@ -25,8 +26,26 @@ router.get(
 router.post("/", authMiddleware, projectsController.createProject);
 router.put("/:projectId", authMiddleware, projectsController.updateProject);
 router.delete("/:projectId", authMiddleware, projectsController.deleteProject);
-router.get('/submit/email',authMiddleware , async ()=>{
+router.post("/submit/slack", async (req, res, next) => {
+  try {
+    const { category, start, end, classId } = req.body;
 
-})
+    const notSubmitUsers = await projectsRepository.getAllNotSubmitUser(
+      category,
+      start,
+      end,
+      classId,
+    );
+
+    const text = notSubmitUsers;
+    let nameArr = text.map((item) => item.name);
+    let resultString = nameArr.join(", ");
+    await slackSender(resultString);
+
+    return res.status(200).json({ message: "슬랙으로 메세지 발송완료" });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;
