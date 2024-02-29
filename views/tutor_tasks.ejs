@@ -1,0 +1,19 @@
+<body>
+    <%- include('tutor_header.ejs') %>
+
+    <h1 class="main_title">개인과제 조회</h1>
+    <div class="tasks">
+        <% if (!tasks || tasks.length === 0) { %>
+            <h1 style="text-align: center;">아무도 제출 안함</h1>
+        <% } else { %>
+            <% tasks.forEach(task => { %>
+                <div class="task">
+                    <a href="/tasks/<%= task.id %>">
+                        <h2><%= task.users ? task.users.name : task.teams.name %></h2>
+                        <h3> 제출일 : <%= new Date(task.createdAt).toLocaleDateString('ko-KR') %></h3>
+                    </a>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+</body>

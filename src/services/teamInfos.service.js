@@ -3,12 +3,12 @@ export class TeamInfosService {
         this.teamInfosRepository = teamInfosRepository;
     }
 
-    findTeamInfos = async (teamInfoId) => {
-        if (!teamInfoId) {
+    findTeamInfos = async (teamId) => {
+        if (!teamId) {
             throw new Error('팀 소개페이지를 선택하세요.');
         }
 
-        const teamInfo = await this.teamInfosRepository.findTeamInfos(teamInfoId);
+        const teamInfo = await this.teamInfosRepository.findTeamInfos(teamId);
 
         if (!teamInfo) {
             throw new Error('팀 소개페이지가 없습니다.');

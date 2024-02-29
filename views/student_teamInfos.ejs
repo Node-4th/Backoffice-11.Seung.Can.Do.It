@@ -1,12 +1,34 @@
+
+
 <body>
     <%- include('student_header.ejs') %>
 
-    <h1 class="teamname">팀이름</h1>
-        <div class="Infos">
-            <div class="groundRules">GroundRules</div>
-            <div class="goals">Goals</div>
-            <div class="contents">Contents</div>
+    <h1 class="teamname"><%= teamInfos ? teamInfos.teamName : "팀이름" %></h1>
+    <div class="Infos">
+        <div class="groundRules">
+            <h3>GroundRules</h3>
+            <%= teamInfos ? teamInfos.groundRules : "" %>
         </div>
-        <a href="/students/createteamInfo"><button class="createTeamInfo">작성하기</button></a>
-
+        <div class="goals">
+            <h3>Goals</h3>
+            <%= teamInfos ? teamInfos.goals : "" %>
+        </div>
+        <div class="contents">
+            <h3>Contents</h3>
+            <%= teamInfos ? teamInfos.contents : "" %>
+        </div>
+    </div>
+    
+    
+    <% if (teamInfos) { %>
+        <a href="/students/editTeamInfo/<%= teamInfos.id %>">
+            <button class="createTeamInfo">수정하기</button>
+        </a>
+    <% } else { %>
+        <a href="/students/createteamInfo/<%= team.id %>">
+            <button class="createTeamInfo">작성하기</button>
+        </a>
+    <% } %>
+    
+    <a href="/students/submit/<%= team.projectId %>?teamId=<%= team.id %>"><button class="createTeamInfo">과제 제출하기</button></a>
 </body>

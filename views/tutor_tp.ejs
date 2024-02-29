@@ -1,0 +1,21 @@
+<body>
+    <%- include('tutor_header.ejs') %>
+
+    <h1 class="main_title">팀과제 조회</h1>
+    <div class="tasks">
+        <% projects.forEach(project => { %>
+            <% if (project.category === 'TEAM_PROJECT') { %>
+                <div class="project">
+                    <a href="/tasks/project/<%= project.id %>">
+                        <h1><%= project.title %></h1>
+                    </a>
+                    <p>발제 날짜: <%= project.start.toLocaleDateString('ko-KR') %></p>
+                    <p>마감 날짜: <%= project.end.toLocaleDateString('ko-KR') %></p>
+                    <% if (project.end < new Date()) { %>
+                            <h3 style="color: red;">과제 마감</h3>
+                        <% } %>
+                </div>
+            <% } %>
+        <% }); %>
+    </div>
+</body>

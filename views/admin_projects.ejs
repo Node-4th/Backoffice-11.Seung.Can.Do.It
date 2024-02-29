@@ -1,0 +1,28 @@
+<body>
+    <%- include('admin_header.ejs') %>
+
+        <h1 class="main_title">프로젝트</h1>
+
+        <div class="tasks">
+            <a href="/admin/createproject">
+                <div class="createproject">
+                    <h3>프로젝트 생성하기</h3>
+                </div>
+            </a>
+            <% projects.forEach(project=> { %>
+
+                <div class="project">
+                    <a href="/projects/<%= project.id %>">
+                        <h1><%= project.title %>
+                        </h1>
+                    </a>
+                    <h3>( <%= project.category %> )</h3>
+                    <p>발제 날짜: <%= project.start.toLocaleDateString('ko-KR') %>
+                    </p>
+                    <p>마감 날짜: <%= project.end.toLocaleDateString('ko-KR') %>
+                    </p>
+                </div>
+
+                <% }); %>
+        </div>
+</body>

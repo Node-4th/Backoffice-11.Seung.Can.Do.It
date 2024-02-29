@@ -1,27 +1,73 @@
 export class ProjectsController {
-  constructor(projectsService) {
+  constructor(projectsService, tasksService) {
     this.projectsService = projectsService;
+    this.tasksService = tasksService;
   }
   getAllProjects = async (req, res, next) => {
     try {
       // Request
       const orderKey = req.query.orderKey ?? "id";
       const orderValue = req.query.orderValue ?? "desc";
-
+      const category = req.query.category;
+      const { role } = req.user;
+      console.log(req.user);
       // 유효성 검사
       if (!["id"].includes(orderKey))
         throw new Error("orderKey 가 올바르지 않습니다.");
       if (!["asc", "desc"].includes(orderValue.toLowerCase()))
         throw new Error("orderValue 가 올바르지 않습니다.");
-
       // 프로젝트 목록 조회
       const projects = await this.projectsService.getAllProjects(
         orderKey,
         orderValue,
       );
 
+      const tasks = await this.tasksService.findTaskCategory(category);
+
+      const submitP = projects.map((project) => {
+        tasks[0].map((task) => {
+          if (task.projectId === project.id) {
+            if (task.userId === req.user.id) {
+              project.Status = '제출완료';
+              return project;
+            }
+          }
+        });
+        return project;
+      });
+
+      // console.log(submit);
       // Response
-      return res.json({ success: true, data: projects });
+      // return res.json({ success: true, data: projects });
+      // return res.render('admin_projects.ejs', { projects: projects });
+      switch (role) {
+        case 'ADMIN':
+          res.render('admin_projects.ejs', { projects });
+          break;
+        case 'STUDENT':
+          switch (category) {
+            case 'TIL':
+              res.render('student_til.ejs', { projects });
+              break;
+            case 'PERSONAL_PROJECT':
+              res.render('student_pps.ejs', { projects, submitP });
+              break;
+            case 'TEAM_PROJECT':
+              res.render('student_tps.ejs', { projects });
+              break;
+          }
+          break;
+        case 'TUTOR':
+          switch (category) {
+            case 'PERSONAL_PROJECT':
+              res.render('tutor_pp.ejs', { projects });
+              break;
+            case 'TEAM_PROJECT':
+              res.render('tutor_tp.ejs', { projects });
+              break;
+          }
+          break;
+      }
     } catch (error) {
       next(error);
     }
@@ -31,6 +77,7 @@ export class ProjectsController {
     try {
       //Requests
       const { projectId } = req.params;
+      const { role, id } = req.user;
 
       //유효성 검사
       if (!projectId) throw new Error("projectId는 필수값입니다.");
@@ -39,8 +86,27 @@ export class ProjectsController {
       const project =
         await this.projectsService.getProjectByProjectId(projectId);
 
+      const tasks = project.tasks.find(task => task.userId === req.user.id);
+      const task = tasks || "";
+
+      console.log("============", task);
       //Response
-      return res.status(200).json({ success: true, data: project });
+      // return res.status(200).json({ success: true, data: project });
+      switch (role) {
+        case 'ADMIN':
+          res.render('admin_project.ejs', { project });
+          break;
+        case 'STUDENT':
+          switch (project.category) {
+            case 'PERSONAL_PROJECT':
+              res.render('student_pp.ejs', { project, task });
+              break;
+            case 'TEAM_PROJECT':
+              res.render('student_tp.ejs', { project });
+              break;
+          }
+          break;
+      }
     } catch (error) {
       next(error);
     }
@@ -71,11 +137,12 @@ export class ProjectsController {
         end,
       );
       //Response
-      res.status(201).json({
-        success: true,
-        message: "프로젝트가 성공적으로 생성되었습니다.",
-        data: createdProject,
-      });
+      // res.status(201).json({
+      //   success: true,
+      //   message: "프로젝트가 성공적으로 생성되었습니다.",
+      //   data: createdProject,
+      // });
+      res.redirect('/projects');
     } catch (error) {
       next(error);
     }
@@ -138,8 +205,8 @@ export class ProjectsController {
       //Request
       const { id } = req.user;
       const userId = id;
-      const { category, start, end } = req.body;
-
+      const { category, start, end } = req.query;
+      console.log("============", req.query);
       //유효성 검사
       if (!category) {
         return res.status(400).json({
@@ -177,11 +244,12 @@ export class ProjectsController {
       //Response
       console.log("Response 미제출자 목록 조회 성공:", notSubmitUsers);
 
-      res.status(200).json({
-        success: true,
-        message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
-        data: notSubmitUsers,
-      });
+      // res.status(200).json({
+      //   success: true,
+      //   message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
+      //   data: notSubmitUsers,
+      // });
+      res.render('admin_notsubmit.ejs', { notSubmitUsers: notSubmitUsers });
     } catch (error) {
       console.error("미제출자 목록 조회 실패:", error);
       next(error);

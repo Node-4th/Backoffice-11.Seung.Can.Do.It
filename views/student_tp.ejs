@@ -1,0 +1,19 @@
+<body>
+    <%- include('student_header.ejs') %>
+
+        <div class="pro">
+            <h1 class="main_title">
+                <%= project.title %>
+            </h1>
+            <h3>( <%= project.category %> )</h3>
+            <p>발제 날짜: <%= project.start.toLocaleDateString('ko-KR') %>
+            </p>
+            <p>마감 날짜: <%= project.end.toLocaleDateString('ko-KR') %>
+            </p>
+
+            <button class="submitbut"><a href="/teams/project/<%= project.id %>">팀 확인하기</a></button>
+
+        </div>
+
+
+</body>

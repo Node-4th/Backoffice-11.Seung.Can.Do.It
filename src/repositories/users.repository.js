@@ -6,11 +6,11 @@ export class UsersRepository {
   createUser = async ({ name, email, password, profileImg, role, adminId }) => {
     let createUser;
     if (adminId) {
-      const classId = await this.prisma.users.findFirst({
+      const classId = await this.prisma.Users.findFirst({
         where: { id: +adminId },
         select: { classId: true },
       });
-      createUser = await this.prisma.users.create({
+      createUser = await this.prisma.Users.create({
         data: {
           name,
           email,
@@ -21,7 +21,7 @@ export class UsersRepository {
         },
       });
     } else {
-      createUser = await this.prisma.users.create({
+      createUser = await this.prisma.Users.create({
         data: {
           name,
           email,

@@ -1,0 +1,20 @@
+<body>
+    <%- include('admin_header.ejs') %>
+
+        <div class="pro">
+            <h1>
+                <%= team.name %>
+            </h1>
+            <p>팀 멤버 : <%= team.memberList %>
+            </p>
+
+            <a href="/admin/editteam/<%= team.id %>"><button class="teambtn">팀 수정하기</button></a>
+            <form class="form-box" action='/teams/<%= team.id %>?_method=DELETE' method="POST">
+                <button class="teambtn">팀 삭제하기</button>
+            </form>
+            <a href=""><button class="teambtn">Info</button></a>
+        </div>
+
+
+
+</body>

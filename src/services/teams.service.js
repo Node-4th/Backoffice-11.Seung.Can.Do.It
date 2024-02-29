@@ -14,8 +14,8 @@ export class TeamsService {
     return isAdmin;
   };
 
-  getAllTeams = async (orderKey, orderValue) => {
-    const teams = await this.teamsRepository.getAllTeams(orderKey, orderValue);
+  getAllTeams = async (orderKey, orderValue, projectId) => {
+    const teams = await this.teamsRepository.getAllTeams(orderKey, orderValue, projectId);
     return teams;
   };
 

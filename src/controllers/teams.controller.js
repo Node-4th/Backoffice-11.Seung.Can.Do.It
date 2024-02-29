@@ -8,6 +8,9 @@ export class TeamsController {
       const orderKey = req.query.orderKey ?? "id";
       const orderValue = req.query.orderValue ?? "desc";
 
+      const { projectId } = req.params;
+      const { role } = req.user;
+
       // 유효성 검사
       if (!["id"].includes(orderKey))
         throw new Error("orderKey 가 올바르지 않습니다.");
@@ -15,10 +18,18 @@ export class TeamsController {
         throw new Error("orderValue 가 올바르지 않습니다.");
 
       // 팀 목록 조회
-      const teams = await this.teamsService.getAllTeams(orderKey, orderValue);
+      const teams = await this.teamsService.getAllTeams(orderKey, orderValue, projectId);
 
       // Response
-      return res.json({ success: true, data: teams });
+      // return res.json({ success: true, data: teams });
+      switch (role) {
+        case 'ADMIN':
+          res.render('admin_teams.ejs', { teams: teams })
+          break;
+        case 'STUDENT':
+          res.render('student_teams.ejs', { teams: teams });
+          break;
+      }
     } catch (error) {
       next(error);
     }
@@ -27,15 +38,24 @@ export class TeamsController {
     try {
       //Requests
       const { teamId } = req.params;
+      const { role } = req.user;
 
       //유효성 검사
       if (!teamId) throw new Error("teamId는 필수값입니다.");
 
       //프로젝트 상세조회
       const team = await this.teamsService.getTeamByTeamId(teamId);
-
+      const task = team.tasks.find(task => task.id);
       //Response
-      return res.status(200).json({ success: true, data: team });
+      // return res.status(200).json({ success: true, data: team });
+      switch (role) {
+        case 'ADMIN':
+          res.render('admin_team.ejs', { team });
+          break;
+        case 'STUDENT':
+          res.render('student_team.ejs', { team, task });
+          break;
+      }
     } catch (error) {
       next(error);
     }
@@ -43,7 +63,8 @@ export class TeamsController {
   createTeam = async (req, res, next) => {
     try {
       const userId = req.user.id;
-      const { projectId, name, memberList } = req.body;
+      const { name, memberList } = req.body;
+      const { projectId } = req.params;
 
       //유효성 검사
       if (!projectId || !name || !memberList)
@@ -57,11 +78,12 @@ export class TeamsController {
         memberList,
       );
       //Response
-      res.status(201).json({
-        success: true,
-        message: "팀이 성공적으로 생성되었습니다.",
-        data: createdTeam,
-      });
+      // res.status(201).json({
+      //   success: true,
+      //   message: "팀이 성공적으로 생성되었습니다.",
+      //   data: createdTeam,
+      // });
+      res.redirect(`/projects/${projectId}`);
     } catch (error) {
       next(error);
     }
@@ -69,9 +91,9 @@ export class TeamsController {
   updateTeam = async (req, res, next) => {
     try {
       const userId = req.user.id;
-      const { teamId } = req.params;
-      const { projectId, name, memberList } = req.body;
-
+      const { projectId, teamId } = req.params;
+      const { name, memberList } = req.body;
+      console.log(req.body);
       //유효성 검사
       if (!name || !memberList)
         throw new Error("필수 값이 입력되지 않았습니다.");
@@ -85,11 +107,12 @@ export class TeamsController {
         memberList,
       );
       //Response
-      res.status(201).json({
-        success: true,
-        message: "팀이 성공적으로 수정되었습니다.",
-        data: updatedTeam,
-      });
+      // res.status(201).json({
+      //   success: true,
+      //   message: "팀이 성공적으로 생성되었습니다.",
+      //   data: updatedTeam,
+      // });
+      return res.redirect(`/teams/${updatedTeam.id}`)
     } catch (error) {
       next(error);
     }
@@ -100,12 +123,13 @@ export class TeamsController {
       const { teamId } = req.params;
 
       //서비스 계층에 팀 생성 요청
-      await this.teamsService.deleteTeam(userId, teamId);
+      const deleteTeam = await this.teamsService.deleteTeam(userId, teamId);
       //Response
-      res.status(200).json({
-        success: true,
-        message: "팀이 성공적으로 삭제되었습니다.",
-      });
+      // res.status(200).json({
+      //   success: true,
+      //   message: "팀이 성공적으로 생성되었습니다.",
+      // });
+      return res.redirect(`/teams/project/${deleteTeam.projectId}`)
     } catch (error) {
       next(error);
     }
