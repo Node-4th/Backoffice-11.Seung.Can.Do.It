@@ -15,6 +15,8 @@ describe("Tasks Service Unit Test", () => {
       submitTask: jest.fn(),
       findProjectById: jest.fn(),
       findTeamById: jest.fn(),
+      findProjectByCategory: jest.fn(),
+      findTask: jest.fn(),
     };
     tasksService = new TasksService(mockTasksRepository);
   });
@@ -41,6 +43,22 @@ describe("Tasks Service Unit Test", () => {
     name: "name",
     projectId: 1,
   };
+  const projects = [
+    {
+      projectId: 1,
+      title: "title",
+      deadline: "2024-02-26 00:00:00.000",
+      createdAt: "2024-02-26 00:00:00.000",
+      category: "TIL",
+    },
+    {
+      projectId: 2,
+      title: "title",
+      deadline: "2024-02-26 00:00:00.000",
+      createdAt: "2024-02-26 00:00:00.000",
+      category: "TEAM_PROJECT",
+    },
+  ];
 
   test("submitTask Method (SUCCESS)", async () => {
     mockTasksRepository.submitTask.mockResolvedValue(task);
@@ -74,6 +92,25 @@ describe("Tasks Service Unit Test", () => {
     mockTasksRepository.findTeamById.mockResolvedValue(null);
     await expect(tasksService.submitTask(1, 1, 1)).rejects.toThrowError(
       "팀 조회에 실패하였습니다.",
+    );
+  });
+
+  // test("findTaskCategory Method (SUCCESS)", async () => {
+  //   mockTasksRepository.findProjectByCategory.mockResolvedValue(projects);
+
+  // });
+
+  test("findTask Method (SUCCESS)", async () => {
+    mockTasksRepository.findTask.mockResolvedValue(task);
+
+    const findTask = await tasksService.findTask(task.id);
+
+    expect(findTask).toEqual(task);
+  });
+
+  test("findTask Method (taskId Missing)", async () => {
+    await expect(tasksService.findTask(null)).rejects.toThrowError(
+      "과제 조회에 실패하였습니다.",
     );
   });
 });

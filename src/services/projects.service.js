@@ -46,9 +46,15 @@ export class ProjectsService {
     const createdProject = await this.projectsRepository.createProject(
       title,
       category,
-      start,
+      start, // dateformat
       end,
     );
+
+    /**
+1 prisma String
+2 service dateformat(formattedstart
+3 repo formatted 애들 지워버리기
+   */
 
     //Return
     return createdProject;
@@ -113,20 +119,32 @@ export class ProjectsService {
       "Service - 검색 조건(카테고리, 시작일, 종료일) 조회 성공",
       projectInfos,
     );
-
     // 위의 절차에서 함께 가져온 classId와 projectId
     console.log("Service - isAdmin.classId:", isAdmin.classId); //1
-    console.log("Service - projectInfos.id", projectInfos.id); //2
 
-    // classId -> userId : 노드4기교육과정(class)에 소속된 User가 누구인지를 찾기 위함.
+    if (category === "TEAM_PROJECT") {
+      const notSubmitTeams = await this.projectsRepository.getAllNotSubmitTeams(
+        category,
+        start,
+        end,
+        isAdmin.classId,
+      );
 
-    // projectId -> taskId :발제한 특정 프로젝트(TIL, 개인과제, 팀과제)에 소속된 Tasks가 제출/미제출 되었는지 찾기 위함.
+      return notSubmitTeams;
+    } else {
+      // classId -> userId : 노드4기교육과정(class)에 소속된 User가 누구인지를 찾기 위함.
 
-    const notSubmitUsers = await this.projectsRepository.getAllNotSubmitUser(
-      isAdmin.classId, //classId
-      projectInfos.id, //projectId
-    );
+      // projectId -> taskId :발제한 특정 프로젝트(TIL, 개인과제, 팀과제)에 소속된 Tasks가 제출/미제출 되었는지 찾기 위함.
 
-    return notSubmitUsers;
+      const notSubmitUsers = await this.projectsRepository.getAllNotSubmitUser(
+        category,
+        start,
+        end,
+        isAdmin.classId, //classId
+        // projectInfos.id, //projectId
+      );
+
+      return notSubmitUsers;
+    }
   };
 }

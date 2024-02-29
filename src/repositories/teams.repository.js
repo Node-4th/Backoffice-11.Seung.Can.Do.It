@@ -61,6 +61,7 @@ export class TeamsRepository {
       data: {
         projectId: +projectId,
         name,
+        projectId,
         memberList: members,
       },
     });

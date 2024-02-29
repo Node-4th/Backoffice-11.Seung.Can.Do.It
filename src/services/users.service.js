@@ -5,7 +5,15 @@ export class UsersService {
     this.usersRepository = usersRepository;
   }
 
-  signUpUser = async (name, email, password, pwConfirm, profileImg, role,adminId) => {
+  signUpUser = async (
+    name,
+    email,
+    password,
+    pwConfirm,
+    profileImg,
+    role,
+    adminId,
+  ) => {
     if (!name || !email || !password || !pwConfirm || !role) {
       throw new Error("필수항목을 체크해주세요");
     }
@@ -20,7 +28,7 @@ export class UsersService {
       password: hashedPassword,
       profileImg,
       role: upperRole,
-      adminId
+      adminId,
     });
     if (!user) {
       throw new Error("회원가입에 실패했습니다.");

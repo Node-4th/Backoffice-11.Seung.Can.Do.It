@@ -41,6 +41,13 @@ export class ClassesController {
 
       //서비스 계층에 클래스 생성 요청
       const createdClass = await this.classesService.createClass(userId, name);
+
+      if (createdClass === null) {
+        return res
+          .status(400)
+          .json({ success: false, message: "이미 생성한 사용자입니다." });
+      }
+
       //Response
       res.status(201).render('admin_class.ejs', {class : createdClass});
       // .json({
