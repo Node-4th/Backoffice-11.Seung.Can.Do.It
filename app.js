@@ -45,6 +45,10 @@ app.use(errorHandlerMiddleware);
 
 ////////////////////////////////
 
+app.get('/main', async (req, res, next) => {
+  res.render('main.ejs');
+});
+
 app.get('/signup', async (req, res, next) => {
   res.render('signup.ejs');
 });

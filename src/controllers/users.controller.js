@@ -26,17 +26,7 @@ export class UsersController {
       // return res
       //   .status(201)
       //   .json({ message: "회원가입 완료되었습니다.", success: true, user });
-      switch (user.role) {
-        case 'ADMIN':
-          res.render('admin_main.ejs');
-          break;
-        case 'TUTOR':
-          res.render('tutor_main.ejs');
-          break;
-        case 'STUDENT':
-          res.render('student_main.ejs');
-          break;
-      }
+        return res.render('/signin');
     } catch (error) {
       next(error);
     }
