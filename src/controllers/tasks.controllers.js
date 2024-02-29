@@ -18,7 +18,6 @@ export class TasksController {
         content,
         submitUrl,
       );
-      console.log(project);
 
       if (teamId) {
         res.redirect(`/students/team_Infos/${teamId}`);

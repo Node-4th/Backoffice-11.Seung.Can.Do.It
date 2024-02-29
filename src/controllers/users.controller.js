@@ -24,9 +24,9 @@ export class UsersController {
       );
 
       // return res
-      //   .status(201)
-      //   .json({ message: "회원가입 완료되었습니다.", success: true, user });
-        return res.render('/signin');
+        // .status(201)
+        // .json({ message: "회원가입 완료되었습니다.", success: true, user });
+      return res.status(201).redirect('/signin').json({ message: "회원가입 완료되었습니다.", success: true, user });
     } catch (error) {
       next(error);
     }
