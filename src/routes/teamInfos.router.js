@@ -11,7 +11,7 @@ const teamInfosService = new TeamInfosService(teamInfosRepository);
 const teamInfosController = new TeamInfosController(teamInfosService);
 
 // 팀정보 상세 조회
-router.get('/:teamInfoId',authMiddleware, teamInfosController.findTeamInfos);
+router.get('/:teamId',authMiddleware, teamInfosController.findTeamInfos);
 
 // 팀정보 생성
 router.post('/:teamId',authMiddleware, teamInfosController.createTeamInfos);

@@ -1,12 +1,22 @@
 <body>
     <%- include('student_header.ejs') %>
 
-    <h1 class="main_title">개인과제</h1>
-        <div class="tasks">
-            <div class="task"><a href="/tasks/:taskId" >노드 숙련 주차</a></div>
-            <a href="/students/submit"><button class="taskbtn">과제 제출하기</button></a>
-            <a href="/students/feedback"><button class="taskbtn">피드백 확인하기</button></a>
-            <a href="/til/students" ><div class="task">노드 숙련 주차</div></a>
+        <div class="pro">
+            <h1 class="main_title">
+                <%= project.title %>
+            </h1>
+            <h3>( <%= project.category %> )</h3>
+            <p>발제 날짜: <%= project.start.toLocaleDateString('ko-KR') %>
+            </p>
+            <p>마감 날짜: <%= project.end.toLocaleDateString('ko-KR') %>
+            </p>
+            
+            <a href="/students/submit/<%= project.id %>"><button class="submitbut">과제 제출하기</button></a>
+            <% if (task && task.id) { %>
+                <a href="/feedbacks/<%= task.id %>"><button class="submitbut">피드백 확인하기</button></a>
+            <% } %>
+             
         </div>
+
 
 </body>

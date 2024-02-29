@@ -1,0 +1,15 @@
+<body>
+    <%- include('admin_header.ejs') %>
+        <h1 class="createC">팀 생성</h1>
+        <form class="form-box" action="/teams/<%= projectId %>" method="POST">
+            <div class="createclass">
+                <h3>title</h3>
+                <input class="team_input" type="text" name="name" placeholder="title을 입력하세요">
+                <h3>memberList</h3>
+                <input class="team_input" type="text" name="memberList" placeholder="memberList을 입력하세요">
+                <button class="project-btn">생성하기</button>
+            </div>
+        </form>
+
+
+</body>

@@ -6,13 +6,21 @@ import { ProjectsRepository } from "../repositories/projects.repository.js";
 import { ProjectsService } from "../services/projects.service.js";
 import { ProjectsController } from "../controllers/projects.controller.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
+import { TasksService } from "../services/tasks.service.js";
+import { TasksRepository } from "../repositories/tasks.repository.js";
+import slackSender from "../utils/slackSender.js";
 
 const router = express.Router();
 
 /**인스턴스 생성 */
+const tasksRepository = new TasksRepository(prisma);
+const tasksService = new TasksService(tasksRepository);
 const projectsRepository = new ProjectsRepository(prisma);
 const projectsService = new ProjectsService(projectsRepository);
-const projectsController = new ProjectsController(projectsService);
+const projectsController = new ProjectsController(
+  projectsService,
+  tasksService,
+);
 
 // 프로젝트 미제출자 목록 조회
 router.get("/submit", authMiddleware, projectsController.getAllNotSubmitUser);
@@ -37,7 +45,6 @@ router.post("/submit/slack", async (req, res, next) => {
       end,
       classId,
     );
-
     const text = notSubmitUsers;
     let nameArr = text.map((item) => item.name);
     let resultString = nameArr.join(", ");

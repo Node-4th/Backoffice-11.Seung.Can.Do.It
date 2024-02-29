@@ -14,16 +14,14 @@ export class ClassesController {
   getClassByClassId = async (req, res, next) => {
     try {
       //Requests
-      const { classId } = req.params;
-
-      //유효성 검사
-      if (!classId) throw new Error("classId는 필수값입니다.");
-
+      const { classId } = req.user;
       //클래스 상세조회
       const myClass = await this.classesService.getClassByClassId(classId);
 
+      console.log(myClass);
       //Response
-      return res.status(200).json({ success: true, data: myClass });
+      // return res.status(200).json({ success: true, data: myClass });
+      return res.render('admin_class.ejs', {myClass: myClass})
     } catch (error) {
       next(error);
     }
@@ -51,11 +49,12 @@ export class ClassesController {
       }
 
       //Response
-      res.status(201).json({
-        success: true,
-        message: "클래스가 성공적으로 생성되었습니다.",
-        data: createdClass,
-      });
+      res.status(201).render('admin_class.ejs', {class : createdClass});
+      // .json({
+      //   success: true,
+      //   message: "클래스가 성공적으로 생성되었습니다.",
+      //   data: createdClass,
+      // });
     } catch (error) {
       next(error);
     }

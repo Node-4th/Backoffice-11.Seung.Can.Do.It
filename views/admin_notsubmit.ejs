@@ -1,0 +1,16 @@
+<body>
+    <%- include('admin_header.ejs') %>
+
+
+        <div id="result" class="result">
+            <div id="no" class="no">
+                <h1>미제출자</h1>
+                <% notSubmitUsers.forEach(user=> { %>
+                <p><%= user.name %></p>
+                <% }); %>
+            </div>
+        </div>
+
+
+
+</body>

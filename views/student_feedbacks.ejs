@@ -1,0 +1,23 @@
+<body>
+    <%- include('student_header.ejs') %>
+
+        <h1 class="main_title">개인과제</h1>
+        <div class="tasks">
+
+            <% feedbacks.forEach(feedback=> { %>
+                <div class="project">
+                    <a href="/feedbacks/task/<%= feedback.id %>">
+                        <h1>
+                            <%= feedback.title %>
+                        </h1>
+                    </a>
+                    <p><%= feedback.name %> 튜터님
+                    </p>
+                    <p><%= feedback.status %>
+                    </p>
+
+                </div>
+                <% }); %>
+
+        </div>
+</body>

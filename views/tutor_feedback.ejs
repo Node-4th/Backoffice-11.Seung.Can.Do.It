@@ -1,0 +1,18 @@
+<body>
+    <%- include('tutor_header.ejs') %>
+
+    <h1 class="teamname"><%= feedback.title %></h1>
+    <div class="Infos">
+        <h3 class="name"><%= feedback.user.name %> 튜터님</h3>
+        <div class="groundRules"><%= feedback.content %></div>
+        <h2 class="goals">평점
+            <% for (let i = 1; i <= parseInt(feedback.rating.replace("RATING_", ""), 10); i++) { %>
+                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+            <% } %>
+        </h2>
+        <a href="/tutor/editfeedback/<%= feedback.id %>"><button class="BTN">피드백 수정하기</button></a>
+        <form class="form-box" action='/feedbacks/<%= feedback.id %>?_method=DELETE' method="POST">
+            <button class="BTN">피드백 삭제하기</button>
+        </form>
+    </div>
+</body>

@@ -13,7 +13,8 @@ export class ProjectsService {
     return isAdmin;
   };
 
-  getAllProjects = async (orderKey, orderValue) => {
+  getAllProjects = async (orderKey, orderValue, id) => {
+    
     const projects = await this.projectsRepository.getAllProjects(
       orderKey,
       orderValue,
@@ -108,6 +109,16 @@ export class ProjectsService {
     const isAdmin = await this.checkAdminRole(userId);
     console.log("Service - isAdmin", isAdmin);
 
+    // 검색 조건으로 입력한 프로젝트 정보 조회 요청
+    const projectInfos = await this.projectsRepository.getProjectInfosInRange(
+      category,
+      start,
+      end,
+    );
+    console.log(
+      "Service - 검색 조건(카테고리, 시작일, 종료일) 조회 성공",
+      projectInfos,
+    );
     // 위의 절차에서 함께 가져온 classId와 projectId
     console.log("Service - isAdmin.classId:", isAdmin.classId); //1
 

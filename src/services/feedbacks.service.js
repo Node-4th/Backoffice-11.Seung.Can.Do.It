@@ -25,7 +25,7 @@ export class FeedbacksService {
     }
 
     return feedbacks.map(feedback => ({
-      feedbackId: feedback.feedbackId,
+      id: feedback.id,
       taskId: feedback.taskId,
       title: feedback.title,
       userId: feedback.userId,
@@ -98,6 +98,26 @@ export class FeedbacksService {
     );
 
     return feedback;
+  }
+
+  findUser = async (userId) => {
+    const user = await this.feedbacksRepository.findUser(userId);
+
+    if(user.role !== "TUTOR") {
+      throw new Error ('피드백을 작성할 권한이 없습니다.');
+    };
+
+    return user;
+  }
+
+  findAllFeedbackByUser = async (id) => {
+    const feedbacks = await this.feedbacksRepository.findAllFeedbackByUser(id);
+
+    if(!feedbacks) {
+      throw new Error('작성한 피드백이 없습니다.');
+    }
+
+    return feedbacks;
   }
 }
 

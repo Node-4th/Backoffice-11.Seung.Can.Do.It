@@ -1,7 +1,7 @@
 <body>
     <%- include('student_header.ejs') %>
 
-        <form class="form-box" action="/teams/:teamId" method="POST">
+        <form class="form-box" action="/teamInfos/<%= teamId %>" method="POST">
             <div class="Infos">
                 <div class="groundRules"><h3>Team Name</h3>
                     <input class="team_input" type="text" name="teamName" placeholder="Team Name을 입력하세요">
@@ -16,6 +16,6 @@
                     <input class="team_input" type="text" name="content" placeholder="Contents를 입력하세요">
                 </div>
             </div>
-            <button class="submitbtn">제출하기</button>
+            <button class="submitbtn">팀 정보 저장하기</button>
         </form>
 </body>
