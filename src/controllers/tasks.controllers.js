@@ -21,9 +21,9 @@ export class TasksController {
       console.log(project);
 
       if (teamId) {
-        res.redirect(`/students/team_Infos/${teamId}`);
+        return res.redirect("/students/main");
       } else {
-        res.render('student_pp.ejs', { project });
+        res.render("student_pp.ejs", { project });
       }
     } catch (err) {
       next(err);
@@ -59,7 +59,7 @@ export class TasksController {
       //   message: "성공적으로 조회하였습니다.",
       //   findTask,
       // });
-      return res.render('tutor_task.ejs', {task : findTask})
+      return res.render("tutor_task.ejs", { task: findTask });
     } catch (err) {
       next(err);
     }
@@ -120,8 +120,8 @@ export class TasksController {
 
       const tasks = await this.tasksService.findTasksByProject(projectId);
 
-      return res.render('tutor_tasks.ejs', {tasks});
-    } catch(err) {
+      return res.render("tutor_tasks.ejs", { tasks });
+    } catch (err) {
       next(err);
     }
   };

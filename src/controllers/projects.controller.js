@@ -200,61 +200,61 @@ export class ProjectsController {
   };
 
   // Task 미제출자 목록 조회 API
-  getAllNotSubmitUser = async (req, res, next) => {
-    try {
-      //Request
-      const { id } = req.user;
-      const userId = id;
-      const { category, start, end } = req.query;
-      console.log("============", req.query);
-      //유효성 검사
-      if (!category) {
-        return res.status(400).json({
-          success: false,
-          message: "조회할 프로젝트 유형을 입력해주세요.",
-        });
-      }
+  // getAllNotSubmitUser = async (req, res, next) => {
+  //   try {
+  //     //Request
+  //     const { id } = req.user;
+  //     const userId = id;
+  //     const { category, start, end } = req.query;
+  //     console.log("============", req.query);
+  //     //유효성 검사
+  //     if (!category) {
+  //       return res.status(400).json({
+  //         success: false,
+  //         message: "조회할 프로젝트 유형을 입력해주세요.",
+  //       });
+  //     }
 
-      if (!["TIL", "PERSONAL_PROJECT", "TEAM_PROJECT"].includes(category))
-        throw new Error(
-          "올바르지 않은 프로젝트 유형입니다. 프로젝트 유형은 'TIL', 'PERSONAL_PROJECT', 'TEAM_PROJECT' 중 하나의 항목만 기재하실 수 있습니다.",
-        );
+  //     if (!["TIL", "PERSONAL_PROJECT", "TEAM_PROJECT"].includes(category))
+  //       throw new Error(
+  //         "올바르지 않은 프로젝트 유형입니다. 프로젝트 유형은 'TIL', 'PERSONAL_PROJECT', 'TEAM_PROJECT' 중 하나의 항목만 기재하실 수 있습니다.",
+  //       );
 
-      if (!start || !end) {
-        return res.status(400).json({
-          message:
-            "발제한 날짜(시작일) 혹은 제출 마감일(종료일)을 입력해주세요.",
-        });
-      }
+  //     if (!start || !end) {
+  //       return res.status(400).json({
+  //         message:
+  //           "발제한 날짜(시작일) 혹은 제출 마감일(종료일)을 입력해주세요.",
+  //       });
+  //     }
 
-      //Request Console.log
-      console.log("Controller - User ID:", id);
-      console.log("Controller - Category:", category);
-      console.log("Controller - Start:", start);
-      console.log("Controller - End:", end);
+  //     //Request Console.log
+  //     console.log("Controller - User ID:", id);
+  //     console.log("Controller - Category:", category);
+  //     console.log("Controller - Start:", start);
+  //     console.log("Controller - End:", end);
 
-      //서비스 계층에 조회 요청
-      const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
-        userId,
-        category,
-        start,
-        end,
-      );
+  //     //서비스 계층에 조회 요청
+  //     const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
+  //       userId,
+  //       category,
+  //       start,
+  //       end,
+  //     );
 
-      //Response
-      console.log("Response 미제출자 목록 조회 성공:", notSubmitUsers);
+  //     //Response
+  //     console.log("Response 미제출자 목록 조회 성공:", notSubmitUsers);
 
-      // res.status(200).json({
-      //   success: true,
-      //   message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
-      //   data: notSubmitUsers,
-      // });
-      res.render("admin_notsubmit.ejs", { notSubmitUsers: notSubmitUsers });
-    } catch (error) {
-      console.error("미제출자 목록 조회 실패:", error);
-      next(error);
-    }
-  };
+  //     // res.status(200).json({
+  //     //   success: true,
+  //     //   message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
+  //     //   data: notSubmitUsers,
+  //     // });
+  //     res.render("admin_notsubmit.ejs", { notSubmitUsers: notSubmitUsers });
+  //   } catch (error) {
+  //     console.error("미제출자 목록 조회 실패:", error);
+  //     next(error);
+  //   }
+  // };
 
   getAllNotSubmitUser = async (category, start, end, classId) => {
     // projectId로 프로젝트 정보 조회
