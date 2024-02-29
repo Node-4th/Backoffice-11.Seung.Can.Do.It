@@ -59,8 +59,9 @@ export class ProjectsRepository {
           select: {
             id: true,
             userId: true,
-            teamId: true
-        }}
+            teamId: true,
+          },
+        },
       },
     });
   };
@@ -108,7 +109,7 @@ export class ProjectsRepository {
   getProjectInfosInRange = async (category, start, end) => {
     const formattedStart = new Date(start).toISOString();
     const formattedEnd = new Date(end).toISOString();
-    
+
     return await this.prisma.projects.findMany({
       where: {
         category,
@@ -122,33 +123,68 @@ export class ProjectsRepository {
     });
   };
 
+  // getAllNotSubmitUser = async (category, start, end, classId) => {
+  //   // projectId로 프로젝트 정보 조회
+  //   const project = await this.prisma.projects.findFirst({
+  //     where: {
+  //       category,
+  //       start: {
+  //         gte: formattedStart,
+  //       },
+  //       end: {
+  //         lte: formattedEnd,
+  //       },
+  //     },
+  //   });
+  // };
+
+  // getAllNotSubmitUser = async (classId, projectId) => {
+  //   // projectId로 프로젝트 정보 조회
+  //   console.log("repository", projectId);
+  //   const project = await this.prisma.projects.findFirst({
+  //     where: {
+  //       id: +projectId,
+  //     },
+  //   });
+
+  //   // 만약 해당하는 projectId가 없다면 빈 배열을 반환합니다.
+  //   if (!project) return [];
+
+  //   // projectId에 해당하는 Tasks 테이블에서 userId 조회한 결과
+  //   const tasks = await this.prisma.tasks.findMany({
+  //     where: {
+  //       id: +project.id,
+  //     },
+  //     select: {
+  //       userId: true, //taskId가 아닌 userId
+  //     },
+  //   });
+
+  //   // 순회하면서 배열 형태로 프로젝트 참가인원의 전체 목록을 생성
+  //   const userIdLists = tasks.map((task) => task.userId);
+
+  //   // userIdLists Console.log
+  //   console.log("Repository - 프로젝트 참가자 List:", userIdLists);
+
+  //   /** 미제출자 목록 추출
+  //    * 1. Users 테이블을 조회해서 classId가 있지만,
+  //    * 2. Tasks 테이블에서 조회한 userIdLists 배열과 비교해서
+  //    * 3. tasks.userId가 없는 사람은 과제를 미제출한 사람이기 때문에
+  //    * 4. notIn으로 userIdLists를 제외시키고,
+  //    * 5. Users 테이블에 있는 userId와 name을 조회해서 반환
+  //    */
+
   getAllNotSubmitUser = async (category, start, end, classId) => {
     // projectId로 프로젝트 정보 조회
     const project = await this.prisma.projects.findFirst({
       where: {
         category,
-        start: {
-          gte: formattedStart,
-        },
-        end: {
-          lte: formattedEnd,
-        },
+        start,
+        end,
       },
     });
-  };
-
-
-  getAllNotSubmitUser = async (classId, projectId) => {
-    // projectId로 프로젝트 정보 조회
-    const project = await this.prisma.projects.findFirst({
-      where: {
-        id: projectId,
-      },
-    });
-
     // 만약 해당하는 projectId가 없다면 빈 배열을 반환합니다.
     if (!project) return [];
-
     // projectId에 해당하는 Tasks 테이블에서 userId 조회한 결과
     const tasks = await this.prisma.tasks.findMany({
       where: {
@@ -158,13 +194,10 @@ export class ProjectsRepository {
         userId: true, //taskId가 아닌 userId
       },
     });
-
     // 순회하면서 배열 형태로 프로젝트 참가인원의 전체 목록을 생성
     const userIdLists = tasks.map((task) => task.userId);
-
     // userIdLists Console.log
     console.log("Repository - 프로젝트 참가자 List:", userIdLists);
-
     /** 미제출자 목록 추출
      * 1. Users 테이블을 조회해서 classId가 있지만,
      * 2. Tasks 테이블에서 조회한 userIdLists 배열과 비교해서
@@ -172,6 +205,7 @@ export class ProjectsRepository {
      * 4. notIn으로 userIdLists를 제외시키고,
      * 5. Users 테이블에 있는 userId와 name을 조회해서 반환
      */
+
     const notSubmitUsers = await this.prisma.users.findMany({
       where: {
         classId,
