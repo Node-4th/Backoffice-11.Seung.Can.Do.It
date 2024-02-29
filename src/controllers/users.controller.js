@@ -20,13 +20,13 @@ export class UsersController {
         pwConfirm,
         profileImg,
         role,
-        adminId
+        adminId,
       );
 
       // return res
-        // .status(201)
-        // .json({ message: "회원가입 완료되었습니다.", success: true, user });
-      return res.status(201).redirect('/signin').json({ message: "회원가입 완료되었습니다.", success: true, user });
+      //   .status(201)
+      //   .json({ message: "회원가입 완료되었습니다.", success: true, user });
+      return res.redirect("/signin");
     } catch (error) {
       next(error);
     }
@@ -49,14 +49,14 @@ export class UsersController {
       //   .status(200)
       //   .json({ message: "로그인되었습니다.", success: true, user });
       switch (user.role) {
-        case 'ADMIN':
-          res.render('admin_main.ejs');
+        case "ADMIN":
+          res.render("admin_main.ejs");
           break;
-        case 'TUTOR':
-          res.render('tutor_main.ejs');
+        case "TUTOR":
+          res.render("tutor_main.ejs");
           break;
-        case 'STUDENT':
-          res.render('student_main.ejs');
+        case "STUDENT":
+          res.render("student_main.ejs");
           break;
       }
     } catch (error) {
