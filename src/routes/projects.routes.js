@@ -1,5 +1,4 @@
 import express from "express";
-import slackSender from "../utils/slackSender.js";
 
 /**PrismaORM -> 3계층 의존성 주입 */
 import { prisma } from "../models/index.js";
@@ -28,6 +27,7 @@ router.get(
 router.post("/", authMiddleware, projectsController.createProject);
 router.put("/:projectId", authMiddleware, projectsController.updateProject);
 router.delete("/:projectId", authMiddleware, projectsController.deleteProject);
+
 router.post("/submit/slack", async (req, res, next) => {
   try {
     const { category, start, end, classId } = req.body;
