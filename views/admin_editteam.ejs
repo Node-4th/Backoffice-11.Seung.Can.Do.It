@@ -1,0 +1,17 @@
+<body>
+        <%- include('admin_header.ejs') %>
+    
+        <div class="pro">
+            <form action="/teams/<%= team.projectId %>/<%= team.id %>?_method=PUT" method="POST">
+
+                <label for="newName">팀 이름:</label>
+                <input type="text" name="name" value="<%= team.name %>">
+    
+                <label for="newMemberList">팀 멤버:</label>
+                <input type="text" name="memberList" value="<%= team.memberList %>">
+ 
+                <button class="teambtn" type="submit">팀 수정하기</button>
+            </form>
+        </div>
+    </body>
+    

@@ -1,0 +1,23 @@
+<body>
+    <%- include('tutor_header.ejs') %>
+
+        <div class="ta">
+            <form action="/feedbacks/<%= feedback.id %>?_method=PUT" method="POST">
+                <h3>title</h3>
+                <input class="feed_input" type="text" name="title" value="<%= feedback.title %>">
+                <h3>content</h3>
+                <textarea class="feed_input2" name="content" value="<%= feedback.content %>"></textarea>
+                <h3>평점</h3>
+                <select class="feed_input3" name="rating">
+                    <% for (let i=1; i <=10; i++) { %>
+                        <option value="<%= 'RATING_' + i %>">
+                            <% for (let j=0; j < i; j++) { %>
+                                <% } %>
+                                    <%= i %>
+                        </option>
+                        <% } %>
+                </select>
+                <button class="teambtn" type="submit">피드백 수정하기</button>
+            </form>
+        </div>
+</body>

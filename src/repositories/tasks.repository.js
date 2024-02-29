@@ -26,16 +26,16 @@ export class TasksRepository {
   findTaskByProjectId = async (projectId) => {
     const tasks = await this.prisma.tasks.findMany({
       where: { projectId },
-      select: {
-        id: true,
-        content: true,
-        submitUrl: true,
-        projects: {
-          select: {
-            title: true,
-          },
-        },
-      },
+      // select: {
+      //   id: true,
+      //   content: true,
+      //   submitUrl: true,
+      //   projects: {
+      //     select: {
+      //       title: true,
+      //     },
+      //   },
+      // },
     });
     return tasks;
   };
@@ -50,6 +50,10 @@ export class TasksRepository {
   findTask = async (taskId) => {
     const task = await this.prisma.tasks.findFirst({
       where: { id: +taskId },
+      include: {
+        users: { select: { name: true } },
+        teams: { select: { name: true } }
+      }
     });
     return task;
   };
@@ -78,4 +82,18 @@ export class TasksRepository {
     });
     return task;
   };
+
+  findTaskByProjectId = async (projectId) => {
+    const tasks = await this.prisma.tasks.findMany({
+      where: {
+        projectId: +projectId
+      },
+      include: {
+        users: { select: { name: true } },
+        teams: { select: { name: true } }
+      }
+    });
+
+    return tasks;
+  }
 }

@@ -1,0 +1,18 @@
+<body>
+    <%- include('student_header.ejs') %>
+
+        <h1 class="main_title">팀 확인하기</h1>
+        <div class="teams">
+            <% teams.forEach(team=> { %>
+                <div class="team">
+                    <a href="/teams/<%= team.id %>">
+                        <h1>
+                            <%= team.name %>
+                        </h1>
+                    </a>
+                    <p>팀 멤버 : <%= team.memberList %>
+                    </p>
+                </div>
+             <% }); %>
+        </div>
+</body>

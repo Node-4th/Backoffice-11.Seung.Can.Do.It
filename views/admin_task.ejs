@@ -1,0 +1,20 @@
+<body>
+    <%- include('admin_header.ejs') %>
+        <h1 class="createC">미제출자 조회</h1>
+        <form action="/projects/submit" method="GET">
+            <div class="createclass">
+                <h3>category</h3>
+                <select class="project_input" name="category">
+                    <option value="TIL">TIL</option>
+                    <option value="PERSONAL_PROJECT">Personal Project</option>
+                    <option value="TEAM_PROJECT">Team Project</option>
+                </select>
+                <h3>start</h3>
+                <input class="project_input" type="date" name="start" placeholder="start을 입력하세요">
+                <h3>end</h3>
+                <input class="project_input1" type="date" name="end" placeholder="end을 입력하세요">
+                <button class="project-btn">조회하기</button>
+            </div>
+        </form>
+
+</body>

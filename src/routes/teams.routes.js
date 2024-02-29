@@ -15,10 +15,10 @@ const teamsService = new TeamsService(teamsRepository);
 const teamsController = new TeamsController(teamsService);
 
 // 팀 생성, 조회, 수정, 삭제
-router.get("/", authMiddleware, teamsController.getAllTeams);
+router.get("/project/:projectId", authMiddleware, teamsController.getAllTeams);
 router.get("/:teamId", authMiddleware, teamsController.getTeamByTeamId);
-router.post("/", authMiddleware, teamsController.createTeam);
-router.put("/:teamId", authMiddleware, teamsController.updateTeam);
+router.post("/:projectId", authMiddleware, teamsController.createTeam);
+router.put("/:projectId/:teamId", authMiddleware, teamsController.updateTeam);
 router.delete("/:teamId", authMiddleware, teamsController.deleteTeam);
 
 export default router;

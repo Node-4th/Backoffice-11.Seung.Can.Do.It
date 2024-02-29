@@ -18,8 +18,11 @@ export class TeamsRepository {
     });
   };
 
-  getAllTeams = async (orderKey, orderValue) => {
+  getAllTeams = async (orderKey, orderValue, projectId) => {
     const teams = await this.prisma.teams.findMany({
+      where: {
+        projectId: +projectId
+      },
       select: {
         id: true,
         name: true,
@@ -40,9 +43,11 @@ export class TeamsRepository {
         id: +teamId,
       },
       select: {
+        id: true,
         name: true,
         projectId: true,
         memberList: true,
+        tasks: {select: {id: true}}
       },
     });
   };
@@ -54,7 +59,7 @@ export class TeamsRepository {
 
     return await this.prisma.teams.create({
       data: {
-        projectId,
+        projectId: +projectId,
         name,
         memberList: members,
       },
@@ -71,7 +76,7 @@ export class TeamsRepository {
         id: +teamId,
       },
       data: {
-        projectId,
+        projectId: +projectId,
         name,
         memberList: members,
       },

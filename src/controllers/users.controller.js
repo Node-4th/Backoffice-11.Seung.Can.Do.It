@@ -23,9 +23,20 @@ export class UsersController {
         adminId
       );
 
-      return res
-        .status(201)
-        .json({ message: "회원가입 완료되었습니다.", success: true, user });
+      // return res
+      //   .status(201)
+      //   .json({ message: "회원가입 완료되었습니다.", success: true, user });
+      switch (user.role) {
+        case 'ADMIN':
+          res.render('admin_main.ejs');
+          break;
+        case 'TUTOR':
+          res.render('tutor_main.ejs');
+          break;
+        case 'STUDENT':
+          res.render('student_main.ejs');
+          break;
+      }
     } catch (error) {
       next(error);
     }
@@ -44,9 +55,20 @@ export class UsersController {
       res.cookie("accessToken", `Bearer ${accessToken}`);
       res.cookie("refreshToken", `Bearer ${refreshToken}`);
 
-      return res
-        .status(200)
-        .json({ message: "로그인되었습니다.", success: true, user });
+      // return res
+      //   .status(200)
+      //   .json({ message: "로그인되었습니다.", success: true, user });
+      switch (user.role) {
+        case 'ADMIN':
+          res.render('admin_main.ejs');
+          break;
+        case 'TUTOR':
+          res.render('tutor_main.ejs');
+          break;
+        case 'STUDENT':
+          res.render('student_main.ejs');
+          break;
+      }
     } catch (error) {
       next(error);
     }

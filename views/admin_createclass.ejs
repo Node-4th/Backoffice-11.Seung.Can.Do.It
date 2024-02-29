@@ -1,0 +1,12 @@
+<body>
+    <%- include('admin_header.ejs') %>
+
+    <h1 class="createC">클래스 생성</h1>
+        <form class="form-box" action="/classes" method="POST">
+            <div class="createclass">
+                <h3>Class Name</h3>
+                <input class="class_input" type="text" name="name" placeholder="Class Name을 입력하세요">
+                <button class="sign-btn">생성하기</button>
+            </div>
+        </form>
+</body>

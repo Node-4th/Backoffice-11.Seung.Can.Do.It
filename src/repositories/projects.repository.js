@@ -49,11 +49,18 @@ export class ProjectsRepository {
         id: +projectId,
       },
       select: {
+        id: true,
         title: true,
         category: true,
         start: true,
         end: true,
         createdAt: true,
+        tasks: {
+          select: {
+            id: true,
+            userId: true,
+            teamId: true
+        }}
       },
     });
   };
@@ -98,15 +105,23 @@ export class ProjectsRepository {
     });
   };
 
-  getProjectInfos = async (category, start, end) => {
-    return await this.prisma.projects.findFirst({
+  getProjectInfosInRange = async (category, start, end) => {
+    const formattedStart = new Date(start).toISOString();
+    const formattedEnd = new Date(end).toISOString();
+    
+    return await this.prisma.projects.findMany({
       where: {
         category,
-        start,
-        end,
+        start: {
+          gte: formattedStart,
+        },
+        end: {
+          lte: formattedEnd,
+        },
       },
     });
   };
+
 
   getAllNotSubmitUser = async (classId, projectId) => {
     // projectId로 프로젝트 정보 조회

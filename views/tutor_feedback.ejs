@@ -1,5 +1,5 @@
 <body>
-    <%- include('student_header.ejs') %>
+    <%- include('tutor_header.ejs') %>
 
     <h1 class="teamname"><%= feedback.title %></h1>
     <div class="Infos">
@@ -10,5 +10,9 @@
                 <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
             <% } %>
         </h2>
+        <a href="/tutor/editfeedback/<%= feedback.id %>"><button class="BTN">피드백 수정하기</button></a>
+        <form class="form-box" action='/feedbacks/<%= feedback.id %>?_method=DELETE' method="POST">
+            <button class="BTN">피드백 삭제하기</button>
+        </form>
     </div>
 </body>

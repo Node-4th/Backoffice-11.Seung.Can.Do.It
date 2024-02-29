@@ -17,7 +17,7 @@ const feedbacksController = new FeedbacksController(feedbacksService, slackMessa
 router.get('/:taskId', authMiddleware, feedbacksController.findAllFeedback);
 
 // 피드백 상세 조회
-router.get('/:feedbackId', authMiddleware, feedbacksController.findFeedback);
+router.get('/task/:feedbackId', authMiddleware, feedbacksController.findFeedback);
 
 // 피드백 생성
 router.post('/:taskId', authMiddleware, feedbacksController.createFeedback);
@@ -27,6 +27,8 @@ router.put('/:feedbackId', authMiddleware, feedbacksController.editFeedback);
 
 // 피드백 삭제
 router.delete('/:feedbackId', authMiddleware, feedbacksController.deleteFeedback);
+
+router.get('/', authMiddleware, feedbacksController.findAllFeedbackByUser);
 
 
 export default router;

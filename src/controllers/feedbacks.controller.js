@@ -9,9 +9,10 @@ export class FeedbacksController {
       const { taskId } = req.params;
 
       await this.feedbacksService.findTask(taskId);
-      const feedback = await this.feedbacksService.findAllFeedback(taskId);
+      const feedbacks = await this.feedbacksService.findAllFeedback(taskId);
 
-      return res.status(200).json({ data: feedback });
+      // return res.status(200).json({ data: feedback });
+      return res.render('student_feedbacks.ejs', { feedbacks });
     } catch (err) {
       next(err);
     }
@@ -20,10 +21,22 @@ export class FeedbacksController {
   findFeedback = async (req, res, next) => {
     try {
       const { feedbackId } = req.params;
+      const { role } = req.user;
 
       const feedback = await this.feedbacksService.findFeedback(feedbackId);
-
-      return res.status(200).json({ data: feedback })
+      console.log(feedback);
+      // return res.status(200).json({ data: feedback });
+      switch (role) {
+        case 'ADMIN':
+          res.render('admin_main.ejs');
+          break;
+        case 'TUTOR':
+          res.render(('tutor_feedback.ejs'), { feedback });
+          break;
+        case 'STUDENT':
+          res.render('student_feedback.ejs', { feedback });
+          break;
+      }
 
     } catch (err) {
       next(err);
@@ -45,10 +58,10 @@ export class FeedbacksController {
         rating,
         userId
       );
-      // await this.feedbackMessage.feedbackSlack(feedback, task);
 
-      return res.status(201).json({ success: 'true', message: '피드백을 작성하였습니다.' });
+      // return res.status(201).json({ success: 'true', message: '피드백을 작성하였습니다.' });
 
+      return res.redirect(`/feedbacks/task/${feedback.id}`)
     } catch (err) {
       next(err);
     }
@@ -71,7 +84,8 @@ export class FeedbacksController {
         findFeedback.userId
       );
 
-      return res.status(200).json({ success: 'true', message: '피드백을 수정했습니다.', data: feedback });
+      // return res.status(200).json({ success: 'true', message: '피드백을 수정했습니다.', data: feedback });
+        return res.redirect(`/feedbacks/task/${feedback.id}`)
 
     } catch (err) {
       next(err);
@@ -91,10 +105,23 @@ export class FeedbacksController {
         findFeedback.userId
       );
 
-      return res.status(204).json({ success: 'true', message: '피드백을 삭제했습니다.' });
+      // return res.status(204).json({ success: 'true', message: '피드백을 삭제했습니다.' });
+      return res.redirect('/feedbacks');
 
     } catch (err) {
       next(err);
     }
   };
+
+  findAllFeedbackByUser = async (req, res, next) => {
+    try {
+      const { id, role } = req.user;
+
+      const feedbacks = await this.feedbacksService.findAllFeedbackByUser(id);
+
+      return res.render('tutor_feedbacks.ejs', { feedbacks })
+    } catch(err) {
+      next(err);
+    }
+  }
 }

@@ -13,7 +13,8 @@ export class ProjectsService {
     return isAdmin;
   };
 
-  getAllProjects = async (orderKey, orderValue) => {
+  getAllProjects = async (orderKey, orderValue, id) => {
+    
     const projects = await this.projectsRepository.getAllProjects(
       orderKey,
       orderValue,
@@ -103,7 +104,7 @@ export class ProjectsService {
     console.log("Service - isAdmin", isAdmin);
 
     // 검색 조건으로 입력한 프로젝트 정보 조회 요청
-    const projectInfos = await this.projectsRepository.getProjectInfos(
+    const projectInfos = await this.projectsRepository.getProjectInfosInRange(
       category,
       start,
       end,

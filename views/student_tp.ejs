@@ -10,12 +10,9 @@
             </p>
             <p>마감 날짜: <%= project.end.toLocaleDateString('ko-KR') %>
             </p>
-            
-            <a href="/students/submit/<%= project.id %>"><button class="submitbut">과제 제출하기</button></a>
-            <% if (task && task.id) { %>
-                <a href="/feedbacks/<%= task.id %>"><button class="submitbut">피드백 확인하기</button></a>
-            <% } %>
-             
+
+            <button class="submitbut"><a href="/teams/project/<%= project.id %>">팀 확인하기</a></button>
+
         </div>
 
 

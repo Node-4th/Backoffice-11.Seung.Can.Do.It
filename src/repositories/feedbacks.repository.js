@@ -97,4 +97,14 @@ export class FeedbacksRepository {
 
     return user; 
   }
+
+  findAllFeedbackByUser = async (id) => {
+    const feedbacks = await this.prisma.Feedbacks.findMany({
+      where:{
+        userId: +id
+      }
+    });
+
+    return feedbacks;
+  }
 }

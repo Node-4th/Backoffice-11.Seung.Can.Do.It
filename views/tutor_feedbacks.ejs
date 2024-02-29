@@ -1,0 +1,10 @@
+<body>
+    <%- include('tutor_header.ejs') %>
+
+    <h1 class="main_title">전체 피드백 조회</h1>
+    <div class="feedbacks">
+        <% feedbacks.forEach(feedback => { %>
+            <a href="/feedbacks/task/<%= feedback.id %>"><h1 class="teamname"><%= feedback.title %></h1></a>
+        <% }); %>
+    </div>
+</body>

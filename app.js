@@ -18,6 +18,7 @@ import teamInfosRouter from "./src/routes/teamInfos.router.js";
 import emailRouter from "./src/routes/emailservice.routes.js";
 import usersRouter from "./src/routes/users.routes.js";
 import notSumitUserRouter from "./src/routes/projects.routes.js";
+import { prisma } from "./src/models/index.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -38,7 +39,7 @@ app.use("/teamInfos", teamInfosRouter);
 app.use("/send-emails", emailRouter);
 app.use("/tasks", tasksRouter);
 
-app.use("/projects", notSumitUserRouter);
+// app.use("/projects", notSumitUserRouter);
 
 app.use(errorHandlerMiddleware);
 
@@ -57,25 +58,23 @@ app.get('/students/main', async (req, res, next) => {
   res.render('student_main.ejs');
 });
 
-app.get('/students/til', async (req, res, next) => {
-  res.render('student_til.ejs');
-});
-
-app.get('/students/personal_project', async (req, res, next) => {
-  res.render('student_pp.ejs');
-});
-
 // ------------------------------------------------
-app.get('/students/team_Infos', async (req, res, next) => {
-  res.render('student_teamInfos.ejs');
+app.get('/students/team_Infos/:teamId', async (req, res, next) => {
+  const { teamId } = req.params;
+  const team = await prisma.Teams.findFirst({where: {id: +teamId}});
+  const teamInfos = await prisma.TeamInfos.findFirst({where: {teamId: +teamId}});
+  res.render('student_teamInfos.ejs', { team: team, teamInfos: teamInfos });
 }); 
 
-app.get('/students/submit', async (req, res, next) => {
-  res.render('student_submit.ejs');
+app.get('/students/submit/:projectId', async (req, res, next) => {
+  const { projectId } = req.params;
+  const { teamId } = req.query;
+  res.render('student_submit.ejs', { projectId, teamId });
 });
 
-app.get('/students/createteamInfo', async (req, res, next) => {
-  res.render('student_teamInfos_create.ejs');
+app.get('/students/createteamInfo/:teamId', async (req, res, next) => {
+  const { teamId } = req.params;
+  res.render('student_teamInfos_create.ejs', {teamId: +teamId});
 });
 
 app.get('/students/team', async (req, res, next) => {
@@ -91,8 +90,43 @@ app.get('/admins/main', async (req, res, next) => {
   res.render('admin_main.ejs');
 });
 
-app.get('/admins/til', async (req, res, next) => {
-  res.render('admin_til.ejs');
+app.get('/admins/task', async (req, res, next) => {
+  res.render('admin_task.ejs');
+});
+
+app.get('/admin/createclass', async (req, res, next) => {
+  res.render('admin_createclass.ejs');
+});
+
+app.get('/admin/createproject', async (req, res, next) => {
+  res.render('admin_createproject.ejs');
+});
+
+app.get('/admin/createteam/:projectId', async (req, res, next) => {
+  const {projectId} = req.params;
+  res.render('admin_createteam.ejs', { projectId: projectId });
+});
+
+app.get('/admin/editteam/:teamId', async (req, res, next) => {
+  const {teamId} = req.params;
+  const team = await prisma.Teams.findFirst({where: {id: +teamId}});
+  res.render('admin_editteam.ejs', { team: team });
+});
+
+// tutor
+app.get('/tutor/main', async (req, res, next) => {
+  res.render('tutor_main.ejs');
+});
+
+app.get('/tutor/createfeedback/:taskId', async (req, res, next) => {
+  const { taskId } = req.params;
+  res.render('tutor_createfeedback.ejs', {taskId});
+});
+
+app.get('/tutor/editfeedback/:feedbackId', async (req, res, next) => {
+  const { feedbackId } = req.params;
+  const feedback = await prisma.feedbacks.findFirst({where: {id: +feedbackId}})
+  res.render('tutor_editfeedback.ejs', { feedback });
 });
 
 ////////////////////////////////

@@ -3,10 +3,10 @@ export class TeamInfosRepository {
         this.prisma = prisma;
     }
 
-    findTeamInfos = async (teamInfoId) => {
+    findTeamInfos = async (teamId) => {
         const teamInfo = await this.prisma.TeamInfos.findFirst({
             where: {
-                id: +teamInfoId
+                teamId: +teamId
             }
         });
 

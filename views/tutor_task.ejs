@@ -1,0 +1,15 @@
+<body>
+    <%- include('tutor_header.ejs') %>
+
+        <div class="ta">
+            <h2><%= task.users ? task.users.name : task.teams.name %></h2>
+            <p> content </p>
+            <p><%= task.content %></p>
+            <p> URL : <%= task.submitUrl %></p>
+            <p> 제출일 : <%= new Date(task.createdAt).toLocaleDateString('ko-KR') %></p>
+            <a href="/tutor/createfeedback/<%= task.id %>"><button class="tabtn">피드백 작성하기</button></a>    
+            
+        </div>
+
+
+</body>

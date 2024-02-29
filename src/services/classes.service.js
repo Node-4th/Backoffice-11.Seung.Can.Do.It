@@ -21,7 +21,8 @@ export class ClassesService {
   };
   getClassByClassId = async (classId) => {
     const myClass = await this.classesRepository.getClassByClassId(classId);
-    if (!classId) throw new Error("존재하지 않는 클래스입니다.");
+    
+    if (!myClass) throw new Error("존재하지 않는 클래스입니다.");
     return myClass;
   };
 

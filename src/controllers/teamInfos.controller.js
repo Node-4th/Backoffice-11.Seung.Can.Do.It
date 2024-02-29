@@ -5,9 +5,9 @@ export class TeamInfosController {
 
     findTeamInfos = async (req, res, next) => {
         try {
-            const { teamInfoId } = req.params;
+            const { teamId } = req.params;
 
-            const teamInfo = await this.teamInfosService.findTeamInfos(teamInfoId);
+            const teamInfo = await this.teamInfosService.findTeamInfos(teamId);
 
             return res.status(200).json({ data: teamInfo });
         } catch (err) {
