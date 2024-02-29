@@ -195,10 +195,6 @@ export class ProjectsController {
       const { id } = req.user;
       const userId = id;
       const { category, start, end } = req.body;
-<<<<<<< HEAD
-
-=======
->>>>>>> 65d6b810a736f3834874d10739ddee0a4678c8bd
       //유효성 검사
       if (!category) {
         return res.status(400).json({
@@ -212,10 +208,6 @@ export class ProjectsController {
             "발제한 날짜(시작일) 혹은 제출 마감일(종료일)을 입력해주세요.",
         });
       }
-<<<<<<< HEAD
-
-=======
->>>>>>> 65d6b810a736f3834874d10739ddee0a4678c8bd
       //서비스 계층에 조회 요청
       const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
         userId,
@@ -223,10 +215,6 @@ export class ProjectsController {
         start,
         end,
       );
-<<<<<<< HEAD
-
-=======
->>>>>>> 65d6b810a736f3834874d10739ddee0a4678c8bd
       req.notSubmitUsers = notSubmitUsers;
       next();
     } catch (error) {
