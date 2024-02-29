@@ -87,7 +87,7 @@ export class TeamsController {
       //Response
       res.status(201).json({
         success: true,
-        message: "팀이 성공적으로 생성되었습니다.",
+        message: "팀이 성공적으로 수정되었습니다.",
         data: updatedTeam,
       });
     } catch (error) {
@@ -104,7 +104,7 @@ export class TeamsController {
       //Response
       res.status(200).json({
         success: true,
-        message: "팀이 성공적으로 생성되었습니다.",
+        message: "팀이 성공적으로 삭제되었습니다.",
       });
     } catch (error) {
       next(error);
