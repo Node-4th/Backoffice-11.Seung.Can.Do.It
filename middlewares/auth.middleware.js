@@ -22,7 +22,6 @@ export default async function (req, res, next) {
 
     req.user = user;
     
-
     if (decodedToken.exp * 1000 < Date.now()) {
       if (refreshToken) {
         const decodedRefreshToken = jwt.verify(

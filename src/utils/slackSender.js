@@ -4,7 +4,8 @@ dotenv.config();
 
 const slackSender = async (text) => {
   const data = {
-    channel: "backoffice",
+    channel: process.env.SLACK_CHANNEL_ID,
+
     attachments: [
       {
         title: `오늘 TIL 미제출자 :`,
