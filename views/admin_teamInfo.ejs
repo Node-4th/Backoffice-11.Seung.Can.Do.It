@@ -1,0 +1,23 @@
+
+
+<body>
+    <%- include('admin_header.ejs') %>
+
+    <h1 class="teamname"><%= teamInfos ? teamInfos.teamName : "팀이름" %></h1>
+    <div class="Infos">
+        <div class="groundRules">
+            <h3>GroundRules</h3>
+            <%= teamInfos ? teamInfos.groundRules : "" %>
+        </div>
+        <div class="goals">
+            <h3>Goals</h3>
+            <%= teamInfos ? teamInfos.goals : "" %>
+        </div>
+        <div class="contents">
+            <h3>Contents</h3>
+            <%= teamInfos ? teamInfos.contents : "" %>
+        </div>
+    </div>
+    
+    
+</body>

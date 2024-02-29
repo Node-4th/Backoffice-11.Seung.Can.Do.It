@@ -22,7 +22,7 @@ export class TasksController {
       if (teamId) {
         res.redirect(`/students/team_Infos/${teamId}`);
       } else {
-        res.render('student_pp.ejs', { project });
+        res.redirect('/students/main');
       }
     } catch (err) {
       next(err);

@@ -214,7 +214,8 @@ export class ProjectsController {
           message: "조회할 프로젝트 유형을 입력해주세요.",
         });
       }
-
+      const startDate = new Date(start);
+      const endDate = new Date(end);
       if (!["TIL", "PERSONAL_PROJECT", "TEAM_PROJECT"].includes(category))
         throw new Error(
           "올바르지 않은 프로젝트 유형입니다. 프로젝트 유형은 'TIL', 'PERSONAL_PROJECT', 'TEAM_PROJECT' 중 하나의 항목만 기재하실 수 있습니다.",
@@ -237,8 +238,8 @@ export class ProjectsController {
       const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
         userId,
         category,
-        start,
-        end,
+        startDate,
+        endDate,
       );
 
       //Response

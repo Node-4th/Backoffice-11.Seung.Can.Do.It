@@ -98,8 +98,10 @@ app.get("/students/submit", async (req, res, next) => {
   res.render("student_submit.ejs");
 });
 
-app.get("/students/createteamInfo", async (req, res, next) => {
-  res.render("student_teamInfos_create.ejs");
+app.get("/students/editteamInfo/:teamInfosId", async (req, res, next) => {
+  const { teamInfosId } = req.params;
+  const teamInfos = await prisma.TeamInfos.findFirst({where: {id: +teamInfosId}});
+  res.render("student_teamInfos_edit.ejs", {teamInfos});
 });
 
 app.get("/students/team", async (req, res, next) => {
@@ -136,6 +138,10 @@ app.get('/admin/editteam/:teamId', async (req, res, next) => {
   const {teamId} = req.params;
   const team = await prisma.Teams.findFirst({where: {id: +teamId}});
   res.render('admin_editteam.ejs', { team: team });
+});
+
+app.get('/admin/email', async (req, res, next) => {
+  res.render('admin_email.ejs');
 });
 
 // tutor

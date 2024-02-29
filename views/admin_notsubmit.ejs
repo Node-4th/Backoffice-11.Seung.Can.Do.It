@@ -6,11 +6,25 @@
             <div id="no" class="no">
                 <h1>미제출자</h1>
                 <% notSubmitUsers.forEach(user=> { %>
-                <p><%= user.name %></p>
-                <% }); %>
+                    <p>
+                        <%= user.name %>
+                    </p>
+                    <% }); %>
             </div>
         </div>
 
-
+        <form class="form-box" action="/projects/submit/slack" method="POST">
+            <h3>category</h3>
+            <select class="project_input" name="category">
+                <option value="TIL">TIL</option>
+                <option value="PERSONAL_PROJECT">Personal Project</option>
+                <option value="TEAM_PROJECT">Team Project</option>
+            </select>
+            <h3>start</h3>
+            <input class="project_input" type="date" name="start" placeholder="start을 입력하세요">
+            <h3>end</h3>
+            <input class="project_input1" type="date" name="end" placeholder="end을 입력하세요">
+            <button class="project-btn">슬랙 보내기</button>
+        </form>
 
 </body>

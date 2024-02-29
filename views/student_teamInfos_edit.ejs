@@ -1,0 +1,21 @@
+<body>
+    <%- include('student_header.ejs') %>
+
+        <form class="form-box" action="/teamInfos/<%= teamInfos.teamId %>?_method=PUT" method="POST">
+            <div class="Infos">
+                <div class="groundRules"><h3>Team Name</h3>
+                    <input class="team_input" type="text" name="teamName" value="<%= teamInfos.teamName %>">
+                </div>
+                <div class="groundRules"><h3>GroundRules</h3>
+                    <input class="team_input" type="text" name="groundRules" value="<%= teamInfos.groundRules %>">
+                </div>
+                <div class="goals"><h3>Goals</h3>
+                    <input class="team_input" type="text" name="goals" value="<%= teamInfos.goals %>">
+                </div>
+                <div class="contents"><h3>Contents</h3>
+                    <input class="team_input" type="text" name="content" value="<%= teamInfos.content %>">
+                </div>
+            </div>
+            <button class="submitbtn">팀 정보 저장하기</button>
+        </form>
+</body>

@@ -34,13 +34,16 @@ router.post("/", authMiddleware, projectsController.createProject);
 router.put("/:projectId", authMiddleware, projectsController.updateProject);
 router.delete("/:projectId", authMiddleware, projectsController.deleteProject);
 
-router.post("/submit/slack", async (req, res, next) => {
+router.post("/submit/slack",authMiddleware, async (req, res, next) => {
   try {
-    const { category, start, end, classId } = req.body;
+    const { category, start, end } = req.body;
+    const { classId } = req.user;
+    const startDate = new Date(start);
+    const endDate = new Date(end);
     const notSubmitUsers = await projectsRepository.getAllNotSubmitUser(
       category,
-      start,
-      end,
+      startDate,
+      endDate,
       classId,
     );
     const text = notSubmitUsers;

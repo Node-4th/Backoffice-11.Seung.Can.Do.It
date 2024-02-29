@@ -23,9 +23,6 @@ export class UsersController {
         adminId,
       );
 
-      // return res
-      //   .status(201)
-      //   .json({ message: "회원가입 완료되었습니다.", success: true, user });
       return res.redirect("/signin");
     } catch (error) {
       next(error);
