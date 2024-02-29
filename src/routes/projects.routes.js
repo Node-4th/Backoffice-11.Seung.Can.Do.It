@@ -1,5 +1,4 @@
 import express from "express";
-import slackSender from "../utils/slackSender.js";
 
 /**PrismaORM -> 3계층 의존성 주입 */
 import { prisma } from "../models/index.js";
