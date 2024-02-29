@@ -198,13 +198,6 @@ export class ProjectsRepository {
     const userIdLists = tasks.map((task) => task.userId);
     // userIdLists Console.log
     console.log("Repository - 프로젝트 참가자 List:", userIdLists);
-    /** 미제출자 목록 추출
-     * 1. Users 테이블을 조회해서 classId가 있지만,
-     * 2. Tasks 테이블에서 조회한 userIdLists 배열과 비교해서
-     * 3. tasks.userId가 없는 사람은 과제를 미제출한 사람이기 때문에
-     * 4. notIn으로 userIdLists를 제외시키고,
-     * 5. Users 테이블에 있는 userId와 name을 조회해서 반환
-     */
 
     const notSubmitUsers = await this.prisma.users.findMany({
       where: {
