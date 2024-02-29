@@ -1,6 +1,5 @@
 import axios from "axios";
 import dotenv from "dotenv";
-
 dotenv.config();
 
 const slackSender = async (text) => {
@@ -14,7 +13,6 @@ const slackSender = async (text) => {
       },
     ],
   };
-
   const config = {
     method: "post",
     url: "https://slack.com/api/chat.postMessage",
@@ -24,7 +22,6 @@ const slackSender = async (text) => {
     },
     data,
   };
-
   const result = await axios(config)
     .then((data) => {
       console.log(data);
@@ -32,8 +29,6 @@ const slackSender = async (text) => {
     .catch((err) => {
       console.error(err);
     });
-
   return result;
 };
-
 export default slackSender;
