@@ -83,7 +83,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
         <p> 웹사이트를 방문해주세요.</p>
 
-        <a href="http://localhost:3000/sign-up?role=student&adminId=${user.id}" class="button">방문하기</a>
+        <a href="http://localhost:3000/signup?role=student&adminId=${user.id}" class="button">방문하기</a>
       </div>
       <div class="footer">
         <p>도움이 필요하시면 언제든지 문의해주세요. 즐거운 하루 되세요!🥕</p>
