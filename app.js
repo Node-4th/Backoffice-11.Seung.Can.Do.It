@@ -49,13 +49,12 @@ app.use(errorHandlerMiddleware);
 
 ////////////////////////////////
 
-
-app.get('/main', async (req, res, next) => {
-  res.render('main.ejs');
+app.get("/main", async (req, res, next) => {
+  res.render("main.ejs");
 });
 
-app.get('/signup', async (req, res, next) => {
-  res.render('signup.ejs');
+app.get("/signup", async (req, res, next) => {
+  res.render("signup.ejs");
 });
 
 app.get("/signin", async (req, res, next) => {
@@ -68,22 +67,24 @@ app.get("/students/main", async (req, res, next) => {
 });
 
 // ------------------------------------------------
-app.get('/students/team_Infos/:teamId', async (req, res, next) => {
+app.get("/students/team_Infos/:teamId", async (req, res, next) => {
   const { teamId } = req.params;
-  const team = await prisma.Teams.findFirst({where: {id: +teamId}});
-  const teamInfos = await prisma.TeamInfos.findFirst({where: {teamId: +teamId}});
-  res.render('student_teamInfos.ejs', { team: team, teamInfos: teamInfos });
-}); 
-
-app.get('/students/submit/:projectId', async (req, res, next) => {
-  const { projectId } = req.params;
-  const { teamId } = req.query;
-  res.render('student_submit.ejs', { projectId, teamId });
+  const team = await prisma.Teams.findFirst({ where: { id: +teamId } });
+  const teamInfos = await prisma.TeamInfos.findFirst({
+    where: { teamId: +teamId },
+  });
+  res.render("student_teamInfos.ejs", { team: team, teamInfos: teamInfos });
 });
 
-app.get('/students/createteamInfo/:teamId', async (req, res, next) => {
+app.get("/students/submit/:projectId", async (req, res, next) => {
+  const { projectId } = req.params;
+  const { teamId } = req.query;
+  res.render("student_submit.ejs", { projectId, teamId });
+});
+
+app.get("/students/createteamInfo/:teamId", async (req, res, next) => {
   const { teamId } = req.params;
-  res.render('student_teamInfos_create.ejs', {teamId: +teamId});
+  res.render("student_teamInfos_create.ejs", { teamId: +teamId });
 });
 
 app.get("/students/til", async (req, res, next) => {
@@ -115,51 +116,53 @@ app.get("/admins/main", async (req, res, next) => {
   res.render("admin_main.ejs");
 });
 
-app.get('/admins/task', async (req, res, next) => {
-  res.render('admin_task.ejs');
+app.get("/admins/task", async (req, res, next) => {
+  res.render("admin_task.ejs");
 });
 
-app.get('/admin/createclass', async (req, res, next) => {
-  res.render('admin_createclass.ejs');
+app.get("/admin/createclass", async (req, res, next) => {
+  res.render("admin_createclass.ejs");
 });
 
-app.get('/admin/createproject', async (req, res, next) => {
-  res.render('admin_createproject.ejs');
+app.get("/admin/createproject", async (req, res, next) => {
+  res.render("admin_createproject.ejs");
 });
 
-app.get('/admin/createteam/:projectId', async (req, res, next) => {
-  const {projectId} = req.params;
-  res.render('admin_createteam.ejs', { projectId: projectId });
+app.get("/admin/createteam/:projectId", async (req, res, next) => {
+  const { projectId } = req.params;
+  res.render("admin_createteam.ejs", { projectId: projectId });
 });
 
-app.get('/admin/editteam/:teamId', async (req, res, next) => {
-  const {teamId} = req.params;
-  const team = await prisma.Teams.findFirst({where: {id: +teamId}});
-  res.render('admin_editteam.ejs', { team: team });
+app.get("/admin/editteam/:teamId", async (req, res, next) => {
+  const { teamId } = req.params;
+  const team = await prisma.Teams.findFirst({ where: { id: +teamId } });
+  res.render("admin_editteam.ejs", { team: team });
 });
 
 // tutor
-app.get('/tutor/main', async (req, res, next) => {
-  res.render('tutor_main.ejs');
+app.get("/tutor/main", async (req, res, next) => {
+  res.render("tutor_main.ejs");
 });
 
-app.get('/tutor/createfeedback/:taskId', async (req, res, next) => {
+app.get("/tutor/createfeedback/:taskId", async (req, res, next) => {
   const { taskId } = req.params;
-  res.render('tutor_createfeedback.ejs', {taskId});
+  res.render("tutor_createfeedback.ejs", { taskId });
 });
 
-app.get('/tutor/editfeedback/:feedbackId', async (req, res, next) => {
+app.get("/tutor/editfeedback/:feedbackId", async (req, res, next) => {
   const { feedbackId } = req.params;
-  const feedback = await prisma.feedbacks.findFirst({where: {id: +feedbackId}})
-  res.render('tutor_editfeedback.ejs', { feedback });
+  const feedback = await prisma.feedbacks.findFirst({
+    where: { id: +feedbackId },
+  });
+  res.render("tutor_editfeedback.ejs", { feedback });
 });
 
-const rule = new schedule.RecurrenceRule();
+// const rule = new schedule.RecurrenceRule();
 
-rule.dayOfWeek = [new schedule.Range(1, 5)];
-rule.hour = [9, 12, 21];
-rule.minute = 0;
-rule.tz = "Asia/Seoul";
+// rule.dayOfWeek = [new schedule.Range(1, 5)];
+// rule.hour = [9, 12, 21, 1];
+// rule.minute = 50;
+// rule.tz = "Asia/Seoul";
 
 // const job = schedule.scheduleJob(rule, async () => {
 //   const response = await axios.post(
