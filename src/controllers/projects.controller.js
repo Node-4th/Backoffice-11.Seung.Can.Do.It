@@ -5,18 +5,16 @@ export class ProjectsController {
   }
   getAllProjects = async (req, res, next) => {
     try {
-      // Request
       const orderKey = req.query.orderKey ?? "id";
       const orderValue = req.query.orderValue ?? "desc";
       const category = req.query.category;
       const { role } = req.user;
-      console.log(req.user);
-      // 유효성 검사
+
       if (!["id"].includes(orderKey))
         throw new Error("orderKey 가 올바르지 않습니다.");
       if (!["asc", "desc"].includes(orderValue.toLowerCase()))
         throw new Error("orderValue 가 올바르지 않습니다.");
-      // 프로젝트 목록 조회
+
       const projects = await this.projectsService.getAllProjects(
         orderKey,
         orderValue,
@@ -28,7 +26,7 @@ export class ProjectsController {
         tasks[0].map((task) => {
           if (task.projectId === project.id) {
             if (task.userId === req.user.id) {
-              project.Status = '제출완료';
+              project.Status = "제출완료";
               return project;
             }
           }
@@ -36,34 +34,32 @@ export class ProjectsController {
         return project;
       });
 
-      // console.log(submit);
-      // Response
       // return res.json({ success: true, data: projects });
       // return res.render('admin_projects.ejs', { projects: projects });
       switch (role) {
-        case 'ADMIN':
-          res.render('admin_projects.ejs', { projects });
+        case "ADMIN":
+          res.render("admin_projects.ejs", { projects });
           break;
-        case 'STUDENT':
+        case "STUDENT":
           switch (category) {
-            case 'TIL':
-              res.render('student_til.ejs', { projects });
+            case "TIL":
+              res.render("student_til.ejs", { projects });
               break;
-            case 'PERSONAL_PROJECT':
-              res.render('student_pps.ejs', { projects, submitP });
+            case "PERSONAL_PROJECT":
+              res.render("student_pps.ejs", { projects, submitP });
               break;
-            case 'TEAM_PROJECT':
-              res.render('student_tps.ejs', { projects });
+            case "TEAM_PROJECT":
+              res.render("student_tps.ejs", { projects });
               break;
           }
           break;
-        case 'TUTOR':
+        case "TUTOR":
           switch (category) {
-            case 'PERSONAL_PROJECT':
-              res.render('tutor_pp.ejs', { projects });
+            case "PERSONAL_PROJECT":
+              res.render("tutor_pp.ejs", { projects });
               break;
-            case 'TEAM_PROJECT':
-              res.render('tutor_tp.ejs', { projects });
+            case "TEAM_PROJECT":
+              res.render("tutor_tp.ejs", { projects });
               break;
           }
           break;
@@ -75,34 +71,30 @@ export class ProjectsController {
 
   getProjectByProjectId = async (req, res, next) => {
     try {
-      //Requests
       const { projectId } = req.params;
       const { role, id } = req.user;
 
-      //유효성 검사
       if (!projectId) throw new Error("projectId는 필수값입니다.");
 
-      //프로젝트 상세조회
       const project =
         await this.projectsService.getProjectByProjectId(projectId);
 
-      const tasks = project.tasks.find(task => task.userId === req.user.id);
+      const tasks = project.tasks.find((task) => task.userId === req.user.id);
       const task = tasks || "";
 
-      console.log("============", task);
-      //Response
+      // console.log("============", task);
       // return res.status(200).json({ success: true, data: project });
       switch (role) {
-        case 'ADMIN':
-          res.render('admin_project.ejs', { project });
+        case "ADMIN":
+          res.render("admin_project.ejs", { project });
           break;
-        case 'STUDENT':
+        case "STUDENT":
           switch (project.category) {
-            case 'PERSONAL_PROJECT':
-              res.render('student_pp.ejs', { project, task });
+            case "PERSONAL_PROJECT":
+              res.render("student_pp.ejs", { project, task });
               break;
-            case 'TEAM_PROJECT':
-              res.render('student_tp.ejs', { project });
+            case "TEAM_PROJECT":
+              res.render("student_tp.ejs", { project });
               break;
           }
           break;
@@ -114,11 +106,9 @@ export class ProjectsController {
 
   createProject = async (req, res, next) => {
     try {
-      //Request
       const userId = req.user.id;
       const { title, category, start, end } = req.body;
 
-      //유효성 검사
       if (!title) throw new Error("프로젝트명은 필수 입력 항목입니다.");
       if (!category) throw new Error("프로젝트 유형은 필수 입력 항목입니다.");
       if (!start) throw new Error("프로젝트 시작일은 필수 입력 항목입니다.");
@@ -128,7 +118,6 @@ export class ProjectsController {
           "올바르지 않은 프로젝트 유형입니다. 프로젝트 유형은 'TIL', 'PERSONAL_PROJECT', 'TEAM_PROJECT' 중 하나의 항목만 기재하실 수 있습니다.",
         );
 
-      //서비스 계층에 프로젝트 생성 요청
       const createdProject = await this.projectsService.createProject(
         userId,
         title,
@@ -136,13 +125,12 @@ export class ProjectsController {
         start,
         end,
       );
-      //Response
       // res.status(201).json({
       //   success: true,
       //   message: "프로젝트가 성공적으로 생성되었습니다.",
       //   data: createdProject,
       // });
-      res.redirect('/projects');
+      res.redirect("/projects");
     } catch (error) {
       next(error);
     }
@@ -207,7 +195,7 @@ export class ProjectsController {
       const userId = id;
       const { category, start, end } = req.query;
       console.log("============", req.query);
-      //유효성 검사
+
       if (!category) {
         return res.status(400).json({
           success: false,
@@ -233,7 +221,6 @@ export class ProjectsController {
       console.log("Controller - Start:", start);
       console.log("Controller - End:", end);
 
-      //서비스 계층에 조회 요청
       const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
         userId,
         category,
@@ -241,7 +228,6 @@ export class ProjectsController {
         end,
       );
 
-      //Response
       console.log("Response 미제출자 목록 조회 성공:", notSubmitUsers);
 
       // res.status(200).json({
@@ -249,7 +235,7 @@ export class ProjectsController {
       //   message: "미제출자 인간들을 성공적으로 가려냈습니다😈😈😈",
       //   data: notSubmitUsers,
       // });
-      res.render('admin_notsubmit.ejs', { notSubmitUsers: notSubmitUsers });
+      res.render("admin_notsubmit.ejs", { notSubmitUsers: notSubmitUsers });
     } catch (error) {
       console.error("미제출자 목록 조회 실패:", error);
       next(error);
@@ -263,7 +249,7 @@ export class ProjectsController {
       const { id } = req.user;
       const userId = id;
       const { category, start, end } = req.body;
-      //유효성 검사
+
       if (!category) {
         return res.status(400).json({
           success: false,
@@ -276,7 +262,7 @@ export class ProjectsController {
             "발제한 날짜(시작일) 혹은 제출 마감일(종료일)을 입력해주세요.",
         });
       }
-      //서비스 계층에 조회 요청
+
       const notSubmitUsers = await this.projectsService.getAllNotSubmitUser(
         userId,
         category,
