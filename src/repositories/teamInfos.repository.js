@@ -1,65 +1,65 @@
 export class TeamInfosRepository {
-    constructor(prisma) {
-        this.prisma = prisma;
-    }
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
 
-    findTeamInfos = async (teamId) => {
-        const teamInfo = await this.prisma.TeamInfos.findFirst({
-            where: {
-                teamId: +teamId
-            }
-        });
+  findTeamInfos = async (teamId) => {
+    const teamInfo = await this.prisma.TeamInfos.findFirst({
+      where: {
+        teamId: +teamId,
+      },
+    });
 
-        return teamInfo;
-    };
+    return teamInfo;
+  };
 
-    findTeam = async (teamId) => {
-        const team = await this.prisma.Teams.findFirst({
-            where: {
-                id: +teamId
-            }
-        });
+  findTeam = async (teamId) => {
+    const team = await this.prisma.Teams.findFirst({
+      where: {
+        id: +teamId,
+      },
+    });
 
-        return team;
-    }
+    return team;
+  };
 
-    createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
-        const teamInfo = await this.prisma.TeamInfos.create({
-            data: {
-                teamId: +teamId,
-                teamName,
-                groundRules,
-                goals,
-                content
-            }
-        });
+  createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
+    const teamInfo = await this.prisma.TeamInfos.create({
+      data: {
+        teamId: +teamId,
+        teamName,
+        groundRules,
+        goals,
+        content,
+      },
+    });
 
-        return teamInfo;
-    };
+    return teamInfo;
+  };
 
-    editTeamInfos = async (teamInfoId, teamName, groundRules, goals, content) => {
-        const teamInfo = await this.prisma.TeamInfos.update({
-            where: {
-                id: +teamInfoId
-            },
-            data: {
-                teamName,
-                groundRules,
-                goals,
-                content
-            }
-        });
+  editTeamInfos = async (teamInfoId, teamName, groundRules, goals, content) => {
+    const teamInfo = await this.prisma.TeamInfos.update({
+      where: {
+        id: +teamInfoId,
+      },
+      data: {
+        teamName,
+        groundRules,
+        goals,
+        content,
+      },
+    });
 
-        return teamInfo;
-    };
+    return teamInfo;
+  };
 
-    deleteTeamInfos = async (teamInfoId) => {
-        const teamInfo = await this.prisma.TeamInfos.delete({
-            where: {
-                id: +teamInfoId
-            }
-        });
+  deleteTeamInfos = async (teamInfoId) => {
+    const teamInfo = await this.prisma.TeamInfos.delete({
+      where: {
+        id: +teamInfoId,
+      },
+    });
 
-        return teamInfo;
-    };
-};
+    return teamInfo;
+  };
+}

@@ -52,8 +52,8 @@ export class TasksRepository {
       where: { id: +taskId },
       include: {
         users: { select: { name: true } },
-        teams: { select: { name: true } }
-      }
+        teams: { select: { name: true } },
+      },
     });
     return task;
   };
@@ -84,14 +84,14 @@ export class TasksRepository {
   findTaskByProjectId = async (projectId) => {
     const tasks = await this.prisma.tasks.findMany({
       where: {
-        projectId: +projectId
+        projectId: +projectId,
       },
       include: {
         users: { select: { name: true } },
-        teams: { select: { name: true } }
-      }
+        teams: { select: { name: true } },
+      },
     });
 
     return tasks;
-  }
+  };
 }

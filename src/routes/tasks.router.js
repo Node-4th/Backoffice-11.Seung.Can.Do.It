@@ -48,6 +48,10 @@ router.put("/:taskId", authMiddleware, tasksController.updateTask);
 router.delete("/:taskId", authMiddleware, tasksController.deleteTask);
 
 //프로젝트 아이디별 과제 조회
-router.get('/project/:projectId', authMiddleware, tasksController.findTasksByProject);
+router.get(
+  "/project/:projectId",
+  authMiddleware,
+  tasksController.findTasksByProject,
+);
 
 export default router;

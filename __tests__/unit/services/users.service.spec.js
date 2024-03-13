@@ -17,8 +17,8 @@ describe("users service unit test", () => {
     const params = {
       name: "이름",
       email: "이메일",
-      password: '123456',
-      pwConfirm: '123456',
+      password: "123456",
+      pwConfirm: "123456",
       profileImg: null,
       role: "admin",
     };
@@ -33,9 +33,7 @@ describe("users service unit test", () => {
       role: "ADMIN",
     };
 
-
     mockusersRepository.createUser.mockReturnValue(result);
-    
 
     await expect(async () => {
       await usersService.signUpUser();
@@ -95,7 +93,6 @@ describe("users service unit test", () => {
       await usersService.signInUser();
     }).rejects.toThrow("필수 항목을 체크해주세요");
 
-
     await expect(async () => {
       await usersService.signInUser(params.email, params.password);
     }).rejects.toThrow("비밀번호가 다릅니다.");
@@ -104,6 +101,5 @@ describe("users service unit test", () => {
     expect(mockusersRepository.findUniqueUser).toHaveBeenCalledWith(
       params.email,
     );
-
   });
 });

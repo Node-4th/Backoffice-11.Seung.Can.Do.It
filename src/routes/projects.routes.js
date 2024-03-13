@@ -10,7 +10,6 @@ import { TasksService } from "../services/tasks.service.js";
 import { TasksRepository } from "../repositories/tasks.repository.js";
 import slackSender from "../utils/slackSender.js";
 
-
 const router = express.Router();
 
 /**인스턴스 생성 */
@@ -18,7 +17,10 @@ const tasksRepository = new TasksRepository(prisma);
 const tasksService = new TasksService(tasksRepository);
 const projectsRepository = new ProjectsRepository(prisma);
 const projectsService = new ProjectsService(projectsRepository);
-const projectsController = new ProjectsController(projectsService, tasksService);
+const projectsController = new ProjectsController(
+  projectsService,
+  tasksService,
+);
 
 // 프로젝트 미제출자 목록 조회
 router.get("/submit", authMiddleware, projectsController.getAllNotSubmitUser);
