@@ -1,11 +1,3 @@
-/** 컨트롤러 계층 패턴
- * 0. try...catch 구문으로 에러핸들러에 에러 전달
- * 1. Request : 클라이언트로부터 전달 받는 데이터(입력값)
- * 2. 입력값에 대한 유효성 검사 (검증 로직 X)
- * 3. 서비스 계층에 요청
- * 4. Response : 클라이언트에게 반환할 데이터
- */
-
 export class ClassesController {
   constructor(classesService) {
     this.classesService = classesService;
@@ -13,15 +5,11 @@ export class ClassesController {
 
   getClassByClassId = async (req, res, next) => {
     try {
-      //Requests
-      const { classId } = req.user;
-      //클래스 상세조회
+      const { classId } = req.params;
+      // const { classId } = req.user;
       const myClass = await this.classesService.getClassByClassId(classId);
-
-      console.log(myClass);
-      //Response
-      // return res.status(200).json({ success: true, data: myClass });
-      return res.render('admin_class.ejs', {myClass: myClass})
+      return res.status(200).json({ success: true, data: myClass });
+      // return res.render("admin_class.ejs", { myClass: myClass });
     } catch (error) {
       next(error);
     }
@@ -29,32 +17,31 @@ export class ClassesController {
 
   createClass = async (req, res, next) => {
     try {
-      //Request
       const { id } = req.user;
       const userId = id;
       const { name } = req.body;
-
-      //유효성 검사
       if (!name) {
         throw new Error("클래스명은 필수 입력 항목입니다.");
       }
 
-      //서비스 계층에 클래스 생성 요청
       const createdClass = await this.classesService.createClass(userId, name);
 
-      if (createdClass === null) {
-        return res
-          .status(400)
-          .json({ success: false, message: "이미 생성한 사용자입니다." });
-      }
+      /**
+       * 03.01 if문 -> 서비스 계층으로 옮김.
+       */
 
-      //Response
-      res.status(201).render('admin_class.ejs', {class : createdClass});
-      // .json({
-      //   success: true,
-      //   message: "클래스가 성공적으로 생성되었습니다.",
-      //   data: createdClass,
-      // });
+      // if (createdClass === null) {
+      //   return res
+      //     .status(400)
+      //     .json({ success: false, message: "이미 생성한 사용자입니다." });
+      // }
+
+      // res.status(201).render("admin_class.ejs", { class: createdClass });
+      res.status(201).json({
+        success: true,
+        message: "클래스가 성공적으로 생성되었습니다.",
+        data: createdClass,
+      });
     } catch (error) {
       next(error);
     }

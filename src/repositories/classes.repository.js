@@ -2,17 +2,20 @@ export class ClassesRepository {
   constructor(prisma) {
     this.prisma = prisma;
   }
-  /** 레파지토리 계층 패턴
-   * 1. Parameter : 서비스 계층에 전달 받는 매개변수
-   * 2. DB 사용 로직
-   *  3. Return : 서비스 계층에 전달할 데이터
-   *
+  /** 03.01 수정사항
+   * getUserByUserId - classId와 role을 같이 return 하도록 수정.
+   * createClass - 검증 로직을 서비스 계층으로 옮기고,
+   * updateUsersClassId - 추가해서 classId 업데이트는 분리되게 수정.
    */
-  // 이거 문제있음 class 테이블에서 userId 삭제
+
   getUserByUserId = async (userId) => {
     return await this.prisma.users.findFirst({
       where: {
         id: +userId,
+      },
+      select: {
+        classId: true,
+        role: true,
       },
     });
   };
@@ -36,35 +39,24 @@ export class ClassesRepository {
     });
   };
 
-  createClass = async (userId, name) => {
-    const hasClassUser = await this.prisma.users.findFirst({
+  createClass = async (name) => {
+    return await this.prisma.class.create({
+      data: {
+        name,
+      },
+    });
+  };
+
+  updateUsersClassId = async (userId, classId) => {
+    const updateUser = await this.prisma.users.update({
       where: {
         id: +userId,
       },
-      select: {
-        classId: true,
+      data: {
+        classId: classId,
       },
     });
-
-    if (!hasClassUser.classId) {
-      const newClass = await this.prisma.class.create({
-        data: {
-          name,
-        },
-      });
-      const user = await this.prisma.users.update({
-        where: {
-          id: +userId,
-        },
-        data: {
-          classId: +newClass.id,
-        },
-      });
-
-      return newClass;
-    } else {
-      return null;
-    }
+    return updateUser;
   };
 
   updateClass = async (classId, name) => {

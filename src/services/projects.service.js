@@ -14,7 +14,6 @@ export class ProjectsService {
   };
 
   getAllProjects = async (orderKey, orderValue, id) => {
-    
     const projects = await this.projectsRepository.getAllProjects(
       orderKey,
       orderValue,
@@ -31,7 +30,6 @@ export class ProjectsService {
   };
 
   createProject = async (userId, title, category, start, end) => {
-    //Parameter - user.role이 admin인지 검증하기
     const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 프로젝트를 생성할 수 있습니다.");
@@ -42,26 +40,17 @@ export class ProjectsService {
     if (isExistProjectByTitle) {
       throw new Error("이미 존재하는 프로젝트명입니다.");
     }
-    //레파지토리 계층에 프로젝트 생성 요청
+    //프로젝트 생성 요청
     const createdProject = await this.projectsRepository.createProject(
       title,
       category,
-      start, // dateformat
+      start,
       end,
     );
-
-    /**
-1 prisma String
-2 service dateformat(formattedstart
-3 repo formatted 애들 지워버리기
-   */
-
-    //Return
     return createdProject;
   };
 
   updateProject = async (userId, projectId, title, category, start, end) => {
-    //Parameter - user.role이 admin인지 검증하기
     const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 프로젝트를 수정할 수 있습니다.");
@@ -72,7 +61,7 @@ export class ProjectsService {
     if (!isExistProjectByProjectId) {
       throw new Error("수정할 프로젝트가 존재하지 않습니다.");
     }
-    //레파지토리 계층에 프로젝트 수정 요청
+    //프로젝트 수정 요청
     const updatedProject = await this.projectsRepository.updateProject(
       projectId,
       title,
@@ -80,13 +69,10 @@ export class ProjectsService {
       start,
       end,
     );
-
-    //Return
     return updatedProject;
   };
 
   deleteProject = async (userId, projectId) => {
-    //Parameter - user.role이 admin인지 검증하기
     const isAdmin = await this.checkAdminRole(userId);
     if (!isAdmin) {
       throw new Error("관리자만 프로젝트를 삭제할 수 있습니다.");
@@ -97,7 +83,7 @@ export class ProjectsService {
     if (!isExistProjectByProjectId) {
       throw new Error("삭제할 프로젝트가 존재하지 않습니다.");
     }
-    //레파지토리 계층에 프로젝트 삭제 요청
+    //프로젝트 삭제 요청
     return await this.projectsRepository.deleteProject(projectId);
   };
 
@@ -132,16 +118,11 @@ export class ProjectsService {
 
       return notSubmitTeams;
     } else {
-      // classId -> userId : 노드4기교육과정(class)에 소속된 User가 누구인지를 찾기 위함.
-
-      // projectId -> taskId :발제한 특정 프로젝트(TIL, 개인과제, 팀과제)에 소속된 Tasks가 제출/미제출 되었는지 찾기 위함.
-
       const notSubmitUsers = await this.projectsRepository.getAllNotSubmitUser(
         category,
         start,
         end,
-        isAdmin.classId, //classId
-        // projectInfos.id, //projectId
+        isAdmin.classId,
       );
 
       return notSubmitUsers;
