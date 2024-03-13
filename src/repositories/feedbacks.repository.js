@@ -5,44 +5,44 @@ export class FeedbacksRepository {
 
   findAllFeedback = async (taskId) => {
     const feedback = await this.prisma.Feedbacks.findMany({
-      where: { 
-        taskId: +taskId 
+      where: {
+        taskId: +taskId,
       },
       include: {
-        user: { select: { name: true } }
-      }
-    })
+        user: { select: { name: true } },
+      },
+    });
 
     return feedback;
-  } 
+  };
 
   findFeedback = async (feedbackId) => {
     const task = await this.prisma.Feedbacks.findFirst({
       where: {
-        id: +feedbackId
+        id: +feedbackId,
       },
       include: {
-        user: { select: { name: true } }
-      }
-    })
+        user: { select: { name: true } },
+      },
+    });
 
     return task;
-  } 
+  };
 
   findTask = async (taskId) => {
     const task = await this.prisma.Tasks.findFirst({
       where: {
-        id: +taskId
+        id: +taskId,
       },
       include: {
         users: { select: { name: true } },
         teams: { select: { name: true } },
-        projects: { select: { title: true } }
-      }
-    })
+        projects: { select: { title: true } },
+      },
+    });
 
     return task;
-  }
+  };
 
   createFeedback = async (taskId, title, content, rating, userId) => {
     const feedback = await this.prisma.Feedbacks.create({
@@ -51,60 +51,60 @@ export class FeedbacksRepository {
         title,
         content,
         rating,
-        userId
+        userId,
       },
       include: {
-        user: { select: { name: true } }
-      }
-    })
+        user: { select: { name: true } },
+      },
+    });
 
     return feedback;
-  }
+  };
 
   editFeedback = async (feedbackId, title, content, rating, userId) => {
     const feedback = await this.prisma.Feedbacks.update({
       where: {
         id: +feedbackId,
-        userId
+        userId,
       },
       data: {
         title,
         content,
-        rating
-      }
+        rating,
+      },
     });
 
     return feedback;
-  }
+  };
 
   deleteFeedback = async (feedbackId, userId) => {
     const feedback = await this.prisma.Feedbacks.delete({
       where: {
         id: +feedbackId,
-        userId
-      }
+        userId,
+      },
     });
 
     return feedback;
-  }
+  };
 
   findUser = async (userId) => {
     const user = await this.prisma.Users.findFirst({
       where: {
-        id: userId
-      }
+        id: userId,
+      },
     });
 
-    return user; 
-  }
+    return user;
+  };
 
   findAllFeedbackByUser = async (id) => {
     const feedbacks = await this.prisma.Feedbacks.findMany({
-      where:{
-        userId: +id
-      }
+      where: {
+        userId: +id,
+      },
     });
 
     return feedbacks;
-  }
+  };
 }

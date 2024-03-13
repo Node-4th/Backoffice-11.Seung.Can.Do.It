@@ -118,17 +118,17 @@ export class TasksService {
   };
 
   findTasksByProject = async (projectId) => {
-    if(!projectId) {
-      throw new Error('프로젝트를 선택하세요.');
+    if (!projectId) {
+      throw new Error("프로젝트를 선택하세요.");
     }
 
     const tasks = await this.tasksRepository.findTaskByProjectId(projectId);
 
-    if(!tasks || !tasks.length === 0) {
-      throw new Error('과제를 제출한 사람이 없습니다.');
+    if (!tasks || !tasks.length === 0) {
+      throw new Error("과제를 제출한 사람이 없습니다.");
     }
     console.log(tasks);
 
     return tasks;
-  }
+  };
 }

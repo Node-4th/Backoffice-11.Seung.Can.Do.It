@@ -21,7 +21,7 @@ export class TeamsRepository {
   getAllTeams = async (orderKey, orderValue, projectId) => {
     const teams = await this.prisma.teams.findMany({
       where: {
-        projectId: +projectId
+        projectId: +projectId,
       },
       select: {
         id: true,
@@ -47,7 +47,7 @@ export class TeamsRepository {
         name: true,
         projectId: true,
         memberList: true,
-        tasks: {select: {id: true}}
+        tasks: { select: { id: true } },
       },
     });
   };

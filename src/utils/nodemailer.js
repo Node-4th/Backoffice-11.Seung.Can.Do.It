@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
 });
 
 export default async function emailSender(emails, template) {
-  
   for (const email of emails) {
     const mailOptions = {
       from: process.env.EMAIL_USER,

@@ -1,71 +1,71 @@
 export class TeamInfosService {
-    constructor(teamInfosRepository) {
-        this.teamInfosRepository = teamInfosRepository;
+  constructor(teamInfosRepository) {
+    this.teamInfosRepository = teamInfosRepository;
+  }
+
+  findTeamInfos = async (teamId) => {
+    if (!teamId) {
+      throw new Error("팀 소개페이지를 선택하세요.");
     }
 
-    findTeamInfos = async (teamId) => {
-        if (!teamId) {
-            throw new Error('팀 소개페이지를 선택하세요.');
-        }
+    const teamInfo = await this.teamInfosRepository.findTeamInfos(teamId);
 
-        const teamInfo = await this.teamInfosRepository.findTeamInfos(teamId);
+    if (!teamInfo) {
+      throw new Error("팀 소개페이지가 없습니다.");
+    }
 
-        if (!teamInfo) {
-            throw new Error('팀 소개페이지가 없습니다.');
-        }
+    return teamInfo;
+  };
 
-        return teamInfo;
-    };
+  findTeam = async (teamId) => {
+    if (!teamId) {
+      throw new Error("팀을 선택하세요.");
+    }
 
-    findTeam = async (teamId) => {
-        if (!teamId) {
-            throw new Error('팀을 선택하세요.');
-        }
+    const team = await this.teamInfosRepository.findTeam(teamId);
 
-        const team = await this.teamInfosRepository.findTeam(teamId);
+    if (!team) {
+      throw new Error("팀이 없습니다.");
+    }
 
-        if (!team) {
-            throw new Error('팀이 없습니다.');
-        }
+    return team;
+  };
 
-        return team;
-    };
+  createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
+    if (!teamName || !groundRules || !goals || !content) {
+      throw new Error("필수 값이 입력되지 않았습니다.");
+    }
 
-    createTeamInfos = async (teamId, teamName, groundRules, goals, content) => {
-        if (!teamName || !groundRules || !goals || !content) {
-            throw new Error('필수 값이 입력되지 않았습니다.');
-        }
+    const teamInfo = await this.teamInfosRepository.createTeamInfos(
+      teamId,
+      teamName,
+      groundRules,
+      goals,
+      content,
+    );
 
-        const teamInfo = await this.teamInfosRepository.createTeamInfos(
-            teamId,
-            teamName,
-            groundRules,
-            goals,
-            content
-        );
+    return teamInfo;
+  };
 
-        return teamInfo;
-    };
+  editTeamInfos = async (teamInfoId, teamName, groundRules, goals, content) => {
+    if (!teamName || !groundRules || !goals || !content) {
+      throw new Error("필수 값이 입력되지 않았습니다.");
+    }
 
-    editTeamInfos = async (teamInfoId, teamName, groundRules, goals, content) => {
-        if (!teamName || !groundRules || !goals || !content) {
-            throw new Error('필수 값이 입력되지 않았습니다.')
-        }
+    const teamInfo = await this.teamInfosRepository.editTeamInfos(
+      teamInfoId,
+      teamName,
+      groundRules,
+      goals,
+      content,
+    );
 
-        const teamInfo = await this.teamInfosRepository.editTeamInfos(
-            teamInfoId,
-            teamName,
-            groundRules,
-            goals,
-            content
-        );
+    return teamInfo;
+  };
 
-        return teamInfo;
-    };
+  deleteTeamInfos = async (teamInfoId) => {
+    const teamInfo = await this.teamInfosRepository.deleteTeamInfos(teamInfoId);
 
-    deleteTeamInfos = async (teamInfoId) => {
-        const teamInfo = await this.teamInfosRepository.deleteTeamInfos(teamInfoId);
-
-        return teamInfo;
-    };
-};
+    return teamInfo;
+  };
+}
