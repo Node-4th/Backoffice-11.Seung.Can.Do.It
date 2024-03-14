@@ -34,6 +34,11 @@
 
 <br>
 
+
+### 🏆 수상내역
+
+![Group 1-2](https://github.com/boogie-bogie/Backoffice-project_-Seung.Can.Do.It-/assets/86586908/219d7416-c9de-4316-ac0f-05de7906fe96)
+
 ### 📁 Directory Structure: 폴더 구조
 
 ```bash
